@@ -74,7 +74,7 @@ test('guard helpers classify access correctly', () => {
 })
 
 test('legacyPathToHash maps former Quarto entry points to learner routes', () => {
-  assert.equal(legacyPathToHash('/mgenetica/plataforma.html'), 'auth')
+  assert.equal(legacyPathToHash('/mgenetica/plataforma.html'), 'catalog')
   assert.equal(legacyPathToHash('/mgenetica/modules/'), 'catalog')
   assert.equal(legacyPathToHash('/mgenetica/en/modules/'), 'catalog')
   assert.equal(legacyPathToHash('/mgenetica/es/modules/'), 'catalog')

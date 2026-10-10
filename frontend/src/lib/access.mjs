@@ -76,7 +76,7 @@ const LEGACY_MODULE_SLUGS = new Map([
 
 function legacyPathToHash(pathname) {
   const normalizedPath = String(pathname || '').replace(/\/+/g, '/').replace(/\/+$/, '/')
-  if (/\/plataforma\.html$/.test(normalizedPath)) return 'auth'
+  if (/\/plataforma\.html$/.test(normalizedPath)) return 'catalog'
   if (/\/(en\/|es\/)?modules\/?$/.test(normalizedPath)) return 'catalog'
 
   const filename = normalizedPath.split('/').filter(Boolean).pop()

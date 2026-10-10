@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M13 · Endogamia e parentesco — MGenética</title>
+<style>
+  :root{
+    --mg-ink:#0a1f38;--mg-navy-700:#1a4b78;--mg-navy-900:#061626;
+    --mg-cyan:#00a8d6;--mg-cyan-soft:#d6f1f9;--mg-mid:#4a9fd1;
+    --mg-muted:#5a7391;
+    --mg-bg:#fff;--mg-bg-soft:#f7f9fc;--mg-bg-tint:#eef3f9;
+    --mg-line:rgba(10,31,56,.10);--mg-line-strong:rgba(10,31,56,.18);
+    --mg-gold:#ffc107;--mg-gold-soft:#fff7e0;--mg-gold-border:#ffe08a;--mg-gold-ink:#7b4200;
+    --mg-red:#c2410c;
+    --shadow-sm:0 1px 2px rgba(13,38,66,.05),0 1px 1px rgba(13,38,66,.04);
+    --font-body:"DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+    --font-display:"Lora",Georgia,"Times New Roman",serif;
+    --font-mono:"DM Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:var(--font-body);background:linear-gradient(180deg,#f7f9fc,#eef3f9);min-height:100vh;color:var(--mg-ink);line-height:1.6;padding:1.4rem 1rem 3rem;}
+  .page{max-width:840px;margin:0 auto;}
+  .back{display:inline-block;font-family:var(--font-mono);font-size:.74rem;color:var(--mg-muted);text-decoration:none;margin-bottom:1rem;letter-spacing:.03em;}
+  .back:hover{color:var(--mg-cyan);}
+  .eyebrow{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--mg-cyan);font-weight:600;}
+  h1{font-family:var(--font-display);font-size:1.75rem;font-weight:600;margin:.25rem 0 .4rem;line-height:1.18;}
+  .sub{color:var(--mg-muted);font-size:.96rem;margin-bottom:1.6rem;max-width:62ch;}
+  h2{font-family:var(--font-display);font-size:1.12rem;font-weight:600;color:var(--mg-navy-700);margin-bottom:.9rem;display:flex;align-items:center;gap:.5rem;}
+  h2 .n{display:inline-flex;align-items:center;justify-content:center;width:1.5rem;height:1.5rem;border-radius:50%;background:var(--mg-cyan);color:#fff;font-family:var(--font-mono);font-size:.8rem;font-weight:700;flex:none;}
+  .card{background:var(--mg-bg);border:1px solid var(--mg-line);border-radius:var(--radius);padding:1.4rem;margin-bottom:1.2rem;box-shadow:var(--shadow-sm);}
+  .presets{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem;}
+  .preset{font-family:var(--font-mono);font-size:.78rem;border:1px solid var(--mg-line-strong);background:var(--mg-bg-soft);border-radius:20px;padding:.4rem .8rem;cursor:pointer;color:var(--mg-navy-700);transition:.15s;}
+  .preset:hover,.preset.active{border-color:var(--mg-cyan);background:var(--mg-cyan-soft);color:#0a7a99;}
+  .slider-group label{display:flex;justify-content:space-between;align-items:baseline;font-size:.86rem;margin-bottom:.35rem;font-weight:500;}
+  .slider-group label .v{font-family:var(--font-mono);font-weight:700;color:var(--mg-navy-700);font-size:.95rem;}
+  input[type=range]{width:100%;height:6px;-webkit-appearance:none;appearance:none;background:var(--mg-bg-tint);border-radius:4px;outline:none;}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--mg-cyan);border:3px solid #fff;box-shadow:var(--shadow-sm);cursor:pointer;}
+  input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:var(--mg-cyan);border:3px solid #fff;cursor:pointer;}
+  .res-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem;margin-top:.3rem;}
+  .res{background:var(--mg-bg-soft);border:1px solid var(--mg-line);border-radius:12px;padding:.85rem .4rem;text-align:center;}
+  .res .lab{font-size:.68rem;color:var(--mg-muted);margin-bottom:.2rem;font-family:var(--font-mono);}
+  .res .val{font-family:var(--font-mono);font-size:1.4rem;font-weight:700;color:var(--mg-cyan);}
+  .res.warn .val{color:var(--mg-red);}
+  .formula{font-family:var(--font-mono);background:var(--mg-bg-tint);border:1px solid var(--mg-line);border-radius:8px;padding:.7rem .9rem;font-size:.86rem;color:var(--mg-navy-700);margin:.7rem 0 0;text-align:center;}
+  .note{border-left:3px solid var(--mg-cyan);background:var(--mg-cyan-soft);color:var(--mg-navy-900);padding:.75rem .9rem;border-radius:0 8px 8px 0;font-size:.86rem;margin-top:1rem;}
+  .try{font-size:.82rem;color:var(--mg-navy-700);background:var(--mg-bg-tint);border:1px dashed var(--mg-line-strong);border-radius:8px;padding:.6rem .8rem;margin-top:.9rem;}
+  .try b{color:var(--mg-cyan);}
+  .mg-foot{text-align:center;font-size:.74rem;color:var(--mg-muted);margin-top:2rem;font-family:var(--font-mono);}
+  canvas{width:100%;height:auto;display:block;}
+</style>
+<!-- MG-RUNTIME:start (gerado por scripts/apply_lab_runtime.py — não editar à mão) -->
+<style id="mg-runtime">
+/* mg-lab.css — runtime compartilhado dos labs interativos MGenética.
+   Fonte única: injetado inline em cada lab (mantém self-contained/offline).
+   Adiciona tema ESCURO (sobre os mesmos tokens --mg-* que os labs já usam),
+   foco visível, reduced-motion e utilitários de acessibilidade.
+   Deve vir DEPOIS do <style> do lab para sobrescrever o :root claro. */
+
+/* ----- Tema escuro: auto (prefers-color-scheme) + manual ([data-theme]) ----- */
+:root[data-theme="dark"],
+:root.mg-dark {
+  --mg-ink:#e8eef5;
+  --mg-navy-700:#5fa8da;
+  --mg-navy-900:#cdddec;
+  --mg-cyan:#34c0e8;
+  --mg-cyan-soft:#10344a;
+  --mg-mid:#6bb4dd;
+  --mg-muted:#9fb3c9;
+  --mg-bg:#0c1622;
+  --mg-bg-soft:#111f30;
+  --mg-bg-tint:#16263a;
+  --mg-line:rgba(220,235,250,.12);
+  --mg-line-strong:rgba(220,235,250,.22);
+  --mg-gold:#ffca28;
+  --mg-gold-soft:#33290f;
+  --mg-gold-border:#7a5a16;
+  --mg-gold-ink:#ffd97a;
+  --mg-red:#f08a5a;
+  --mg-red-soft:#3a2018;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]):not(.mg-light) {
+    --mg-ink:#e8eef5;
+    --mg-navy-700:#5fa8da;
+    --mg-navy-900:#cdddec;
+    --mg-cyan:#34c0e8;
+    --mg-cyan-soft:#10344a;
+    --mg-mid:#6bb4dd;
+    --mg-muted:#9fb3c9;
+    --mg-bg:#0c1622;
+    --mg-bg-soft:#111f30;
+    --mg-bg-tint:#16263a;
+    --mg-line:rgba(220,235,250,.12);
+    --mg-line-strong:rgba(220,235,250,.22);
+    --mg-gold:#ffca28;
+    --mg-gold-soft:#33290f;
+    --mg-gold-border:#7a5a16;
+    --mg-gold-ink:#ffd97a;
+    --mg-red:#f08a5a;
+    --mg-red-soft:#3a2018;
+  }
+}
+
+/* garante que o fundo/texto sigam os tokens (alguns labs herdam do body) */
+html, body { background: var(--mg-bg); color: var(--mg-ink); }
+:root { color-scheme: light dark; }
+
+/* ----- Acessibilidade ----- */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 3px solid var(--mg-cyan);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+.mg-visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ----- Controles do runtime (reset, legenda "como ler") ----- */
+.mg-reset-btn {
+  font: inherit; cursor: pointer;
+  border: 1px solid var(--mg-line-strong);
+  background: var(--mg-bg-soft); color: var(--mg-navy-700);
+  border-radius: 8px; padding: 6px 12px; font-weight: 600; font-size: 12.5px;
+}
+.mg-reset-btn:hover { border-color: var(--mg-cyan); }
+.mg-howto {
+  font-size: 12px; color: var(--mg-muted); margin: 6px 0 0; line-height: 1.5;
+}
+
+/* ----- Base responsiva (vale para todos, mesmo sem media query própria) ----- */
+img, canvas, svg, iframe, table { max-width: 100%; }
+canvas { height: auto; }
+@media (max-width: 640px) {
+  body { font-size: 15px; }
+}
+</style>
+<script id="mg-runtime">
+/* mg-lab.js — runtime compartilhado dos labs interativos MGenética.
+   Fonte única, injetado inline. Fornece:
+   - MG: tokens de cor (lidos do CSS) para o canvas usar e reagir ao tema.
+   - tema/idioma via ?theme=&lang= e via postMessage do site (iframe).
+   - auto-resize: reporta a altura ao parent (postMessage).
+   - i18n t(key) lendo <script type="application/json" id="i18n">.
+   - hook de reset ("voltar ao exemplo"). Tudo offline, sem dependências. */
+(function () {
+  "use strict";
+  var root = document.documentElement;
+  var TOKENS = {
+    ink: "--mg-ink", navy7: "--mg-navy-700", navy9: "--mg-navy-900",
+    cyan: "--mg-cyan", cyanSoft: "--mg-cyan-soft", mid: "--mg-mid", muted: "--mg-muted",
+    bg: "--mg-bg", bgSoft: "--mg-bg-soft", bgTint: "--mg-bg-tint",
+    line: "--mg-line", lineStrong: "--mg-line-strong",
+    gold: "--mg-gold", goldSoft: "--mg-gold-soft", goldBorder: "--mg-gold-border", goldInk: "--mg-gold-ink",
+    red: "--mg-red", redSoft: "--mg-red-soft"
+  };
+  var MG = {};
+  window.MG = MG; // canvas usa MG.ink, MG.cyan, ...
+
+  function readPalette() {
+    var cs = getComputedStyle(root);
+    for (var k in TOKENS) MG[k] = cs.getPropertyValue(TOKENS[k]).trim();
+  }
+
+  function params() {
+    try { return new URLSearchParams(location.search); } catch (e) { return new URLSearchParams(); }
+  }
+
+  // ---- tema -------------------------------------------------------------
+  function setTheme(theme) {
+    if (theme === "dark" || theme === "light") root.setAttribute("data-theme", theme);
+    else root.removeAttribute("data-theme"); // auto = segue o sistema/host
+    readPalette();
+    window.dispatchEvent(new CustomEvent("mg:themechange", { detail: { palette: MG } }));
+  }
+  // reage a mudança do sistema quando em modo auto
+  try {
+    var mq = window.matchMedia("(prefers-color-scheme: dark)");
+    mq.addEventListener("change", function () {
+      if (!root.hasAttribute("data-theme")) { readPalette(); window.dispatchEvent(new CustomEvent("mg:themechange", { detail: { palette: MG } })); }
+    });
+  } catch (e) {}
+
+  // ---- i18n -------------------------------------------------------------
+  var DICT = {};
+  var LANG = "pt-BR";
+  function loadDict() {
+    var el = document.getElementById("i18n");
+    if (!el) return;
+    try { DICT = JSON.parse(el.textContent) || {}; } catch (e) { DICT = {}; }
+  }
+  function t(key) {
+    var l = DICT[LANG] || {};
+    if (key in l) return l[key];
+    var base = DICT["pt-BR"] || {};
+    return key in base ? base[key] : key;
+  }
+  function setLang(lang) {
+    if (DICT[lang]) LANG = lang;
+    root.setAttribute("lang", LANG);
+    document.querySelectorAll("[data-i18n]").forEach(function (n) {
+      n.textContent = t(n.getAttribute("data-i18n"));
+    });
+    document.querySelectorAll("[data-i18n-aria]").forEach(function (n) {
+      n.setAttribute("aria-label", t(n.getAttribute("data-i18n-aria")));
+    });
+    window.dispatchEvent(new CustomEvent("mg:langchange", { detail: { lang: LANG } }));
+  }
+  window.MGi18n = { t: t, lang: function () { return LANG; } };
+
+  // ---- auto-resize (reporta altura ao iframe pai) -----------------------
+  var lastH = 0, raf = 0;
+  function reportHeight() {
+    var h = Math.ceil(document.documentElement.getBoundingClientRect().height);
+    if (h && h !== lastH) {
+      lastH = h;
+      try { parent.postMessage({ type: "mg-lab-height", id: document.title || "", height: h }, "*"); } catch (e) {}
+    }
+  }
+  function scheduleReport() { cancelAnimationFrame(raf); raf = requestAnimationFrame(reportHeight); }
+
+  // ---- mensagens do site (host controla tema/idioma) --------------------
+  window.addEventListener("message", function (ev) {
+    var d = ev && ev.data; if (!d || typeof d !== "object") return;
+    if (d.type === "mg-set-theme") setTheme(d.theme);
+    if (d.type === "mg-set-lang") setLang(d.lang);
+  });
+
+  // ---- reset ("voltar ao exemplo") --------------------------------------
+  document.addEventListener("click", function (ev) {
+    var b = ev.target.closest && ev.target.closest("[data-mg-reset]");
+    if (b && typeof window.MGReset === "function") { ev.preventDefault(); window.MGReset(); }
+  });
+
+  // ---- boot -------------------------------------------------------------
+  function boot() {
+    readPalette();
+    loadDict();
+    var p = params();
+    var th = p.get("theme"); if (th) setTheme(th); else readPalette();
+    var lg = p.get("lang"); setLang(lg || LANG);
+    if (window.ResizeObserver) new ResizeObserver(scheduleReport).observe(document.documentElement);
+    window.addEventListener("load", scheduleReport);
+    window.addEventListener("mg:themechange", scheduleReport);
+    setTimeout(reportHeight, 60);
+  }
+  // popula MG imediatamente (o <style> do lab já foi parseado), para o canvas
+  // do lab ver as cores certas mesmo se desenhar antes do DOMContentLoaded.
+  readPalette();
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
+  else boot();
+})();
+</script>
+<!-- MG-RUNTIME:end -->
+</head>
+<body>
+<div class="page">
+  <a class="back" href="../#catalog">← Trilha interativa MGenética</a>
+  <p class="eyebrow">Módulo 13 · Endogamia e parentesco</p>
+  <h1>Endogamia &amp; coeficiente F</h1>
+  <p class="sub">Quando os pais compartilham ancestrais, a cria pode herdar duas cópias do mesmo gene por descendência. O coeficiente de endogamia F mede essa probabilidade — e é exatamente metade do parentesco entre os pais.</p>
+
+  <div class="card">
+    <h2><span class="n">1</span>Quão aparentados são os pais?</h2>
+    <div class="presets">
+      <span class="preset" data-a="0">Não aparentados (0)</span>
+      <span class="preset" data-a="0.125">Primos (0,125)</span>
+      <span class="preset active" data-a="0.25">Meio-irmãos (0,25)</span>
+      <span class="preset" data-a="0.5">Irmãos completos / pai-filha (0,50)</span>
+    </div>
+    <div class="slider-group">
+      <label><span>Parentesco entre os pais &nbsp;A<sub>PQ</sub></span><span class="v" id="vA">0,250</span></label>
+      <input type="range" id="A" min="0" max="0.5" step="0.005" value="0.25">
+    </div>
+  </div>
+
+  <div class="card">
+    <h2><span class="n">2</span>Pedigree</h2>
+    <canvas id="cv" width="1440" height="560"></canvas>
+  </div>
+
+  <div class="card">
+    <h2><span class="n">3</span>Resultados para a cria (X)</h2>
+    <div class="res-grid">
+      <div class="res"><div class="lab">endogamia F</div><div class="val" id="F">0,125</div></div>
+      <div class="res"><div class="lab">diagonal A<sub>XX</sub> = 1+F</div><div class="val" id="diag">1,125</div></div>
+      <div class="res warn"><div class="lab">heterozigose esperada</div><div class="val" id="het">−12,5%</div></div>
+    </div>
+    <div class="formula">F<sub>cria</sub> = A<sub>PQ</sub> / 2 &nbsp;·&nbsp; A<sub>XX</sub> = 1 + F &nbsp;·&nbsp; heterozigose ∝ (1 − F)</div>
+  </div>
+
+  <div class="card">
+    <h2><span class="n">4</span>O que F significa na prática</h2>
+    <div class="note" id="explain"></div>
+    <div class="try"><b>Conecte com a M4:</b> esse mesmo F é o índice de fixação que afasta a população da parábola de Hardy-Weinberg — déficit de heterozigotos. Endogamia não muda as frequências alélicas (p e q), mas redistribui os genótipos para os homozigotos, expondo alelos recessivos deletérios (depressão por endogamia).</div>
+  </div>
+
+  <div class="mg-foot">MGenética · artefato interativo · derivado do texto M13 — Endogamia e parentesco</div>
+</div>
+
+<script>
+  const cv=document.getElementById('cv'),ctx=cv.getContext('2d');ctx.scale(2,2);
+  const CW=720,CH=280;
+  const el=id=>document.getElementById(id);
+  function f3(x){return x.toFixed(3).replace('.',',');}
+  if(!CanvasRenderingContext2D.prototype.roundRect){
+    CanvasRenderingContext2D.prototype.roundRect=function(x,y,w,h,r){r=Math.min(r,w/2,h/2);
+      this.moveTo(x+r,y);this.arcTo(x+w,y,x+w,y+h,r);this.arcTo(x+w,y+h,x,y+h,r);
+      this.arcTo(x,y+h,x,y,r);this.arcTo(x,y,x+w,y,r);this.closePath();return this;};
+  }
+
+  function box(x,y,w,h,label,sub,col,alpha){
+    ctx.globalAlpha=alpha;
+    ctx.fillStyle='#fff';ctx.strokeStyle=col;ctx.lineWidth=2;
+    ctx.beginPath();ctx.roundRect(x-w/2,y-h/2,w,h,10);ctx.fill();ctx.stroke();
+    ctx.fillStyle=col;ctx.font='bold 13px monospace';ctx.textAlign='center';ctx.fillText(label,x,y+(sub?-2:4));
+    if(sub){ctx.fillStyle='#5a7391';ctx.font='10px monospace';ctx.fillText(sub,x,y+13);}
+    ctx.globalAlpha=1;
+  }
+  function line(x1,y1,x2,y2,col,alpha){ctx.globalAlpha=alpha;ctx.strokeStyle=col;ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();ctx.globalAlpha=1;}
+
+  function draw(A,F){
+    ctx.clearRect(0,0,CW,CH);
+    const cxP=210,cxQ=510,cxA=360,cxX=360;
+    const yA=46,yP=140,yX=240;
+    const rel=A/0.5; // 0..1 strength of common ancestry
+    // ancestor links
+    if(A>0.001){
+      line(cxA,yA+22,cxP,yP-22,'#1a4b78',0.3+0.5*rel);
+      line(cxA,yA+22,cxQ,yP-22,'#1a4b78',0.3+0.5*rel);
+      box(cxA,yA,200,40,'Ancestral comum','compartilhado pelos pais','#1a4b78',0.4+0.6*rel);
+    }else{
+      ctx.fillStyle='#5a7391';ctx.font='11px monospace';ctx.textAlign='center';
+      ctx.fillText('(sem ancestral comum — bases independentes)',cxA,yA+4);
+    }
+    // parent->offspring links
+    line(cxP,yP+22,cxX,yX-22,'#00a8d6',1);
+    line(cxQ,yP+22,cxX,yX-22,'#00a8d6',1);
+    // parents
+    box(cxP,yP,150,44,'Pai  P','EBV / base','#0a1f38',1);
+    box(cxQ,yP,150,44,'Mãe  Q','EBV / base','#0a1f38',1);
+    // A_PQ label between parents
+    ctx.fillStyle='#7b4200';ctx.font='bold 12px monospace';ctx.textAlign='center';
+    ctx.fillText('A(P,Q) = '+f3(A),cxA,yP+5);
+    // offspring
+    const col=F>0.05?'#c2410c':'#00a8d6';
+    box(cxX,yX,170,46,'Cria  X','F = '+f3(F),col,1);
+  }
+
+  function update(){
+    const A=+el('A').value;const F=A/2;
+    el('vA').textContent=f3(A);
+    el('F').textContent=f3(F);
+    el('diag').textContent=f3(1+F);
+    el('het').textContent=(F>0?'−':'')+(F*100).toFixed(1).replace('.',',')+'%';
+    document.querySelectorAll('.preset').forEach(p=>p.classList.toggle('active',Math.abs(parseFloat(p.dataset.a)-A)<0.003));
+    draw(A,F);
+    const ex=el('explain');
+    let m;
+    if(F<0.005)m='F = 0: pais sem parentesco conhecido. A cria tem a heterozigose esperada da base — nenhuma perda por descendência comum.';
+    else if(F<0.07)m='F = '+f3(F)+' ('+(F*100).toFixed(1).replace('.',',')+'%): endogamia leve. Aceitável em muitos programas, mas precisa ser monitorada ao longo das gerações para não acumular.';
+    else if(F<0.16)m='F = '+f3(F)+' ('+(F*100).toFixed(1).replace('.',',')+'%): endogamia moderada, típica do acasalamento entre meio-irmãos. Já há risco perceptível de depressão por endogamia em características de fitness (fertilidade, sobrevivência).';
+    else m='F = '+f3(F)+' ('+(F*100).toFixed(1).replace('.',',')+'%): endogamia alta (irmãos completos ou pai-filha). Risco elevado de expressão de recessivos deletérios e queda de desempenho reprodutivo. Evite salvo objetivo específico de fixação.';
+    ex.innerHTML=m;
+  }
+  el('A').addEventListener('input',update);
+  document.querySelectorAll('.preset').forEach(p=>p.addEventListener('click',()=>{el('A').value=p.dataset.a;update();}));
+  update();
+</script>
+<script type="application/json" id="dados">
+{
+  "controls": {
+    "A": {
+      "type": "range",
+      "min": 0,
+      "max": 0.5,
+      "step": 0.005,
+      "value": 0.25
+    }
+  }
+}
+</script>
+<script id="dados-hydrator">
+(() => {
+  const node = document.getElementById('dados');
+  if (!node) return;
+  let data;
+  try { data = JSON.parse(node.textContent || '{}'); } catch (_) { return; }
+  const controls = data.controls || {};
+  for (const [id, cfg] of Object.entries(controls)) {
+    const target = document.getElementById(id);
+    if (!target || cfg == null || !Object.prototype.hasOwnProperty.call(cfg, 'value')) continue;
+    target.value = String(cfg.value);
+    target.dispatchEvent(new Event('input', { bubbles: true }));
+    target.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+  if (data.cruzamento && typeof update === 'function') {
+    try {
+      if (Object.prototype.hasOwnProperty.call(data.cruzamento, 'pai')) pai = data.cruzamento.pai;
+      if (Object.prototype.hasOwnProperty.call(data.cruzamento, 'mae')) mae = data.cruzamento.mae;
+      update();
+    } catch (_) {}
+  }
+})();
+</script>
+</body>
+</html>

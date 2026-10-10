@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M11 · Correlações genéticas e ambientais — MGenética</title>
+<style>
+  :root{
+    --mg-ink:#0a1f38;--mg-navy-700:#1a4b78;--mg-navy-900:#061626;
+    --mg-cyan:#00a8d6;--mg-cyan-soft:#d6f1f9;--mg-mid:#4a9fd1;
+    --mg-muted:#5a7391;
+    --mg-bg:#fff;--mg-bg-soft:#f7f9fc;--mg-bg-tint:#eef3f9;
+    --mg-line:rgba(10,31,56,.10);--mg-line-strong:rgba(10,31,56,.18);
+    --mg-gold:#ffc107;--mg-gold-soft:#fff7e0;--mg-gold-border:#ffe08a;--mg-gold-ink:#7b4200;
+    --mg-red:#c2410c;
+    --shadow-sm:0 1px 2px rgba(13,38,66,.05),0 1px 1px rgba(13,38,66,.04);
+    --font-body:"DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+    --font-display:"Lora",Georgia,"Times New Roman",serif;
+    --font-mono:"DM Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:var(--font-body);background:linear-gradient(180deg,#f7f9fc,#eef3f9);min-height:100vh;color:var(--mg-ink);line-height:1.6;padding:1.4rem 1rem 3rem;}
+  .page{max-width:840px;margin:0 auto;}
+  .back{display:inline-block;font-family:var(--font-mono);font-size:.74rem;color:var(--mg-muted);text-decoration:none;margin-bottom:1rem;letter-spacing:.03em;}
+  .back:hover{color:var(--mg-cyan);}
+  .eyebrow{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--mg-cyan);font-weight:600;}
+  h1{font-family:var(--font-display);font-size:1.75rem;font-weight:600;margin:.25rem 0 .4rem;line-height:1.18;}
+  .sub{color:var(--mg-muted);font-size:.96rem;margin-bottom:1.6rem;max-width:62ch;}
+  h2{font-family:var(--font-display);font-size:1.12rem;font-weight:600;color:var(--mg-navy-700);margin-bottom:.9rem;display:flex;align-items:center;gap:.5rem;}
+  h2 .n{display:inline-flex;align-items:center;justify-content:center;width:1.5rem;height:1.5rem;border-radius:50%;background:var(--mg-cyan);color:#fff;font-family:var(--font-mono);font-size:.8rem;font-weight:700;flex:none;}
+  .card{background:var(--mg-bg);border:1px solid var(--mg-line);border-radius:var(--radius);padding:1.4rem;margin-bottom:1.2rem;box-shadow:var(--shadow-sm);}
+  .slider-group{margin-bottom:1rem;}
+  .slider-group label{display:flex;justify-content:space-between;align-items:baseline;font-size:.86rem;margin-bottom:.35rem;font-weight:500;}
+  .slider-group label .v{font-family:var(--font-mono);font-weight:700;color:var(--mg-navy-700);font-size:.95rem;}
+  input[type=range]{width:100%;height:6px;-webkit-appearance:none;appearance:none;background:var(--mg-bg-tint);border-radius:4px;outline:none;}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--mg-cyan);border:3px solid #fff;box-shadow:var(--shadow-sm);cursor:pointer;}
+  input[type=range].a::-webkit-slider-thumb{background:var(--mg-mid);}
+  input[type=range].e::-webkit-slider-thumb{background:var(--mg-gold);}
+  input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:var(--mg-cyan);border:3px solid #fff;cursor:pointer;}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+  .formula{font-family:var(--font-mono);background:var(--mg-bg-tint);border:1px solid var(--mg-line);border-radius:8px;padding:.7rem .9rem;font-size:.84rem;color:var(--mg-navy-700);margin:.2rem 0 1rem;text-align:center;}
+  .chips{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.2rem;}
+  .chip{font-family:var(--font-mono);font-size:.76rem;font-weight:600;color:var(--mg-navy-700);background:var(--mg-bg-tint);border:1px solid var(--mg-line-strong);border-radius:20px;padding:.4rem .85rem;cursor:pointer;}
+  .chip:hover{border-color:var(--mg-cyan);color:var(--mg-cyan);}
+  .layout{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;align-items:start;}
+  @media(max-width:640px){.layout{grid-template-columns:1fr;}}
+  .threeres{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.7rem;}
+  .res{background:var(--mg-bg-soft);border:1px solid var(--mg-line);border-radius:12px;padding:.9rem .6rem;text-align:center;}
+  .res .lab{font-size:.68rem;color:var(--mg-muted);margin-bottom:.2rem;font-family:var(--font-mono);}
+  .res .val{font-family:var(--font-mono);font-size:1.5rem;font-weight:700;color:var(--mg-navy-700);}
+  .res.big .val{font-size:2rem;color:var(--mg-cyan);}
+  .res.gen .val{color:var(--mg-mid);}
+  .res.env .val{color:#e0a800;}
+  .cr{display:flex;align-items:center;gap:1rem;background:var(--mg-bg-soft);border:1px solid var(--mg-line);border-radius:12px;padding:1rem;margin-top:.3rem;}
+  .cr .dir{font-family:var(--font-mono);font-size:1.5rem;font-weight:700;}
+  .note{border-left:3px solid var(--mg-cyan);background:var(--mg-cyan-soft);color:var(--mg-navy-900);padding:.75rem .9rem;border-radius:0 8px 8px 0;font-size:.86rem;margin-top:1rem;}
+  .try{font-size:.82rem;color:var(--mg-navy-700);background:var(--mg-bg-tint);border:1px dashed var(--mg-line-strong);border-radius:8px;padding:.6rem .8rem;margin-top:.9rem;}
+  .try b{color:var(--mg-cyan);}
+  .mg-foot{text-align:center;font-size:.74rem;color:var(--mg-muted);margin-top:2rem;font-family:var(--font-mono);}
+  canvas{width:100%;height:auto;display:block;border-radius:10px;}
+</style>
+<!-- MG-RUNTIME:start (gerado por scripts/apply_lab_runtime.py — não editar à mão) -->
+<style id="mg-runtime">
+/* mg-lab.css — runtime compartilhado dos labs interativos MGenética.
+   Fonte única: injetado inline em cada lab (mantém self-contained/offline).
+   Adiciona tema ESCURO (sobre os mesmos tokens --mg-* que os labs já usam),
+   foco visível, reduced-motion e utilitários de acessibilidade.
+   Deve vir DEPOIS do <style> do lab para sobrescrever o :root claro. */
+
+/* ----- Tema escuro: auto (prefers-color-scheme) + manual ([data-theme]) ----- */
+:root[data-theme="dark"],
+:root.mg-dark {
+  --mg-ink:#e8eef5;
+  --mg-navy-700:#5fa8da;
+  --mg-navy-900:#cdddec;
+  --mg-cyan:#34c0e8;
+  --mg-cyan-soft:#10344a;
+  --mg-mid:#6bb4dd;
+  --mg-muted:#9fb3c9;
+  --mg-bg:#0c1622;
+  --mg-bg-soft:#111f30;
+  --mg-bg-tint:#16263a;
+  --mg-line:rgba(220,235,250,.12);
+  --mg-line-strong:rgba(220,235,250,.22);
+  --mg-gold:#ffca28;
+  --mg-gold-soft:#33290f;
+  --mg-gold-border:#7a5a16;
+  --mg-gold-ink:#ffd97a;
+  --mg-red:#f08a5a;
+  --mg-red-soft:#3a2018;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]):not(.mg-light) {
+    --mg-ink:#e8eef5;
+    --mg-navy-700:#5fa8da;
+    --mg-navy-900:#cdddec;
+    --mg-cyan:#34c0e8;
+    --mg-cyan-soft:#10344a;
+    --mg-mid:#6bb4dd;
+    --mg-muted:#9fb3c9;
+    --mg-bg:#0c1622;
+    --mg-bg-soft:#111f30;
+    --mg-bg-tint:#16263a;
+    --mg-line:rgba(220,235,250,.12);
+    --mg-line-strong:rgba(220,235,250,.22);
+    --mg-gold:#ffca28;
+    --mg-gold-soft:#33290f;
+    --mg-gold-border:#7a5a16;
+    --mg-gold-ink:#ffd97a;
+    --mg-red:#f08a5a;
+    --mg-red-soft:#3a2018;
+  }
+}
+
+/* garante que o fundo/texto sigam os tokens (alguns labs herdam do body) */
+html, body { background: var(--mg-bg); color: var(--mg-ink); }
+:root { color-scheme: light dark; }
+
+/* ----- Acessibilidade ----- */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 3px solid var(--mg-cyan);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+.mg-visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ----- Controles do runtime (reset, legenda "como ler") ----- */
+.mg-reset-btn {
+  font: inherit; cursor: pointer;
+  border: 1px solid var(--mg-line-strong);
+  background: var(--mg-bg-soft); color: var(--mg-navy-700);
+  border-radius: 8px; padding: 6px 12px; font-weight: 600; font-size: 12.5px;
+}
+.mg-reset-btn:hover { border-color: var(--mg-cyan); }
+.mg-howto {
+  font-size: 12px; color: var(--mg-muted); margin: 6px 0 0; line-height: 1.5;
+}
+
+/* ----- Base responsiva (vale para todos, mesmo sem media query própria) ----- */
+img, canvas, svg, iframe, table { max-width: 100%; }
+canvas { height: auto; }
+@media (max-width: 640px) {
+  body { font-size: 15px; }
+}
+</style>
+<script id="mg-runtime">
+/* mg-lab.js — runtime compartilhado dos labs interativos MGenética.
+   Fonte única, injetado inline. Fornece:
+   - MG: tokens de cor (lidos do CSS) para o canvas usar e reagir ao tema.
+   - tema/idioma via ?theme=&lang= e via postMessage do site (iframe).
+   - auto-resize: reporta a altura ao parent (postMessage).
+   - i18n t(key) lendo <script type="application/json" id="i18n">.
+   - hook de reset ("voltar ao exemplo"). Tudo offline, sem dependências. */
+(function () {
+  "use strict";
+  var root = document.documentElement;
+  var TOKENS = {
+    ink: "--mg-ink", navy7: "--mg-navy-700", navy9: "--mg-navy-900",
+    cyan: "--mg-cyan", cyanSoft: "--mg-cyan-soft", mid: "--mg-mid", muted: "--mg-muted",
+    bg: "--mg-bg", bgSoft: "--mg-bg-soft", bgTint: "--mg-bg-tint",
+    line: "--mg-line", lineStrong: "--mg-line-strong",
+    gold: "--mg-gold", goldSoft: "--mg-gold-soft", goldBorder: "--mg-gold-border", goldInk: "--mg-gold-ink",
+    red: "--mg-red", redSoft: "--mg-red-soft"
+  };
+  var MG = {};
+  window.MG = MG; // canvas usa MG.ink, MG.cyan, ...
+
+  function readPalette() {
+    var cs = getComputedStyle(root);
+    for (var k in TOKENS) MG[k] = cs.getPropertyValue(TOKENS[k]).trim();
+  }
+
+  function params() {
+    try { return new URLSearchParams(location.search); } catch (e) { return new URLSearchParams(); }
+  }
+
+  // ---- tema -------------------------------------------------------------
+  function setTheme(theme) {
+    if (theme === "dark" || theme === "light") root.setAttribute("data-theme", theme);
+    else root.removeAttribute("data-theme"); // auto = segue o sistema/host
+    readPalette();
+    window.dispatchEvent(new CustomEvent("mg:themechange", { detail: { palette: MG } }));
+  }
+  // reage a mudança do sistema quando em modo auto
+  try {
+    var mq = window.matchMedia("(prefers-color-scheme: dark)");
+    mq.addEventListener("change", function () {
+      if (!root.hasAttribute("data-theme")) { readPalette(); window.dispatchEvent(new CustomEvent("mg:themechange", { detail: { palette: MG } })); }
+    });
+  } catch (e) {}
+
+  // ---- i18n -------------------------------------------------------------
+  var DICT = {};
+  var LANG = "pt-BR";
+  function loadDict() {
+    var el = document.getElementById("i18n");
+    if (!el) return;
+    try { DICT = JSON.parse(el.textContent) || {}; } catch (e) { DICT = {}; }
+  }
+  function t(key) {
+    var l = DICT[LANG] || {};
+    if (key in l) return l[key];
+    var base = DICT["pt-BR"] || {};
+    return key in base ? base[key] : key;
+  }
+  function setLang(lang) {
+    if (DICT[lang]) LANG = lang;
+    root.setAttribute("lang", LANG);
+    document.querySelectorAll("[data-i18n]").forEach(function (n) {
+      n.textContent = t(n.getAttribute("data-i18n"));
+    });
+    document.querySelectorAll("[data-i18n-aria]").forEach(function (n) {
+      n.setAttribute("aria-label", t(n.getAttribute("data-i18n-aria")));
+    });
+    window.dispatchEvent(new CustomEvent("mg:langchange", { detail: { lang: LANG } }));
+  }
+  window.MGi18n = { t: t, lang: function () { return LANG; } };
+
+  // ---- auto-resize (reporta altura ao iframe pai) -----------------------
+  var lastH = 0, raf = 0;
+  function reportHeight() {
+    var h = Math.ceil(document.documentElement.getBoundingClientRect().height);
+    if (h && h !== lastH) {
+      lastH = h;
+      try { parent.postMessage({ type: "mg-lab-height", id: document.title || "", height: h }, "*"); } catch (e) {}
+    }
+  }
+  function scheduleReport() { cancelAnimationFrame(raf); raf = requestAnimationFrame(reportHeight); }
+
+  // ---- mensagens do site (host controla tema/idioma) --------------------
+  window.addEventListener("message", function (ev) {
+    var d = ev && ev.data; if (!d || typeof d !== "object") return;
+    if (d.type === "mg-set-theme") setTheme(d.theme);
+    if (d.type === "mg-set-lang") setLang(d.lang);
+  });
+
+  // ---- reset ("voltar ao exemplo") --------------------------------------
+  document.addEventListener("click", function (ev) {
+    var b = ev.target.closest && ev.target.closest("[data-mg-reset]");
+    if (b && typeof window.MGReset === "function") { ev.preventDefault(); window.MGReset(); }
+  });
+
+  // ---- boot -------------------------------------------------------------
+  function boot() {
+    readPalette();
+    loadDict();
+    var p = params();
+    var th = p.get("theme"); if (th) setTheme(th); else readPalette();
+    var lg = p.get("lang"); setLang(lg || LANG);
+    if (window.ResizeObserver) new ResizeObserver(scheduleReport).observe(document.documentElement);
+    window.addEventListener("load", scheduleReport);
+    window.addEventListener("mg:themechange", scheduleReport);
+    setTimeout(reportHeight, 60);
+  }
+  // popula MG imediatamente (o <style> do lab já foi parseado), para o canvas
+  // do lab ver as cores certas mesmo se desenhar antes do DOMContentLoaded.
+  readPalette();
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
+  else boot();
+})();
+</script>
+<!-- MG-RUNTIME:end -->
+</head>
+<body>
+<div class="page">
+  <a class="back" href="../#catalog">← Trilha interativa MGenética</a>
+  <p class="eyebrow">Módulo 11 · Correlações</p>
+  <h1>Correlações genéticas, fenotípicas e ambientais</h1>
+  <p class="sub">Melhorar peso pode piorar a gordura? O que se vê no fenótipo (<b>rP</b>) mistura dois cabos: o genético (<b>rA</b>) e o ambiental (<b>rE</b>). Só o cabo genético arrasta a próxima geração. Veja a mesma rP = 0,50 nascer de combinações bem diferentes.</p>
+
+  <div class="card">
+    <h2><span class="n">1</span>Os dois cabos por trás da correlação observada</h2>
+    <div class="formula">rP = h<sub>x</sub>·h<sub>y</sub>·rA &nbsp;+&nbsp; e<sub>x</sub>·e<sub>y</sub>·rE &nbsp;&nbsp;(h² = parte genética · e² = 1 − h²)</div>
+    <div class="grid2">
+      <div class="slider-group">
+        <label><span>Correlação genética rA</span><span class="v" id="vrA">0,70</span></label>
+        <input type="range" class="a" id="rA" min="-1" max="1" step="0.05" value="0.70">
+      </div>
+      <div class="slider-group">
+        <label><span>Correlação ambiental rE</span><span class="v" id="vrE">0,20</span></label>
+        <input type="range" class="e" id="rE" min="-1" max="1" step="0.05" value="0.20">
+      </div>
+      <div class="slider-group">
+        <label><span>Herdabilidade peso (h²<sub>x</sub>)</span><span class="v" id="vh2x">0,60</span></label>
+        <input type="range" id="h2x" min="0.05" max="0.95" step="0.01" value="0.60">
+      </div>
+      <div class="slider-group">
+        <label><span>Herdabilidade gordura (h²<sub>y</sub>)</span><span class="v" id="vh2y">0,60</span></label>
+        <input type="range" id="h2y" min="0.05" max="0.95" step="0.01" value="0.60">
+      </div>
+    </div>
+    <div class="chips">
+      <span class="chip" data-p="A">Cenário A do curso (rA 0,70 · rE 0,20)</span>
+      <span class="chip" data-p="B">Cenário B do curso (rA 0,05 · rE 0,70)</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2><span class="n">2</span>Fenótipo observado e sua origem</h2>
+    <div class="layout">
+      <canvas id="cv" width="620" height="620"></canvas>
+      <div>
+        <div class="threeres">
+          <div class="res big"><div class="lab">rP observada</div><div class="val" id="rP">0,50</div></div>
+          <div class="res gen"><div class="lab">via genética</div><div class="val" id="gpart">0,42</div></div>
+          <div class="res env"><div class="lab">via ambiente</div><div class="val" id="epart">0,08</div></div>
+        </div>
+        <div class="note" id="origin"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2><span class="n">3</span>Resposta correlacionada à seleção</h2>
+    <div class="cr">
+      <div class="dir" id="crDir">↑</div>
+      <div id="crTxt" style="font-size:.9rem;"></div>
+    </div>
+    <div class="try"><b>O perigo do rP:</b> carregue o <b>Cenário B</b>. A rP continua 0,50 — os animais mais pesados ainda parecem mais gordos —, mas rA caiu para 0,05. Selecionar peso quase não muda a gordura dos filhos, porque a associação observada era quase toda <i>ambiental</i>. Ler rP como se fosse genética engana.</div>
+  </div>
+
+  <div class="mg-foot">MGenética · artefato interativo · derivado do texto M11 — Correlações genéticas, fenotípicas e ambientais &nbsp;·&nbsp; base: r = cov/√(v<sub>x</sub>·v<sub>y</sub>) = 6/√(16·9) = 0,50</div>
+</div>
+
+<script>
+  const cv=document.getElementById('cv'),ctx=cv.getContext('2d');ctx.scale(2,2);
+  const CW=310,CH=310;
+  const el=id=>document.getElementById(id);
+  function f2(x){return (x<0?'−':'')+Math.abs(x).toFixed(2).replace('.',',');}
+  // deterministic pseudo-random cloud
+  function rng(seed){let s=seed>>>0;return ()=>{s=(Math.imul(s,1103515245)+12345)>>>0;return s/4294967296;};}
+  function randn(r){let s=0;for(let i=0;i<12;i++)s+=r();return s-6;}
+  let PTS=null;
+  function buildPts(){const r=rng(20260528);PTS=[];for(let i=0;i<140;i++)PTS.push([randn(r),randn(r)]);}
+  buildPts();
+
+  function draw(rP){
+    ctx.clearRect(0,0,CW,CH);
+    const cx=CW/2,cy=CH/2,sc=40;
+    // frame + quadrant axes
+    ctx.strokeStyle='rgba(10,31,56,.12)';ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(20,cy);ctx.lineTo(CW-10,cy);ctx.moveTo(cx,CH-20);ctx.lineTo(cx,10);ctx.stroke();
+    ctx.fillStyle='#5a7391';ctx.font='11px monospace';ctx.textAlign='right';ctx.fillText('peso →',CW-12,cy-6);
+    ctx.save();ctx.translate(cx+12,16);ctx.rotate(0);ctx.textAlign='left';ctx.fillText('↑ gordura',0,0);ctx.restore();
+    const rPc=Math.max(-0.985,Math.min(0.985,rP));
+    const k=Math.sqrt(1-rPc*rPc);
+    ctx.fillStyle='rgba(0,168,214,.55)';
+    PTS.forEach(p=>{
+      const x=p[0], y=rPc*p[0]+k*p[1];
+      const px=cx+x*sc, py=cy-y*sc;
+      ctx.beginPath();ctx.arc(px,py,3.4,0,7);ctx.fill();
+    });
+    // trend line
+    ctx.strokeStyle='#0a1f38';ctx.lineWidth=2.5;
+    ctx.beginPath();ctx.moveTo(cx-3*sc,cy-rPc*3*sc);ctx.lineTo(cx+3*sc,cy+rPc*3*sc);ctx.stroke();
+  }
+
+  function update(){
+    const rA=+el('rA').value,rE=+el('rE').value,h2x=+el('h2x').value,h2y=+el('h2y').value;
+    el('vrA').textContent=f2(rA);el('vrE').textContent=f2(rE);el('vh2x').textContent=f2(h2x);el('vh2y').textContent=f2(h2y);
+    const hx=Math.sqrt(h2x),hy=Math.sqrt(h2y),ex=Math.sqrt(1-h2x),ey=Math.sqrt(1-h2y);
+    const g=hx*hy*rA, en=ex*ey*rE;
+    let rP=g+en; rP=Math.max(-1,Math.min(1,rP));
+    el('rP').textContent=f2(rP);el('gpart').textContent=f2(g);el('epart').textContent=f2(en);
+    draw(rP);
+    // origin note
+    const ag=Math.abs(g),ae=Math.abs(en);
+    let o;
+    if(ag>=ae) o='Dos <b>'+f2(rP)+'</b> de rP, <b>'+f2(g)+'</b> vêm do cabo <b>genético</b> e <b>'+f2(en)+'</b> do ambiente. A associação observada é majoritariamente genética — selecionar uma característica tende a <b>arrastar</b> a outra.';
+    else o='Dos <b>'+f2(rP)+'</b> de rP, só <b>'+f2(g)+'</b> são genéticos; <b>'+f2(en)+'</b> vêm do <b>ambiente</b>. O fenótipo parece associado, mas a seleção quase não transmite essa ligação à prole.';
+    el('origin').innerHTML=o;
+    // correlated response
+    const dir=el('crDir'),txt=el('crTxt');
+    if(rA>0.03){dir.textContent='↑';dir.style.color='#00a8d6';txt.innerHTML='Selecionar para <b>maior peso</b> tende a <b>aumentar a gordura</b> nos filhos (rA > 0). Se gordura alta é indesejada, há <b>trade-off</b>.';}
+    else if(rA<-0.03){dir.textContent='↓';dir.style.color='#1a4b78';txt.innerHTML='Selecionar para <b>maior peso</b> tende a <b>reduzir a gordura</b> nos filhos (rA < 0) — características puxam em sentidos opostos.';}
+    else{dir.textContent='≈';dir.style.color='#5a7391';txt.innerHTML='Com rA ≈ 0, selecionar peso tende a deixar a gordura <b>quase estável</b> geneticamente, mesmo que o fenótipo pareça associado.';}
+  }
+  ['rA','rE','h2x','h2y'].forEach(id=>el(id).addEventListener('input',update));
+  document.querySelectorAll('.chip').forEach(c=>c.addEventListener('click',()=>{
+    if(c.getAttribute('data-p')==='A'){el('rA').value=0.70;el('rE').value=0.20;el('h2x').value=0.60;el('h2y').value=0.60;}
+    else{el('rA').value=0.05;el('rE').value=0.70;el('h2x').value=0.31;el('h2y').value=0.31;}
+    update();
+  }));
+  update();
+</script>
+<script type="application/json" id="dados">
+{
+  "controls": {
+    "rA": {
+      "type": "range",
+      "min": -1,
+      "max": 1,
+      "step": 0.05,
+      "value": 0.7
+    },
+    "rE": {
+      "type": "range",
+      "min": -1,
+      "max": 1,
+      "step": 0.05,
+      "value": 0.2
+    },
+    "h2x": {
+      "type": "range",
+      "min": 0.05,
+      "max": 0.95,
+      "step": 0.01,
+      "value": 0.6
+    },
+    "h2y": {
+      "type": "range",
+      "min": 0.05,
+      "max": 0.95,
+      "step": 0.01,
+      "value": 0.6
+    }
+  }
+}
+</script>
+<script id="dados-hydrator">
+(() => {
+  const node = document.getElementById('dados');
+  if (!node) return;
+  let data;
+  try { data = JSON.parse(node.textContent || '{}'); } catch (_) { return; }
+  const controls = data.controls || {};
+  for (const [id, cfg] of Object.entries(controls)) {
+    const target = document.getElementById(id);
+    if (!target || cfg == null || !Object.prototype.hasOwnProperty.call(cfg, 'value')) continue;
+    target.value = String(cfg.value);
+    target.dispatchEvent(new Event('input', { bubbles: true }));
+    target.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+  if (data.cruzamento && typeof update === 'function') {
+    try {
+      if (Object.prototype.hasOwnProperty.call(data.cruzamento, 'pai')) pai = data.cruzamento.pai;
+      if (Object.prototype.hasOwnProperty.call(data.cruzamento, 'mae')) mae = data.cruzamento.mae;
+      update();
+    } catch (_) {}
+  }
+})();
+</script>
+</body>
+</html>

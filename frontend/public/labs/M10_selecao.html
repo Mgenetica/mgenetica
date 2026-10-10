@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M10 · Seleção e ganho genético — MGenética</title>
+<style>
+  :root{
+    --mg-ink:#0a1f38;--mg-navy-700:#1a4b78;--mg-navy-900:#061626;
+    --mg-cyan:#00a8d6;--mg-cyan-soft:#d6f1f9;--mg-mid:#4a9fd1;
+    --mg-muted:#5a7391;
+    --mg-bg:#fff;--mg-bg-soft:#f7f9fc;--mg-bg-tint:#eef3f9;
+    --mg-line:rgba(10,31,56,.10);--mg-line-strong:rgba(10,31,56,.18);
+    --mg-gold:#ffc107;--mg-gold-soft:#fff7e0;--mg-gold-border:#ffe08a;--mg-gold-ink:#7b4200;
+    --shadow-sm:0 1px 2px rgba(13,38,66,.05),0 1px 1px rgba(13,38,66,.04);
+    --font-body:"DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+    --font-display:"Lora",Georgia,"Times New Roman",serif;
+    --font-mono:"DM Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:var(--font-body);background:linear-gradient(180deg,#f7f9fc,#eef3f9);min-height:100vh;color:var(--mg-ink);line-height:1.6;padding:1.4rem 1rem 3rem;}
+  .page{max-width:840px;margin:0 auto;}
+  .back{display:inline-block;font-family:var(--font-mono);font-size:.74rem;color:var(--mg-muted);text-decoration:none;margin-bottom:1rem;letter-spacing:.03em;}
+  .back:hover{color:var(--mg-cyan);}
+  .eyebrow{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--mg-cyan);font-weight:600;}
+  h1{font-family:var(--font-display);font-size:1.75rem;font-weight:600;margin:.25rem 0 .4rem;line-height:1.18;}
+  .sub{color:var(--mg-muted);font-size:.96rem;margin-bottom:1.6rem;max-width:62ch;}
+  h2{font-family:var(--font-display);font-size:1.12rem;font-weight:600;color:var(--mg-navy-700);margin-bottom:.9rem;display:flex;align-items:center;gap:.5rem;}
+  h2 .n{display:inline-flex;align-items:center;justify-content:center;width:1.5rem;height:1.5rem;border-radius:50%;background:var(--mg-cyan);color:#fff;font-family:var(--font-mono);font-size:.8rem;font-weight:700;flex:none;}
+  .card{background:var(--mg-bg);border:1px solid var(--mg-line);border-radius:var(--radius);padding:1.4rem;margin-bottom:1.2rem;box-shadow:var(--shadow-sm);}
+  .slider-group{margin-bottom:1rem;}
+  .slider-group label{display:flex;justify-content:space-between;align-items:baseline;font-size:.86rem;margin-bottom:.35rem;font-weight:500;}
+  .slider-group label .v{font-family:var(--font-mono);font-weight:700;color:var(--mg-navy-700);font-size:.95rem;}
+  input[type=range]{width:100%;height:6px;-webkit-appearance:none;appearance:none;background:var(--mg-bg-tint);border-radius:4px;outline:none;}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--mg-cyan);border:3px solid #fff;box-shadow:var(--shadow-sm);cursor:pointer;}
+  input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:var(--mg-cyan);border:3px solid #fff;cursor:pointer;}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+  .res-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.7rem;margin-top:.3rem;}
+  @media(max-width:560px){.res-grid{grid-template-columns:repeat(2,1fr);}}
+  .res{background:var(--mg-bg-soft);border:1px solid var(--mg-line);border-radius:12px;padding:.8rem .4rem;text-align:center;}
+  .res .lab{font-size:.68rem;color:var(--mg-muted);margin-bottom:.2rem;font-family:var(--font-mono);}
+  .res .val{font-family:var(--font-mono);font-size:1.35rem;font-weight:700;color:var(--mg-cyan);}
+  .res.big .val{color:#0a7a99;}
+  .res .u{font-size:.64rem;color:var(--mg-muted);}
+  .formula{font-family:var(--font-mono);background:var(--mg-bg-tint);border:1px solid var(--mg-line);border-radius:8px;padding:.7rem .9rem;font-size:.9rem;color:var(--mg-navy-700);margin:.7rem 0 0;text-align:center;}
+  .legend{display:flex;gap:1.2rem;flex-wrap:wrap;font-size:.76rem;color:var(--mg-muted);margin-top:.4rem;justify-content:center;}
+  .legend span{display:inline-flex;align-items:center;gap:.35rem;}
+  .dot{width:11px;height:11px;border-radius:3px;display:inline-block;}
+  .note{border-left:3px solid var(--mg-cyan);background:var(--mg-cyan-soft);color:var(--mg-navy-900);padding:.75rem .9rem;border-radius:0 8px 8px 0;font-size:.86rem;margin-top:1rem;}
+  .try{font-size:.82rem;color:var(--mg-navy-700);background:var(--mg-bg-tint);border:1px dashed var(--mg-line-strong);border-radius:8px;padding:.6rem .8rem;margin-top:.9rem;}
+  .try b{color:var(--mg-cyan);}
+  .btn{font-family:var(--font-mono);font-size:.78rem;border:1px solid var(--mg-cyan);background:#fff;color:var(--mg-navy-700);border-radius:8px;padding:.4rem .7rem;cursor:pointer;transition:.15s;}
+  .btn:hover{background:var(--mg-cyan);color:#fff;}
+  .mg-foot{text-align:center;font-size:.74rem;color:var(--mg-muted);margin-top:2rem;font-family:var(--font-mono);}
+  canvas{width:100%;height:auto;display:block;}
+</style>
+<!-- MG-RUNTIME:start (gerado por scripts/apply_lab_runtime.py — não editar à mão) -->
+<style id="mg-runtime">
+/* mg-lab.css — runtime compartilhado dos labs interativos MGenética.
+   Fonte única: injetado inline em cada lab (mantém self-contained/offline).
+   Adiciona tema ESCURO (sobre os mesmos tokens --mg-* que os labs já usam),
+   foco visível, reduced-motion e utilitários de acessibilidade.
+   Deve vir DEPOIS do <style> do lab para sobrescrever o :root claro. */
+
+/* ----- Tema escuro: auto (prefers-color-scheme) + manual ([data-theme]) ----- */
+:root[data-theme="dark"],
+:root.mg-dark {
+  --mg-ink:#e8eef5;
+  --mg-navy-700:#5fa8da;
+  --mg-navy-900:#cdddec;
+  --mg-cyan:#34c0e8;
+  --mg-cyan-soft:#10344a;
+  --mg-mid:#6bb4dd;
+  --mg-muted:#9fb3c9;
+  --mg-bg:#0c1622;
+  --mg-bg-soft:#111f30;
+  --mg-bg-tint:#16263a;
+  --mg-line:rgba(220,235,250,.12);
+  --mg-line-strong:rgba(220,235,250,.22);
+  --mg-gold:#ffca28;
+  --mg-gold-soft:#33290f;
+  --mg-gold-border:#7a5a16;
+  --mg-gold-ink:#ffd97a;
+  --mg-red:#f08a5a;
+  --mg-red-soft:#3a2018;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]):not(.mg-light) {
+    --mg-ink:#e8eef5;
+    --mg-navy-700:#5fa8da;
+    --mg-navy-900:#cdddec;
+    --mg-cyan:#34c0e8;
+    --mg-cyan-soft:#10344a;
+    --mg-mid:#6bb4dd;
+    --mg-muted:#9fb3c9;
+    --mg-bg:#0c1622;
+    --mg-bg-soft:#111f30;
+    --mg-bg-tint:#16263a;
+    --mg-line:rgba(220,235,250,.12);
+    --mg-line-strong:rgba(220,235,250,.22);
+    --mg-gold:#ffca28;
+    --mg-gold-soft:#33290f;
+    --mg-gold-border:#7a5a16;
+    --mg-gold-ink:#ffd97a;
+    --mg-red:#f08a5a;
+    --mg-red-soft:#3a2018;
+  }
+}
+
+/* garante que o fundo/texto sigam os tokens (alguns labs herdam do body) */
+html, body { background: var(--mg-bg); color: var(--mg-ink); }
+:root { color-scheme: light dark; }
+
+/* ----- Acessibilidade ----- */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 3px solid var(--mg-cyan);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+.mg-visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ----- Controles do runtime (reset, legenda "como ler") ----- */
+.mg-reset-btn {
+  font: inherit; cursor: pointer;
+  border: 1px solid var(--mg-line-strong);
+  background: var(--mg-bg-soft); color: var(--mg-navy-700);
+  border-radius: 8px; padding: 6px 12px; font-weight: 600; font-size: 12.5px;
+}
+.mg-reset-btn:hover { border-color: var(--mg-cyan); }
+.mg-howto {
+  font-size: 12px; color: var(--mg-muted); margin: 6px 0 0; line-height: 1.5;
+}
+
+/* ----- Base responsiva (vale para todos, mesmo sem media query própria) ----- */
+img, canvas, svg, iframe, table { max-width: 100%; }
+canvas { height: auto; }
+@media (max-width: 640px) {
+  body { font-size: 15px; }
+}
+</style>
+<script id="mg-runtime">
+/* mg-lab.js — runtime compartilhado dos labs interativos MGenética.
+   Fonte única, injetado inline. Fornece:
+   - MG: tokens de cor (lidos do CSS) para o canvas usar e reagir ao tema.
+   - tema/idioma via ?theme=&lang= e via postMessage do site (iframe).
+   - auto-resize: reporta a altura ao parent (postMessage).
+   - i18n t(key) lendo <script type="application/json" id="i18n">.
+   - hook de reset ("voltar ao exemplo"). Tudo offline, sem dependências. */
+(function () {
+  "use strict";
+  var root = document.documentElement;
+  var TOKENS = {
+    ink: "--mg-ink", navy7: "--mg-navy-700", navy9: "--mg-navy-900",
+    cyan: "--mg-cyan", cyanSoft: "--mg-cyan-soft", mid: "--mg-mid", muted: "--mg-muted",
+    bg: "--mg-bg", bgSoft: "--mg-bg-soft", bgTint: "--mg-bg-tint",
+    line: "--mg-line", lineStrong: "--mg-line-strong",
+    gold: "--mg-gold", goldSoft: "--mg-gold-soft", goldBorder: "--mg-gold-border", goldInk: "--mg-gold-ink",
+    red: "--mg-red", redSoft: "--mg-red-soft"
+  };
+  var MG = {};
+  window.MG = MG; // canvas usa MG.ink, MG.cyan, ...
+
+  function readPalette() {
+    var cs = getComputedStyle(root);
+    for (var k in TOKENS) MG[k] = cs.getPropertyValue(TOKENS[k]).trim();
+  }
+
+  function params() {
+    try { return new URLSearchParams(location.search); } catch (e) { return new URLSearchParams(); }
+  }
+
+  // ---- tema -------------------------------------------------------------
+  function setTheme(theme) {
+    if (theme === "dark" || theme === "light") root.setAttribute("data-theme", theme);
+    else root.removeAttribute("data-theme"); // auto = segue o sistema/host
+    readPalette();
+    window.dispatchEvent(new CustomEvent("mg:themechange", { detail: { palette: MG } }));
+  }
+  // reage a mudança do sistema quando em modo auto
+  try {
+    var mq = window.matchMedia("(prefers-color-scheme: dark)");
+    mq.addEventListener("change", function () {
+      if (!root.hasAttribute("data-theme")) { readPalette(); window.dispatchEvent(new CustomEvent("mg:themechange", { detail: { palette: MG } })); }
+    });
+  } catch (e) {}
+
+  // ---- i18n -------------------------------------------------------------
+  var DICT = {};
+  var LANG = "pt-BR";
+  function loadDict() {
+    var el = document.getElementById("i18n");
+    if (!el) return;
+    try { DICT = JSON.parse(el.textContent) || {}; } catch (e) { DICT = {}; }
+  }
+  function t(key) {
+    var l = DICT[LANG] || {};
+    if (key in l) return l[key];
+    var base = DICT["pt-BR"] || {};
+    return key in base ? base[key] : key;
+  }
+  function setLang(lang) {
+    if (DICT[lang]) LANG = lang;
+    root.setAttribute("lang", LANG);
+    document.querySelectorAll("[data-i18n]").forEach(function (n) {
+      n.textContent = t(n.getAttribute("data-i18n"));
+    });
+    document.querySelectorAll("[data-i18n-aria]").forEach(function (n) {
+      n.setAttribute("aria-label", t(n.getAttribute("data-i18n-aria")));
+    });
+    window.dispatchEvent(new CustomEvent("mg:langchange", { detail: { lang: LANG } }));
+  }
+  window.MGi18n = { t: t, lang: function () { return LANG; } };
+
+  // ---- auto-resize (reporta altura ao iframe pai) -----------------------
+  var lastH = 0, raf = 0;
+  function reportHeight() {
+    var h = Math.ceil(document.documentElement.getBoundingClientRect().height);
+    if (h && h !== lastH) {
+      lastH = h;
+      try { parent.postMessage({ type: "mg-lab-height", id: document.title || "", height: h }, "*"); } catch (e) {}
+    }
+  }
+  function scheduleReport() { cancelAnimationFrame(raf); raf = requestAnimationFrame(reportHeight); }
+
+  // ---- mensagens do site (host controla tema/idioma) --------------------
+  window.addEventListener("message", function (ev) {
+    var d = ev && ev.data; if (!d || typeof d !== "object") return;
+    if (d.type === "mg-set-theme") setTheme(d.theme);
+    if (d.type === "mg-set-lang") setLang(d.lang);
+  });
+
+  // ---- reset ("voltar ao exemplo") --------------------------------------
+  document.addEventListener("click", function (ev) {
+    var b = ev.target.closest && ev.target.closest("[data-mg-reset]");
+    if (b && typeof window.MGReset === "function") { ev.preventDefault(); window.MGReset(); }
+  });
+
+  // ---- boot -------------------------------------------------------------
+  function boot() {
+    readPalette();
+    loadDict();
+    var p = params();
+    var th = p.get("theme"); if (th) setTheme(th); else readPalette();
+    var lg = p.get("lang"); setLang(lg || LANG);
+    if (window.ResizeObserver) new ResizeObserver(scheduleReport).observe(document.documentElement);
+    window.addEventListener("load", scheduleReport);
+    window.addEventListener("mg:themechange", scheduleReport);
+    setTimeout(reportHeight, 60);
+  }
+  // popula MG imediatamente (o <style> do lab já foi parseado), para o canvas
+  // do lab ver as cores certas mesmo se desenhar antes do DOMContentLoaded.
+  readPalette();
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
+  else boot();
+})();
+</script>
+<!-- MG-RUNTIME:end -->
+</head>
+<body>
+<div class="page">
+  <a class="back" href="../#catalog">← Trilha interativa MGenética</a>
+  <p class="eyebrow">Módulo 10 · Seleção</p>
+  <h1>Seleção e ganho genético</h1>
+  <p class="sub">A equação do melhorista: <b>R = h² × S</b>. Escolher os melhores cria um diferencial de seleção (S); só a fração herdável (h²) chega aos filhos como resposta (R). Veja a peneira funcionando sobre a curva.</p>
+
+  <div class="card">
+    <h2><span class="n">1</span>Decisões do programa</h2>
+    <div class="grid2">
+      <div class="slider-group">
+        <label><span>Proporção selecionada</span><span class="v" id="vprop">20%</span></label>
+        <input type="range" id="prop" min="1" max="90" step="1" value="20">
+      </div>
+      <div class="slider-group">
+        <label><span>Herdabilidade h²</span><span class="v" id="vh2">0,30</span></label>
+        <input type="range" id="h2" min="0.05" max="0.9" step="0.01" value="0.30">
+      </div>
+      <div class="slider-group">
+        <label><span>Desvio-padrão fenotípico σ<sub>P</sub> (pontos)</span><span class="v" id="vsd">16</span></label>
+        <input type="range" id="sd" min="4" max="30" step="1" value="16">
+      </div>
+      <div class="slider-group">
+        <label><span>Intervalo de geração L (anos)</span><span class="v" id="vL">8</span></label>
+        <input type="range" id="L" min="1" max="12" step="0.5" value="8">
+      </div>
+    </div>
+    <button class="btn" id="ex">Exemplo do curso: 10% selecionado, h²=0,30</button>
+  </div>
+
+  <div class="card">
+    <h2><span class="n">2</span>A peneira da seleção</h2>
+    <canvas id="cv" width="1440" height="600"></canvas>
+    <div class="legend">
+      <span><i class="dot" style="background:#0a1f38"></i> população candidata</span>
+      <span><i class="dot" style="background:#00a8d6"></i> selecionados (cauda)</span>
+      <span><i style="display:inline-block;width:18px;border-top:2px dashed #00a8d6"></i> progênie (deslocada por R)</span>
+      <span><i style="display:inline-block;width:18px;border-top:2px dashed #7b4200"></i> média atual</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2><span class="n">3</span>Resultados</h2>
+    <div class="res-grid">
+      <div class="res"><div class="lab">intensidade i</div><div class="val" id="ri">1,40</div></div>
+      <div class="res"><div class="lab">diferencial S</div><div class="val" id="rS">22,4</div><div class="u">pontos</div></div>
+      <div class="res big"><div class="lab">resposta R</div><div class="val" id="rR">6,7</div><div class="u">pontos/geração</div></div>
+      <div class="res big"><div class="lab">ganho / ano</div><div class="val" id="rG">0,84</div><div class="u">pontos/ano</div></div>
+    </div>
+    <div class="formula">S = i × σ<sub>P</sub> &nbsp;·&nbsp; R = h² × S &nbsp;·&nbsp; ganho/ano = R / L</div>
+  </div>
+
+  <div class="card">
+    <h2><span class="n">4</span>Leitura estratégica</h2>
+    <div class="note" id="explain"></div>
+    <div class="try"><b>Experimente o trade-off:</b> aperte a proporção de 20% para 5%. O diferencial S e a resposta R crescem (peneira mais fina) — mas você passa a depender de pouquíssimos garanhões. Se a avaliação tiver erro ou viés de ambiente, o risco do programa dispara. Mais intensidade ≠ sempre melhor.</div>
+  </div>
+
+  <div class="mg-foot">MGenética · artefato interativo · derivado do texto M10 — Seleção e ganho genético</div>
+</div>
+
+<script>
+  const cv=document.getElementById('cv'),ctx=cv.getContext('2d');ctx.scale(2,2);
+  const CW=720,CH=300;
+  const el=id=>document.getElementById(id);
+  function f1(x){return x.toFixed(1).replace('.',',');}
+  function f2(x){return x.toFixed(2).replace('.',',');}
+  function dnorm(z){return Math.exp(-z*z/2)/Math.sqrt(2*Math.PI);}
+  function qnorm(p){
+    const a=[-3.969683028665376e+01,2.209460984245205e+02,-2.759285104469687e+02,1.383577518672690e+02,-3.066479806614716e+01,2.506628277459239e+00];
+    const b=[-5.447609879822406e+01,1.615858368580409e+02,-1.556989798598866e+02,6.680131188771972e+01,-1.328068155288572e+01];
+    const c=[-7.784894002430293e-03,-3.223964580411365e-01,-2.400758277161838e+00,-2.549732539343734e+00,4.374664141464968e+00,2.938163982698783e+00];
+    const d=[7.784695709041462e-03,3.224671290700398e-01,2.445134137142996e+00,3.754408661907416e+00];
+    const pl=0.02425,ph=1-pl;let q,r;
+    if(p<pl){q=Math.sqrt(-2*Math.log(p));return(((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5])/((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1);}
+    if(p<=ph){q=p-0.5;r=q*q;return(((((a[0]*r+a[1])*r+a[2])*r+a[3])*r+a[4])*r+a[5])*q/(((((b[0]*r+b[1])*r+b[2])*r+b[3])*r+b[4])*r+1);}
+    q=Math.sqrt(-2*Math.log(1-p));return -(((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5])/((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1);
+  }
+
+  function draw(prop,h2,sd){
+    ctx.clearRect(0,0,CW,CH);
+    const x0=40,x1=700,yb=250,yTop=30;
+    const zMin=-3.4,zMax=4.2; // in SD units (phenotype mean 0)
+    const X=z=>x0+(x1-x0)*((z-zMin)/(zMax-zMin));
+    const peak=dnorm(0);
+    const Y=d=>yb-(yb-yTop)*(d/peak);
+    const z=qnorm(1-prop);          // truncation point in SD units
+    const i=dnorm(z)/prop;          // selection intensity
+    const R_sd=h2*i;                // response in SD units (R = h2*S, S=i*sd)
+    // axis
+    ctx.strokeStyle='rgba(10,31,56,.18)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(x0,yb);ctx.lineTo(x1,yb);ctx.stroke();
+    // x ticks in points (sd units * sd)
+    ctx.fillStyle='#5a7391';ctx.font='10px monospace';ctx.textAlign='center';
+    for(let zz=-3;zz<=4;zz++){const x=X(zz);ctx.strokeStyle='rgba(10,31,56,.06)';ctx.beginPath();ctx.moveTo(x,yTop);ctx.lineTo(x,yb);ctx.stroke();ctx.fillStyle='#5a7391';ctx.fillText((zz*sd),x,yb+17);}
+    ctx.fillText('desvio fenotípico (pontos)',(x0+x1)/2,yb+32);
+    // selected shaded area (right of z)
+    ctx.beginPath();ctx.moveTo(X(z),yb);
+    for(let t=z;t<=zMax;t+=0.02){ctx.lineTo(X(t),Y(dnorm(t)));}
+    ctx.lineTo(X(zMax),yb);ctx.closePath();ctx.fillStyle='rgba(0,168,214,.30)';ctx.fill();
+    // population curve
+    ctx.strokeStyle='#0a1f38';ctx.lineWidth=2.5;ctx.beginPath();
+    for(let t=zMin;t<=zMax;t+=0.02){const x=X(t),y=Y(dnorm(t));if(t===zMin)ctx.moveTo(x,y);else ctx.lineTo(x,y);}ctx.stroke();
+    // offspring curve shifted by R_sd
+    ctx.strokeStyle='#00a8d6';ctx.setLineDash([6,4]);ctx.lineWidth=2;ctx.beginPath();
+    for(let t=zMin;t<=zMax;t+=0.02){const x=X(t),y=Y(dnorm(t-R_sd));if(t===zMin)ctx.moveTo(x,y);else ctx.lineTo(x,y);}ctx.stroke();ctx.setLineDash([]);
+    // truncation line
+    ctx.strokeStyle='#00a8d6';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(X(z),yb);ctx.lineTo(X(z),Y(dnorm(z)));ctx.stroke();
+    // mean lines: pop mean 0, selected mean = i (in sd), offspring mean = R_sd
+    function vline(zz,col,dash){ctx.strokeStyle=col;if(dash)ctx.setLineDash(dash);ctx.lineWidth=1.8;ctx.beginPath();ctx.moveTo(X(zz),yb);ctx.lineTo(X(zz),yTop+6);ctx.stroke();ctx.setLineDash([]);}
+    vline(0,'#7b4200',[5,4]);
+    vline(i,'#00a8d6',null);
+    // S arrow (0 -> i) and R arrow (0 -> R_sd)
+    function arrow(z1,z2,yL,col,label){const xa=X(z1),xb=X(z2),y=yL;ctx.strokeStyle=col;ctx.lineWidth=1.8;ctx.beginPath();ctx.moveTo(xa,y);ctx.lineTo(xb,y);ctx.stroke();
+      ctx.beginPath();ctx.moveTo(xb,y);ctx.lineTo(xb-7,y-4);ctx.lineTo(xb-7,y+4);ctx.closePath();ctx.fillStyle=col;ctx.fill();
+      ctx.fillStyle=col;ctx.font='bold 11px monospace';ctx.textAlign='center';ctx.fillText(label,(xa+xb)/2,y-6);}
+    arrow(0,i,yTop+22,'#0a7a99','S');
+    arrow(0,R_sd,yTop+50,'#00a8d6','R');
+    // labels
+    ctx.fillStyle='#7b4200';ctx.font='10px monospace';ctx.textAlign='center';ctx.fillText('média',X(0),yTop+2);
+    return {z,i};
+  }
+
+  function update(){
+    const prop=(+el('prop').value)/100,h2=+el('h2').value,sd=+el('sd').value,L=+el('L').value;
+    el('vprop').textContent=(prop*100).toFixed(0)+'%';
+    el('vh2').textContent=f2(h2);el('vsd').textContent=sd;el('vL').textContent=f1(L);
+    const {z,i}=draw(prop,h2,sd);
+    const S=i*sd,R=h2*S,G=R/L;
+    el('ri').textContent=f2(i);el('rS').textContent=f1(S);el('rR').textContent=f1(R);el('rG').textContent=f2(G);
+    const ex=el('explain');
+    let m='Selecionando os <b>'+(prop*100).toFixed(0)+'%</b> melhores, o grupo escolhido está em média <b>'+f1(S)+' pontos</b> acima da população (intensidade i = '+f2(i)+'). Como h² = '+f2(h2)+', a progênie sobe <b>'+f1(R)+' pontos por geração</b>';
+    m+= ', o que equivale a <b>'+f2(G)+' ponto/ano</b> com intervalo de '+f1(L)+' anos.';
+    if(prop<=0.05)m+=' <br><br>⚠️ Proporção muito baixa: ganho alto, porém forte dependência de poucos reprodutores e maior risco de endogamia (M13).';
+    else if(h2<0.2)m+=' <br><br>Com h² baixo, boa parte da superioridade dos selecionados é ambiente — não se transmite. A resposta fica pequena mesmo com S grande.';
+    ex.innerHTML=m;
+  }
+  ['prop','h2','sd','L'].forEach(id=>el(id).addEventListener('input',update));
+  el('ex').addEventListener('click',()=>{el('prop').value=10;el('h2').value=0.30;el('sd').value=16;el('L').value=8;update();});
+  update();
+</script>
+<script type="application/json" id="dados">
+{
+  "controls": {
+    "prop": {
+      "type": "range",
+      "min": 1,
+      "max": 90,
+      "step": 1,
+      "value": 20
+    },
+    "h2": {
+      "type": "range",
+      "min": 0.05,
+      "max": 0.9,
+      "step": 0.01,
+      "value": 0.3
+    },
+    "sd": {
+      "type": "range",
+      "min": 4,
+      "max": 30,
+      "step": 1,
+      "value": 16
+    },
+    "L": {
+      "type": "range",
+      "min": 1,
+      "max": 12,
+      "step": 0.5,
+      "value": 8
+    }
+  }
+}
+</script>
+<script id="dados-hydrator">
+(() => {
+  const node = document.getElementById('dados');
+  if (!node) return;
+  let data;
+  try { data = JSON.parse(node.textContent || '{}'); } catch (_) { return; }
+  const controls = data.controls || {};
+  for (const [id, cfg] of Object.entries(controls)) {
+    const target = document.getElementById(id);
+    if (!target || cfg == null || !Object.prototype.hasOwnProperty.call(cfg, 'value')) continue;
+    target.value = String(cfg.value);
+    target.dispatchEvent(new Event('input', { bubbles: true }));
+    target.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+  if (data.cruzamento && typeof update === 'function') {
+    try {
+      if (Object.prototype.hasOwnProperty.call(data.cruzamento, 'pai')) pai = data.cruzamento.pai;
+      if (Object.prototype.hasOwnProperty.call(data.cruzamento, 'mae')) mae = data.cruzamento.mae;
+      update();
+    } catch (_) {}
+  }
+})();
+</script>
+</body>
+</html>

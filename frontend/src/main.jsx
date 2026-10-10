@@ -1,6 +1,7 @@
 import React from 'react'
 import { createRoot } from 'react-dom/client'
-import App from './App'
+import PublicSite from './PublicSite'
+import CoursePreview from './CoursePreview'
 import './styles.css'
 
 class RootErrorBoundary extends React.Component {
@@ -32,7 +33,7 @@ class RootErrorBoundary extends React.Component {
 createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <RootErrorBoundary>
-      <App />
+      {import.meta.env.DEV && new URLSearchParams(window.location.search).has('course-preview') ? <CoursePreview /> : <PublicSite />}
     </RootErrorBoundary>
   </React.StrictMode>
 )

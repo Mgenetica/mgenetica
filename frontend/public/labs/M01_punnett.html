@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M1 · Quadro de Punnett — MGenética</title>
+<style>
+  :root{
+    --mg-ink:#0a1f38;--mg-navy-700:#1a4b78;--mg-navy-900:#061626;
+    --mg-cyan:#00a8d6;--mg-cyan-soft:#d6f1f9;--mg-mid:#4a9fd1;
+    --mg-muted:#5a7391;
+    --mg-bg:#fff;--mg-bg-soft:#f7f9fc;--mg-bg-tint:#eef3f9;
+    --mg-line:rgba(10,31,56,.10);--mg-line-strong:rgba(10,31,56,.18);
+    --mg-gold:#ffc107;--mg-gold-soft:#fff7e0;--mg-gold-border:#ffe08a;--mg-gold-ink:#7b4200;
+    --shadow-sm:0 1px 2px rgba(13,38,66,.05),0 1px 1px rgba(13,38,66,.04);
+    --font-body:"DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+    --font-display:"Lora",Georgia,"Times New Roman",serif;
+    --font-mono:"DM Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:var(--font-body);background:linear-gradient(180deg,#f7f9fc,#eef3f9);min-height:100vh;color:var(--mg-ink);line-height:1.6;padding:1.4rem 1rem 3rem;}
+  .page{max-width:840px;margin:0 auto;}
+  .back{display:inline-block;font-family:var(--font-mono);font-size:.74rem;color:var(--mg-muted);text-decoration:none;margin-bottom:1rem;letter-spacing:.03em;}
+  .back:hover{color:var(--mg-cyan);}
+  .eyebrow{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--mg-cyan);font-weight:600;}
+  h1{font-family:var(--font-display);font-size:1.75rem;font-weight:600;margin:.25rem 0 .4rem;line-height:1.18;}
+  .sub{color:var(--mg-muted);font-size:.96rem;margin-bottom:1.6rem;max-width:62ch;}
+  h2{font-family:var(--font-display);font-size:1.12rem;font-weight:600;color:var(--mg-navy-700);margin-bottom:.9rem;display:flex;align-items:center;gap:.5rem;}
+  h2 .n{display:inline-flex;align-items:center;justify-content:center;width:1.5rem;height:1.5rem;border-radius:50%;background:var(--mg-cyan);color:#fff;font-family:var(--font-mono);font-size:.8rem;font-weight:700;flex:none;}
+  .card{background:var(--mg-bg);border:1px solid var(--mg-line);border-radius:var(--radius);padding:1.4rem;margin-bottom:1.2rem;box-shadow:var(--shadow-sm);}
+  .parents{display:flex;gap:2rem;flex-wrap:wrap;justify-content:center;}
+  .par{text-align:center;}
+  .par .role{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mg-muted);margin-bottom:.45rem;}
+  .seg{display:inline-flex;border:1px solid var(--mg-line-strong);border-radius:10px;overflow:hidden;}
+  .seg button{font-family:var(--font-mono);font-size:1rem;font-weight:700;padding:.5rem 1.1rem;border:0;background:var(--mg-bg);color:var(--mg-navy-700);cursor:pointer;border-right:1px solid var(--mg-line);transition:background .12s;}
+  .seg button:last-child{border-right:0;}
+  .seg button.on{background:var(--mg-cyan);color:#fff;}
+  .gam{font-family:var(--font-mono);font-size:.82rem;color:var(--mg-muted);margin-top:.5rem;}
+  .gam b{color:var(--mg-navy-700);font-size:1rem;}
+  .punnett{display:grid;grid-template-columns:repeat(3,1fr);gap:.45rem;max-width:330px;margin:.2rem auto 0;}
+  .pcell{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-weight:700;font-size:1.35rem;border-radius:10px;}
+  .phdr{background:var(--mg-bg-tint);color:var(--mg-navy-700);}
+  .pcorner{background:transparent;}
+  .g-AA{background:var(--mg-ink);color:#fff;}
+  .g-Aa{background:var(--mg-mid);color:#fff;}
+  .g-aa{background:var(--mg-cyan-soft);color:var(--mg-navy-900);}
+  .axis{text-align:center;font-family:var(--font-mono);font-size:.72rem;color:var(--mg-muted);margin-top:.5rem;}
+  .prop{margin:.55rem 0;}
+  .prop .lab{display:flex;justify-content:space-between;font-size:.84rem;margin-bottom:.2rem;}
+  .prop .lab b{font-family:var(--font-mono);}
+  .track{height:26px;background:var(--mg-bg-tint);border-radius:6px;overflow:hidden;}
+  .fill{height:100%;display:flex;align-items:center;padding-left:.55rem;color:#fff;font-family:var(--font-mono);font-size:.8rem;font-weight:700;white-space:nowrap;transition:width .2s;}
+  .twores{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:.3rem;}
+  .res{background:var(--mg-bg-soft);border:1px solid var(--mg-line);border-radius:12px;padding:1rem;text-align:center;}
+  .res .lab{font-size:.72rem;color:var(--mg-muted);margin-bottom:.25rem;font-family:var(--font-mono);}
+  .res .val{font-family:var(--font-mono);font-size:1.7rem;font-weight:700;color:var(--mg-navy-700);}
+  .res .hint{font-size:.74rem;color:var(--mg-muted);margin-top:.25rem;}
+  .note{border-left:3px solid var(--mg-cyan);background:var(--mg-cyan-soft);color:var(--mg-navy-900);padding:.75rem .9rem;border-radius:0 8px 8px 0;font-size:.86rem;margin-top:1rem;}
+  .try{font-size:.82rem;color:var(--mg-navy-700);background:var(--mg-bg-tint);border:1px dashed var(--mg-line-strong);border-radius:8px;padding:.6rem .8rem;margin-top:.9rem;}
+  .try b{color:var(--mg-cyan);}
+  .mg-foot{text-align:center;font-size:.74rem;color:var(--mg-muted);margin-top:2rem;font-family:var(--font-mono);}
+</style>
+<!-- MG-RUNTIME:start (gerado por scripts/apply_lab_runtime.py — não editar à mão) -->
+<style id="mg-runtime">
+/* mg-lab.css — runtime compartilhado dos labs interativos MGenética.
+   Fonte única: injetado inline em cada lab (mantém self-contained/offline).
+   Adiciona tema ESCURO (sobre os mesmos tokens --mg-* que os labs já usam),
+   foco visível, reduced-motion e utilitários de acessibilidade.
+   Deve vir DEPOIS do <style> do lab para sobrescrever o :root claro. */
+
+/* ----- Tema escuro: auto (prefers-color-scheme) + manual ([data-theme]) ----- */
+:root[data-theme="dark"],
+:root.mg-dark {
+  --mg-ink:#e8eef5;
+  --mg-navy-700:#5fa8da;
+  --mg-navy-900:#cdddec;
+  --mg-cyan:#34c0e8;
+  --mg-cyan-soft:#10344a;
+  --mg-mid:#6bb4dd;
+  --mg-muted:#9fb3c9;
+  --mg-bg:#0c1622;
+  --mg-bg-soft:#111f30;
+  --mg-bg-tint:#16263a;
+  --mg-line:rgba(220,235,250,.12);
+  --mg-line-strong:rgba(220,235,250,.22);
+  --mg-gold:#ffca28;
+  --mg-gold-soft:#33290f;
+  --mg-gold-border:#7a5a16;
+  --mg-gold-ink:#ffd97a;
+  --mg-red:#f08a5a;
+  --mg-red-soft:#3a2018;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]):not(.mg-light) {
+    --mg-ink:#e8eef5;
+    --mg-navy-700:#5fa8da;
+    --mg-navy-900:#cdddec;
+    --mg-cyan:#34c0e8;
+    --mg-cyan-soft:#10344a;
+    --mg-mid:#6bb4dd;
+    --mg-muted:#9fb3c9;
+    --mg-bg:#0c1622;
+    --mg-bg-soft:#111f30;
+    --mg-bg-tint:#16263a;
+    --mg-line:rgba(220,235,250,.12);
+    --mg-line-strong:rgba(220,235,250,.22);
+    --mg-gold:#ffca28;
+    --mg-gold-soft:#33290f;
+    --mg-gold-border:#7a5a16;
+    --mg-gold-ink:#ffd97a;
+    --mg-red:#f08a5a;
+    --mg-red-soft:#3a2018;
+  }
+}
+
+/* garante que o fundo/texto sigam os tokens (alguns labs herdam do body) */
+html, body { background: var(--mg-bg); color: var(--mg-ink); }
+:root { color-scheme: light dark; }
+
+/* ----- Acessibilidade ----- */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 3px solid var(--mg-cyan);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+.mg-visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ----- Controles do runtime (reset, legenda "como ler") ----- */
+.mg-reset-btn {
+  font: inherit; cursor: pointer;
+  border: 1px solid var(--mg-line-strong);
+  background: var(--mg-bg-soft); color: var(--mg-navy-700);
+  border-radius: 8px; padding: 6px 12px; font-weight: 600; font-size: 12.5px;
+}
+.mg-reset-btn:hover { border-color: var(--mg-cyan); }
+.mg-howto {
+  font-size: 12px; color: var(--mg-muted); margin: 6px 0 0; line-height: 1.5;
+}
+
+/* ----- Base responsiva (vale para todos, mesmo sem media query própria) ----- */
+img, canvas, svg, iframe, table { max-width: 100%; }
+canvas { height: auto; }
+@media (max-width: 640px) {
+  body { font-size: 15px; }
+}
+</style>
+<script id="mg-runtime">
+/* mg-lab.js — runtime compartilhado dos labs interativos MGenética.
+   Fonte única, injetado inline. Fornece:
+   - MG: tokens de cor (lidos do CSS) para o canvas usar e reagir ao tema.
+   - tema/idioma via ?theme=&lang= e via postMessage do site (iframe).
+   - auto-resize: reporta a altura ao parent (postMessage).
+   - i18n t(key) lendo <script type="application/json" id="i18n">.
+   - hook de reset ("voltar ao exemplo"). Tudo offline, sem dependências. */
+(function () {
+  "use strict";
+  var root = document.documentElement;
+  var TOKENS = {
+    ink: "--mg-ink", navy7: "--mg-navy-700", navy9: "--mg-navy-900",
+    cyan: "--mg-cyan", cyanSoft: "--mg-cyan-soft", mid: "--mg-mid", muted: "--mg-muted",
+    bg: "--mg-bg", bgSoft: "--mg-bg-soft", bgTint: "--mg-bg-tint",
+    line: "--mg-line", lineStrong: "--mg-line-strong",
+    gold: "--mg-gold", goldSoft: "--mg-gold-soft", goldBorder: "--mg-gold-border", goldInk: "--mg-gold-ink",
+    red: "--mg-red", redSoft: "--mg-red-soft"
+  };
+  var MG = {};
+  window.MG = MG; // canvas usa MG.ink, MG.cyan, ...
+
+  function readPalette() {
+    var cs = getComputedStyle(root);
+    for (var k in TOKENS) MG[k] = cs.getPropertyValue(TOKENS[k]).trim();
+  }
+
+  function params() {
+    try { return new URLSearchParams(location.search); } catch (e) { return new URLSearchParams(); }
+  }
+
+  // ---- tema -------------------------------------------------------------
+  function setTheme(theme) {
+    if (theme === "dark" || theme === "light") root.setAttribute("data-theme", theme);
+    else root.removeAttribute("data-theme"); // auto = segue o sistema/host
+    readPalette();
+    window.dispatchEvent(new CustomEvent("mg:themechange", { detail: { palette: MG } }));
+  }
+  // reage a mudança do sistema quando em modo auto
+  try {
+    var mq = window.matchMedia("(prefers-color-scheme: dark)");
+    mq.addEventListener("change", function () {
+      if (!root.hasAttribute("data-theme")) { readPalette(); window.dispatchEvent(new CustomEvent("mg:themechange", { detail: { palette: MG } })); }
+    });
+  } catch (e) {}
+
+  // ---- i18n -------------------------------------------------------------
+  var DICT = {};
+  var LANG = "pt-BR";
+  function loadDict() {
+    var el = document.getElementById("i18n");
+    if (!el) return;
+    try { DICT = JSON.parse(el.textContent) || {}; } catch (e) { DICT = {}; }
+  }
+  function t(key) {
+    var l = DICT[LANG] || {};
+    if (key in l) return l[key];
+    var base = DICT["pt-BR"] || {};
+    return key in base ? base[key] : key;
+  }
+  function setLang(lang) {
+    if (DICT[lang]) LANG = lang;
+    root.setAttribute("lang", LANG);
+    document.querySelectorAll("[data-i18n]").forEach(function (n) {
+      n.textContent = t(n.getAttribute("data-i18n"));
+    });
+    document.querySelectorAll("[data-i18n-aria]").forEach(function (n) {
+      n.setAttribute("aria-label", t(n.getAttribute("data-i18n-aria")));
+    });
+    window.dispatchEvent(new CustomEvent("mg:langchange", { detail: { lang: LANG } }));
+  }
+  window.MGi18n = { t: t, lang: function () { return LANG; } };
+
+  // ---- auto-resize (reporta altura ao iframe pai) -----------------------
+  var lastH = 0, raf = 0;
+  function reportHeight() {
+    var h = Math.ceil(document.documentElement.getBoundingClientRect().height);
+    if (h && h !== lastH) {
+      lastH = h;
+      try { parent.postMessage({ type: "mg-lab-height", id: document.title || "", height: h }, "*"); } catch (e) {}
+    }
+  }
+  function scheduleReport() { cancelAnimationFrame(raf); raf = requestAnimationFrame(reportHeight); }
+
+  // ---- mensagens do site (host controla tema/idioma) --------------------
+  window.addEventListener("message", function (ev) {
+    var d = ev && ev.data; if (!d || typeof d !== "object") return;
+    if (d.type === "mg-set-theme") setTheme(d.theme);
+    if (d.type === "mg-set-lang") setLang(d.lang);
+  });
+
+  // ---- reset ("voltar ao exemplo") --------------------------------------
+  document.addEventListener("click", function (ev) {
+    var b = ev.target.closest && ev.target.closest("[data-mg-reset]");
+    if (b && typeof window.MGReset === "function") { ev.preventDefault(); window.MGReset(); }
+  });
+
+  // ---- boot -------------------------------------------------------------
+  function boot() {
+    readPalette();
+    loadDict();
+    var p = params();
+    var th = p.get("theme"); if (th) setTheme(th); else readPalette();
+    var lg = p.get("lang"); setLang(lg || LANG);
+    if (window.ResizeObserver) new ResizeObserver(scheduleReport).observe(document.documentElement);
+    window.addEventListener("load", scheduleReport);
+    window.addEventListener("mg:themechange", scheduleReport);
+    setTimeout(reportHeight, 60);
+  }
+  // popula MG imediatamente (o <style> do lab já foi parseado), para o canvas
+  // do lab ver as cores certas mesmo se desenhar antes do DOMContentLoaded.
+  readPalette();
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
+  else boot();
+})();
+</script>
+<!-- MG-RUNTIME:end -->
+</head>
+<body>
+<div class="page">
+  <a class="back" href="../#catalog">← Trilha interativa MGenética</a>
+  <p class="eyebrow">Módulo 1 · Genética básica</p>
+  <h1>Quadro de Punnett e segregação</h1>
+  <p class="sub">Cada genitor passa <b>um</b> alelo por locus. Escolha o genótipo do pai e da mãe e veja os gametas se combinarem na fecundação — a proporção dos filhos nasce antes de qualquer comparação de desempenho.</p>
+
+  <div class="card">
+    <h2><span class="n">1</span>Genótipo dos genitores</h2>
+    <div class="parents">
+      <div class="par">
+        <div class="role">Pai</div>
+        <div class="seg" id="segPai">
+          <button data-g="AA">AA</button><button data-g="Aa" class="on">Aa</button><button data-g="aa">aa</button>
+        </div>
+        <div class="gam">gametas: <b id="gametaPai">A · a</b></div>
+      </div>
+      <div class="par">
+        <div class="role">Mãe</div>
+        <div class="seg" id="segMae">
+          <button data-g="AA">AA</button><button data-g="Aa" class="on">Aa</button><button data-g="aa">aa</button>
+        </div>
+        <div class="gam">gametas: <b id="gametaMae">A · a</b></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2><span class="n">2</span>Combinação dos gametas</h2>
+    <div class="punnett">
+      <div class="pcell pcorner"></div>
+      <div class="pcell phdr" id="hM1">A</div>
+      <div class="pcell phdr" id="hM2">a</div>
+      <div class="pcell phdr" id="hP1">A</div>
+      <div class="pcell" id="c11">AA</div>
+      <div class="pcell" id="c12">Aa</div>
+      <div class="pcell phdr" id="hP2">a</div>
+      <div class="pcell" id="c21">Aa</div>
+      <div class="pcell" id="c22">aa</div>
+    </div>
+    <div class="axis">linhas = gametas do pai &nbsp;·&nbsp; colunas = gametas da mãe</div>
+  </div>
+
+  <div class="card">
+    <h2><span class="n">3</span>Proporção genotípica esperada</h2>
+    <div class="prop">
+      <div class="lab"><span>AA</span><b id="labAA">1/4 · 25%</b></div>
+      <div class="track"><div class="fill" id="barAA" style="width:25%;background:var(--mg-ink)">5 em 20</div></div>
+    </div>
+    <div class="prop">
+      <div class="lab"><span>Aa</span><b id="labAa">2/4 · 50%</b></div>
+      <div class="track"><div class="fill" id="barAa" style="width:50%;background:var(--mg-mid)">10 em 20</div></div>
+    </div>
+    <div class="prop">
+      <div class="lab"><span>aa</span><b id="labaa">1/4 · 25%</b></div>
+      <div class="track"><div class="fill" id="baraa" style="width:25%;background:var(--mg-cyan);color:var(--mg-navy-900)">5 em 20</div></div>
+    </div>
+    <div class="twores">
+      <div class="res"><div class="lab">proporção genotípica</div><div class="val" id="ratioTxt">1 : 2 : 1</div><div class="hint">AA : Aa : aa</div></div>
+      <div class="res"><div class="lab">esperado em 20 potros</div><div class="val" id="n20">5 : 10 : 5</div><div class="hint">expectativa, não garantia</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2><span class="n">4</span>Do genótipo ao fenótipo</h2>
+    <div class="note" id="phenoBox"></div>
+    <div class="try"><b>Faça o cruzamento-teste:</b> ponha o pai em <b>Aa</b> e a mãe em <b>aa</b>. A proporção vira 1 Aa : 1 aa — e agora o fenótipo "ausente" (aa) revela quem carregava o alelo <i>a</i> escondido. É assim que se descobre um portador.</div>
+  </div>
+
+  <div class="mg-foot">MGenética · artefato interativo · derivado do texto M1 — Revisão de genética básica</div>
+</div>
+
+<script>
+  const el=id=>document.getElementById(id);
+  let pai='Aa', mae='Aa';
+  function gametes(g){return [g.charAt(0),g.charAt(1)];}
+  function norm(x,y){return [x,y].sort().join('');}
+
+  function update(){
+    const gp=gametes(pai), gm=gametes(mae);
+    el('gametaPai').textContent=gp[0]+' · '+gp[1];
+    el('gametaMae').textContent=gm[0]+' · '+gm[1];
+    // headers
+    el('hM1').textContent=gm[0];el('hM2').textContent=gm[1];
+    el('hP1').textContent=gp[0];el('hP2').textContent=gp[1];
+    // 2x2 cells: rows=pai gametes, cols=mae gametes
+    const ids=[['c11','c12'],['c21','c22']];
+    const counts={AA:0,Aa:0,aa:0};
+    for(let i=0;i<2;i++)for(let j=0;j<2;j++){
+      const gt=norm(gp[i],gm[j]);counts[gt]++;
+      const c=el(ids[i][j]);c.textContent=gt;c.className='pcell g-'+gt;
+    }
+    // proportions (out of 4)
+    const order=['AA','Aa','aa'];
+    order.forEach(gt=>{
+      const n=counts[gt],pct=n/4*100;
+      el('lab'+gt).textContent=n+'/4 · '+pct.toFixed(0)+'%';
+      const bar=el('bar'+gt);bar.style.width=Math.max(pct,0)+'%';
+      bar.textContent=n?(n*5+' em 20'):'';
+    });
+    el('ratioTxt').textContent=order.map(g=>counts[g]).join(' : ').replace(/\b0\b/g,'0');
+    el('n20').textContent=order.map(g=>counts[g]*5).join(' : ');
+    // phenotype (regra didatica: A_ = presente, aa = ausente)
+    const presente=counts.AA+counts.Aa, ausente=counts.aa;
+    let m='No cruzamento <b>'+pai+' × '+mae+'</b>, espera-se <b>'+order.map(g=>counts[g]).join(' : ')+'</b> (AA : Aa : aa). ';
+    m+='Pela regra didática (A_ mostra a característica, aa não), o fenótipo é <b>'+(presente/4*100).toFixed(0)+'% presente</b> e <b>'+(ausente/4*100).toFixed(0)+'% ausente</b>. ';
+    if(counts.AA>0 && counts.Aa>0) m+='Repare: <b>AA e Aa caem no mesmo fenótipo</b> (presente) — observar o animal não separa os dois genótipos. Fenótipo levanta hipótese; não substitui o genótipo.';
+    else if(counts.aa===4) m+='Todos os filhos são aa: o fenótipo recessivo aparece em 100% da prole.';
+    else if(presente===4) m+='Todos os filhos mostram a característica, mesmo os heterozigotos Aa.';
+    el('phenoBox').innerHTML=m;
+  }
+
+  function wire(segId,setter){
+    el(segId).querySelectorAll('button').forEach(b=>{
+      b.addEventListener('click',()=>{
+        el(segId).querySelectorAll('button').forEach(x=>x.classList.remove('on'));
+        b.classList.add('on');setter(b.getAttribute('data-g'));update();
+      });
+    });
+  }
+  wire('segPai',g=>pai=g);
+  wire('segMae',g=>mae=g);
+  update();
+</script>
+<script type="application/json" id="dados">
+{
+  "cruzamento": {
+    "pai": "Aa",
+    "mae": "Aa"
+  }
+}
+</script>
+<script id="dados-hydrator">
+(() => {
+  const node = document.getElementById('dados');
+  if (!node) return;
+  let data;
+  try { data = JSON.parse(node.textContent || '{}'); } catch (_) { return; }
+  const controls = data.controls || {};
+  for (const [id, cfg] of Object.entries(controls)) {
+    const target = document.getElementById(id);
+    if (!target || cfg == null || !Object.prototype.hasOwnProperty.call(cfg, 'value')) continue;
+    target.value = String(cfg.value);
+    target.dispatchEvent(new Event('input', { bubbles: true }));
+    target.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+  if (data.cruzamento && typeof update === 'function') {
+    try {
+      if (Object.prototype.hasOwnProperty.call(data.cruzamento, 'pai')) pai = data.cruzamento.pai;
+      if (Object.prototype.hasOwnProperty.call(data.cruzamento, 'mae')) mae = data.cruzamento.mae;
+      update();
+    } catch (_) {}
+  }
+})();
+</script>
+</body>
+</html>

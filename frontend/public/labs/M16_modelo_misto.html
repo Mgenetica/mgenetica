@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M16 · Modelo misto y=Xb+Zu+e — MGenética</title>
+<style>
+  :root{
+    --mg-ink:#0a1f38;--mg-navy-700:#1a4b78;--mg-navy-900:#061626;
+    --mg-cyan:#00a8d6;--mg-cyan-soft:#d6f1f9;--mg-mid:#4a9fd1;
+    --mg-muted:#5a7391;
+    --mg-bg:#fff;--mg-bg-soft:#f7f9fc;--mg-bg-tint:#eef3f9;
+    --mg-line:rgba(10,31,56,.10);--mg-line-strong:rgba(10,31,56,.18);
+    --mg-gold:#ffc107;--mg-gold-soft:#fff7e0;--mg-gold-border:#ffe08a;--mg-gold-ink:#7b4200;
+    --mg-red:#c2410c;
+    --shadow-sm:0 1px 2px rgba(13,38,66,.05),0 1px 1px rgba(13,38,66,.04);
+    --font-body:"DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+    --font-display:"Lora",Georgia,"Times New Roman",serif;
+    --font-mono:"DM Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:var(--font-body);background:linear-gradient(180deg,#f7f9fc,#eef3f9);min-height:100vh;color:var(--mg-ink);line-height:1.6;padding:1.4rem 1rem 3rem;}
+  .page{max-width:840px;margin:0 auto;}
+  .back{display:inline-block;font-family:var(--font-mono);font-size:.74rem;color:var(--mg-muted);text-decoration:none;margin-bottom:1rem;letter-spacing:.03em;}
+  .back:hover{color:var(--mg-cyan);}
+  .eyebrow{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--mg-cyan);font-weight:600;}
+  h1{font-family:var(--font-display);font-size:1.75rem;font-weight:600;margin:.25rem 0 .4rem;line-height:1.18;}
+  .sub{color:var(--mg-muted);font-size:.96rem;margin-bottom:1.6rem;max-width:62ch;}
+  h2{font-family:var(--font-display);font-size:1.12rem;font-weight:600;color:var(--mg-navy-700);margin-bottom:.9rem;display:flex;align-items:center;gap:.5rem;}
+  h2 .n{display:inline-flex;align-items:center;justify-content:center;width:1.5rem;height:1.5rem;border-radius:50%;background:var(--mg-cyan);color:#fff;font-family:var(--font-mono);font-size:.8rem;font-weight:700;flex:none;}
+  .card{background:var(--mg-bg);border:1px solid var(--mg-line);border-radius:var(--radius);padding:1.4rem;margin-bottom:1.2rem;box-shadow:var(--shadow-sm);}
+  .quad{display:grid;grid-template-columns:repeat(4,1fr);gap:.7rem;}
+  @media(max-width:640px){.quad{grid-template-columns:1fr 1fr;}}
+  .an{border:1px solid var(--mg-line);border-radius:12px;padding:.8rem;background:var(--mg-bg-soft);}
+  .an .h{display:flex;align-items:center;gap:.5rem;margin-bottom:.5rem;}
+  .an .tag{width:1.7rem;height:1.7rem;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--font-mono);font-weight:700;flex:none;}
+  .an .meta{font-size:.72rem;color:var(--mg-muted);font-family:var(--font-mono);line-height:1.25;}
+  .an .ba{display:flex;align-items:baseline;gap:.35rem;font-family:var(--font-mono);}
+  .an .ba .obs{color:var(--mg-muted);font-size:.92rem;text-decoration:line-through;text-decoration-color:var(--mg-line-strong);}
+  .an .ba .arr{color:var(--mg-mid);}
+  .an .ba .adj{color:var(--mg-navy-700);font-weight:700;font-size:1.22rem;}
+  .an .ba .un{color:var(--mg-muted);font-size:.7rem;}
+  .formula{font-family:var(--font-mono);font-size:.82rem;color:var(--mg-navy-700);background:var(--mg-bg-tint);border:1px solid var(--mg-line);border-radius:8px;padding:.6rem .8rem;margin-bottom:1.1rem;text-align:center;}
+  .sliders{display:grid;grid-template-columns:repeat(3,1fr);gap:.9rem 1.4rem;margin-bottom:.6rem;}
+  @media(max-width:560px){.sliders{grid-template-columns:1fr;}}
+  .slider-group label{display:flex;justify-content:space-between;align-items:baseline;font-size:.78rem;margin-bottom:.25rem;font-weight:500;}
+  .slider-group label .v{font-family:var(--font-mono);font-weight:700;color:var(--mg-navy-700);font-size:.85rem;}
+  input[type=range]{width:100%;height:5px;-webkit-appearance:none;appearance:none;background:var(--mg-bg-tint);border-radius:4px;outline:none;}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:17px;height:17px;border-radius:50%;background:var(--mg-cyan);border:3px solid #fff;box-shadow:var(--shadow-sm);cursor:pointer;}
+  input[type=range]::-moz-range-thumb{width:15px;height:15px;border-radius:50%;background:var(--mg-cyan);border:3px solid #fff;cursor:pointer;}
+  .chips{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;margin-bottom:1.1rem;}
+  .chips .lb{font-size:.78rem;color:var(--mg-muted);}
+  .chip{font-family:var(--font-mono);font-size:.76rem;border:1px solid var(--mg-line-strong);background:var(--mg-bg);color:var(--mg-navy-700);border-radius:999px;padding:.35rem .8rem;cursor:pointer;}
+  .chip:hover{border-color:var(--mg-cyan);color:var(--mg-cyan);}
+  .twores{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-top:.7rem;}
+  @media(max-width:520px){.twores{grid-template-columns:1fr;}}
+  .res{background:var(--mg-bg-soft);border:1px solid var(--mg-line);border-radius:12px;padding:1rem;text-align:center;}
+  .res .lab{font-size:.72rem;color:var(--mg-muted);margin-bottom:.3rem;font-family:var(--font-mono);}
+  .res .val{font-family:var(--font-mono);font-size:1.5rem;font-weight:700;color:var(--mg-navy-700);letter-spacing:.1em;}
+  .note{border-left:3px solid var(--mg-cyan);background:var(--mg-cyan-soft);color:var(--mg-navy-900);padding:.75rem .9rem;border-radius:0 8px 8px 0;font-size:.86rem;margin-top:.4rem;}
+  .try{font-size:.82rem;color:var(--mg-navy-700);background:var(--mg-bg-tint);border:1px dashed var(--mg-line-strong);border-radius:8px;padding:.6rem .8rem;margin-top:.9rem;}
+  .try b{color:var(--mg-cyan);}
+  .legend{display:flex;gap:1.2rem;flex-wrap:wrap;font-size:.76rem;color:var(--mg-muted);margin-top:.5rem;justify-content:center;}
+  .legend span{display:inline-flex;align-items:center;gap:.3rem;}
+  .legend .up{color:var(--mg-cyan);font-weight:700;}
+  .legend .dn{color:var(--mg-red);font-weight:700;}
+  .mg-foot{text-align:center;font-size:.74rem;color:var(--mg-muted);margin-top:2rem;font-family:var(--font-mono);}
+  canvas{width:100%;height:auto;display:block;}
+</style>
+<!-- MG-RUNTIME:start (gerado por scripts/apply_lab_runtime.py — não editar à mão) -->
+<style id="mg-runtime">
+/* mg-lab.css — runtime compartilhado dos labs interativos MGenética.
+   Fonte única: injetado inline em cada lab (mantém self-contained/offline).
+   Adiciona tema ESCURO (sobre os mesmos tokens --mg-* que os labs já usam),
+   foco visível, reduced-motion e utilitários de acessibilidade.
+   Deve vir DEPOIS do <style> do lab para sobrescrever o :root claro. */
+
+/* ----- Tema escuro: auto (prefers-color-scheme) + manual ([data-theme]) ----- */
+:root[data-theme="dark"],
+:root.mg-dark {
+  --mg-ink:#e8eef5;
+  --mg-navy-700:#5fa8da;
+  --mg-navy-900:#cdddec;
+  --mg-cyan:#34c0e8;
+  --mg-cyan-soft:#10344a;
+  --mg-mid:#6bb4dd;
+  --mg-muted:#9fb3c9;
+  --mg-bg:#0c1622;
+  --mg-bg-soft:#111f30;
+  --mg-bg-tint:#16263a;
+  --mg-line:rgba(220,235,250,.12);
+  --mg-line-strong:rgba(220,235,250,.22);
+  --mg-gold:#ffca28;
+  --mg-gold-soft:#33290f;
+  --mg-gold-border:#7a5a16;
+  --mg-gold-ink:#ffd97a;
+  --mg-red:#f08a5a;
+  --mg-red-soft:#3a2018;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]):not(.mg-light) {
+    --mg-ink:#e8eef5;
+    --mg-navy-700:#5fa8da;
+    --mg-navy-900:#cdddec;
+    --mg-cyan:#34c0e8;
+    --mg-cyan-soft:#10344a;
+    --mg-mid:#6bb4dd;
+    --mg-muted:#9fb3c9;
+    --mg-bg:#0c1622;
+    --mg-bg-soft:#111f30;
+    --mg-bg-tint:#16263a;
+    --mg-line:rgba(220,235,250,.12);
+    --mg-line-strong:rgba(220,235,250,.22);
+    --mg-gold:#ffca28;
+    --mg-gold-soft:#33290f;
+    --mg-gold-border:#7a5a16;
+    --mg-gold-ink:#ffd97a;
+    --mg-red:#f08a5a;
+    --mg-red-soft:#3a2018;
+  }
+}
+
+/* garante que o fundo/texto sigam os tokens (alguns labs herdam do body) */
+html, body { background: var(--mg-bg); color: var(--mg-ink); }
+:root { color-scheme: light dark; }
+
+/* ----- Acessibilidade ----- */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 3px solid var(--mg-cyan);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+.mg-visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ----- Controles do runtime (reset, legenda "como ler") ----- */
+.mg-reset-btn {
+  font: inherit; cursor: pointer;
+  border: 1px solid var(--mg-line-strong);
+  background: var(--mg-bg-soft); color: var(--mg-navy-700);
+  border-radius: 8px; padding: 6px 12px; font-weight: 600; font-size: 12.5px;
+}
+.mg-reset-btn:hover { border-color: var(--mg-cyan); }
+.mg-howto {
+  font-size: 12px; color: var(--mg-muted); margin: 6px 0 0; line-height: 1.5;
+}
+
+/* ----- Base responsiva (vale para todos, mesmo sem media query própria) ----- */
+img, canvas, svg, iframe, table { max-width: 100%; }
+canvas { height: auto; }
+@media (max-width: 640px) {
+  body { font-size: 15px; }
+}
+</style>
+<script id="mg-runtime">
+/* mg-lab.js — runtime compartilhado dos labs interativos MGenética.
+   Fonte única, injetado inline. Fornece:
+   - MG: tokens de cor (lidos do CSS) para o canvas usar e reagir ao tema.
+   - tema/idioma via ?theme=&lang= e via postMessage do site (iframe).
+   - auto-resize: reporta a altura ao parent (postMessage).
+   - i18n t(key) lendo <script type="application/json" id="i18n">.
+   - hook de reset ("voltar ao exemplo"). Tudo offline, sem dependências. */
+(function () {
+  "use strict";
+  var root = document.documentElement;
+  var TOKENS = {
+    ink: "--mg-ink", navy7: "--mg-navy-700", navy9: "--mg-navy-900",
+    cyan: "--mg-cyan", cyanSoft: "--mg-cyan-soft", mid: "--mg-mid", muted: "--mg-muted",
+    bg: "--mg-bg", bgSoft: "--mg-bg-soft", bgTint: "--mg-bg-tint",
+    line: "--mg-line", lineStrong: "--mg-line-strong",
+    gold: "--mg-gold", goldSoft: "--mg-gold-soft", goldBorder: "--mg-gold-border", goldInk: "--mg-gold-ink",
+    red: "--mg-red", redSoft: "--mg-red-soft"
+  };
+  var MG = {};
+  window.MG = MG; // canvas usa MG.ink, MG.cyan, ...
+
+  function readPalette() {
+    var cs = getComputedStyle(root);
+    for (var k in TOKENS) MG[k] = cs.getPropertyValue(TOKENS[k]).trim();
+  }
+
+  function params() {
+    try { return new URLSearchParams(location.search); } catch (e) { return new URLSearchParams(); }
+  }
+
+  // ---- tema -------------------------------------------------------------
+  function setTheme(theme) {
+    if (theme === "dark" || theme === "light") root.setAttribute("data-theme", theme);
+    else root.removeAttribute("data-theme"); // auto = segue o sistema/host
+    readPalette();
+    window.dispatchEvent(new CustomEvent("mg:themechange", { detail: { palette: MG } }));
+  }
+  // reage a mudança do sistema quando em modo auto
+  try {
+    var mq = window.matchMedia("(prefers-color-scheme: dark)");
+    mq.addEventListener("change", function () {
+      if (!root.hasAttribute("data-theme")) { readPalette(); window.dispatchEvent(new CustomEvent("mg:themechange", { detail: { palette: MG } })); }
+    });
+  } catch (e) {}
+
+  // ---- i18n -------------------------------------------------------------
+  var DICT = {};
+  var LANG = "pt-BR";
+  function loadDict() {
+    var el = document.getElementById("i18n");
+    if (!el) return;
+    try { DICT = JSON.parse(el.textContent) || {}; } catch (e) { DICT = {}; }
+  }
+  function t(key) {
+    var l = DICT[LANG] || {};
+    if (key in l) return l[key];
+    var base = DICT["pt-BR"] || {};
+    return key in base ? base[key] : key;
+  }
+  function setLang(lang) {
+    if (DICT[lang]) LANG = lang;
+    root.setAttribute("lang", LANG);
+    document.querySelectorAll("[data-i18n]").forEach(function (n) {
+      n.textContent = t(n.getAttribute("data-i18n"));
+    });
+    document.querySelectorAll("[data-i18n-aria]").forEach(function (n) {
+      n.setAttribute("aria-label", t(n.getAttribute("data-i18n-aria")));
+    });
+    window.dispatchEvent(new CustomEvent("mg:langchange", { detail: { lang: LANG } }));
+  }
+  window.MGi18n = { t: t, lang: function () { return LANG; } };
+
+  // ---- auto-resize (reporta altura ao iframe pai) -----------------------
+  var lastH = 0, raf = 0;
+  function reportHeight() {
+    var h = Math.ceil(document.documentElement.getBoundingClientRect().height);
+    if (h && h !== lastH) {
+      lastH = h;
+      try { parent.postMessage({ type: "mg-lab-height", id: document.title || "", height: h }, "*"); } catch (e) {}
+    }
+  }
+  function scheduleReport() { cancelAnimationFrame(raf); raf = requestAnimationFrame(reportHeight); }
+
+  // ---- mensagens do site (host controla tema/idioma) --------------------
+  window.addEventListener("message", function (ev) {
+    var d = ev && ev.data; if (!d || typeof d !== "object") return;
+    if (d.type === "mg-set-theme") setTheme(d.theme);
+    if (d.type === "mg-set-lang") setLang(d.lang);
+  });
+
+  // ---- reset ("voltar ao exemplo") --------------------------------------
+  document.addEventListener("click", function (ev) {
+    var b = ev.target.closest && ev.target.closest("[data-mg-reset]");
+    if (b && typeof window.MGReset === "function") { ev.preventDefault(); window.MGReset(); }
+  });
+
+  // ---- boot -------------------------------------------------------------
+  function boot() {
+    readPalette();
+    loadDict();
+    var p = params();
+    var th = p.get("theme"); if (th) setTheme(th); else readPalette();
+    var lg = p.get("lang"); setLang(lg || LANG);
+    if (window.ResizeObserver) new ResizeObserver(scheduleReport).observe(document.documentElement);
+    window.addEventListener("load", scheduleReport);
+    window.addEventListener("mg:themechange", scheduleReport);
+    setTimeout(reportHeight, 60);
+  }
+  // popula MG imediatamente (o <style> do lab já foi parseado), para o canvas
+  // do lab ver as cores certas mesmo se desenhar antes do DOMContentLoaded.
+  readPalette();
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
+  else boot();
+})();
+</script>
+<!-- MG-RUNTIME:end -->
+</head>
+<body>
+<div class="page">
+  <a class="back" href="../#catalog">← Trilha interativa MGenética</a>
+  <p class="eyebrow">Módulo 16 · Modelos lineares e mistos</p>
+  <h1>Modelo misto: corrigir antes de comparar</h1>
+  <p class="sub">O modelo <b>y = Xb + Zu + e</b> separa a medida em efeitos fixos conhecidos (<b>Xb</b> — fazenda, sexo), efeitos aleatórios (<b>Zu</b>) e resíduo (<b>e</b>). Aqui você ajusta as "réguas tortas" — fazenda e sexo — e vê o ranking dos potros virar quando o ambiente sai da conta.</p>
+
+  <div class="card">
+    <h2><span class="n">1</span>Quatro potros, mesmo peso ao sobreano</h2>
+    <div class="quad" id="animals"></div>
+    <div class="try" style="margin-top:1rem"><b>Peso riscado</b> = observado na fazenda. <b>Peso em destaque</b> = ajustado, depois de remover os efeitos fixos. São os mesmos animais — muda só a régua.</div>
+  </div>
+
+  <div class="card">
+    <h2><span class="n">2</span>Ajuste as réguas (efeitos fixos)</h2>
+    <div class="formula">fenótipo ajustado = peso observado − efeito fazenda − efeito sexo</div>
+    <div class="sliders">
+      <div class="slider-group"><label><span>Fazenda Boa (vantagem)</span><span class="v" id="vBoa">+18</span></label>
+        <input type="range" id="eBoa" min="0" max="30" step="1" value="18"></div>
+      <div class="slider-group"><label><span>Fazenda Seca (desvantagem)</span><span class="v" id="vSeca">−10</span></label>
+        <input type="range" id="eSeca" min="-30" max="0" step="1" value="-10"></div>
+      <div class="slider-group"><label><span>Efeito macho (vs fêmea)</span><span class="v" id="vMacho">+8</span></label>
+        <input type="range" id="eMacho" min="0" max="20" step="1" value="8"></div>
+    </div>
+    <div class="chips" id="preset">
+      <span class="lb">Atalhos:</span>
+      <button class="chip" data-b="18" data-s="-10" data-m="8">Exemplo do curso</button>
+      <button class="chip" data-b="0" data-s="0" data-m="0">Sem correção (efeitos = 0)</button>
+    </div>
+    <canvas id="cv" width="1240" height="580"></canvas>
+    <div class="legend">
+      <span>cada bolha = um potro</span>
+      <span><span class="up">▲</span> sobe no ranking</span>
+      <span><span class="dn">▼</span> desce no ranking</span>
+    </div>
+    <div class="twores">
+      <div class="res"><div class="lab">ranking bruto (observado)</div><div class="val" id="rkBruto">A · B · C · D</div></div>
+      <div class="res"><div class="lab">ranking ajustado</div><div class="val" id="rkAjust">C · D · A · B</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2><span class="n">3</span>Por que o ranking muda</h2>
+    <div class="note" id="explain"></div>
+    <div class="try"><b>Experimente:</b> zere os três efeitos (atalho <i>Sem correção</i>) — o ranking ajustado volta a ser igual ao bruto (A·B·C·D). Agora suba só a <b>Fazenda Seca</b> em direção a −10: assista <b>C</b> escalar até o topo. A correção não premia ambiente; revela o animal por trás dele.</div>
+  </div>
+
+  <div class="mg-foot">MGenética · artefato interativo · derivado do texto M16 — Modelos lineares e modelos mistos</div>
+</div>
+
+<!-- ▼▼▼ DADOS EDITÁVEIS — altere o exemplo aqui (obs = fenótipo bruto; farm/sex = efeitos fixos). A lógica abaixo não precisa ser tocada. ▼▼▼ -->
+<script type="application/json" id="dados">
+{
+  "animais": [
+    {
+      "id": "A",
+      "farm": "Boa",
+      "sex": "M",
+      "obs": 310,
+      "color": "#1a4b78"
+    },
+    {
+      "id": "B",
+      "farm": "Boa",
+      "sex": "F",
+      "obs": 294,
+      "color": "#00a8d6"
+    },
+    {
+      "id": "C",
+      "farm": "Seca",
+      "sex": "M",
+      "obs": 292,
+      "color": "#4a9fd1"
+    },
+    {
+      "id": "D",
+      "farm": "Seca",
+      "sex": "F",
+      "obs": 278,
+      "color": "#5a7391"
+    }
+  ]
+}
+</script>
+<!-- ▲▲▲ FIM DOS DADOS EDITÁVEIS ▲▲▲ -->
+
+<script>
+  const cv=document.getElementById('cv'),ctx=cv.getContext('2d');ctx.scale(2,2);
+  const CW=620,CH=290;
+  const el=id=>document.getElementById(id);
+  const DADOS=JSON.parse(el('dados').textContent);
+  const A=DADOS.animais;
+  let eBoa=18,eSeca=-10,eMacho=8;
+  function adjOf(a){return a.obs-(a.farm==='Boa'?eBoa:eSeca)-(a.sex==='M'?eMacho:0);}
+  function sgn(x){return (x>0?'+':x<0?'−':'')+Math.abs(x);}
+  function sub(x){return x<0?'− (−'+Math.abs(x)+')':'− '+x;}
+  function exFormula(a){
+    const f=(a.farm==='Boa')?eBoa:eSeca,s=(a.sex==='M')?eMacho:0;
+    return a.id+': '+a.obs+' '+sub(f)+' '+sub(s)+' = '+adjOf(a)+' kg';
+  }
+
+  function buildAnimals(){
+    const w=el('animals');w.innerHTML='';
+    A.forEach((a,i)=>{
+      const d=document.createElement('div');d.className='an';
+      d.innerHTML='<div class="h"><span class="tag" style="background:'+a.color+'">'+a.id+'</span>'+
+        '<span class="meta">'+a.farm+'<br>'+(a.sex==='M'?'Macho':'Fêmea')+'</span></div>'+
+        '<div class="ba"><span class="obs">'+a.obs+'</span><span class="arr">→</span>'+
+        '<span class="adj" id="adj'+i+'">'+adjOf(a)+'</span><span class="un">kg</span></div>';
+      w.appendChild(d);
+    });
+  }
+
+  const leftX=160,rightX=460,R=16;
+  function rowY(r){return 64+r*58;}
+  function draw(bruto,ajust){
+    ctx.clearRect(0,0,CW,CH);
+    // headers
+    ctx.textAlign='center';ctx.fillStyle='#1a4b78';ctx.font='bold 12px monospace';
+    ctx.fillText('RANKING BRUTO',leftX,22);ctx.fillText('RANKING AJUSTADO',rightX,22);
+    ctx.fillStyle='#5a7391';ctx.font='10px monospace';
+    ctx.fillText('(peso observado)',leftX,36);ctx.fillText('(efeitos fixos removidos)',rightX,36);
+    // rank indices
+    const rB={},rA={};bruto.forEach((a,i)=>rB[a.id]=i);ajust.forEach((a,i)=>rA[a.id]=i);
+    // connecting lines (under nodes)
+    A.forEach(a=>{
+      const lr=rB[a.id],rr=rA[a.id];
+      ctx.strokeStyle=a.color;ctx.globalAlpha=lr!==rr?.6:.3;ctx.lineWidth=lr!==rr?4:2.5;
+      ctx.beginPath();ctx.moveTo(leftX+R,rowY(lr));ctx.lineTo(rightX-R,rowY(rr));ctx.stroke();
+    });
+    ctx.globalAlpha=1;
+    // far-edge rank numbers
+    ctx.fillStyle='#90a2b8';ctx.font='11px monospace';
+    for(let r=0;r<4;r++){
+      ctx.textAlign='right';ctx.fillText((r+1)+'º',26,rowY(r)+4);
+      ctx.textAlign='left';ctx.fillText((r+1)+'º',CW-26,rowY(r)+4);
+    }
+    // left nodes
+    bruto.forEach((a,r)=>node(leftX,rowY(r),a,false,a.obs,0));
+    // right nodes (with direction)
+    ajust.forEach((a,r)=>node(rightX,rowY(r),a,true,adjOf(a),rB[a.id]-rA[a.id]));
+  }
+  function node(x,y,a,right,wt,dir){
+    ctx.beginPath();ctx.arc(x,y,R,0,7);ctx.fillStyle=a.color;ctx.fill();
+    ctx.fillStyle='#fff';ctx.font='bold 14px monospace';ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText(a.id,x,y);ctx.textBaseline='alphabetic';
+    if(right){
+      let tx=x+R+8;
+      if(dir!==0){ctx.fillStyle=dir>0?'#00a8d6':'#c2410c';ctx.font='bold 12px monospace';ctx.textAlign='left';ctx.fillText(dir>0?'▲':'▼',tx,y+4);tx+=15;}
+      ctx.fillStyle='#0a1f38';ctx.font='bold 12px monospace';ctx.textAlign='left';ctx.fillText(wt+' kg',tx,y+4);
+    }else{
+      ctx.fillStyle='#0a1f38';ctx.font='bold 12px monospace';ctx.textAlign='right';ctx.fillText(wt+' kg',x-R-8,y+4);
+    }
+  }
+
+  function update(){
+    eBoa=+el('eBoa').value;eSeca=+el('eSeca').value;eMacho=+el('eMacho').value;
+    el('vBoa').textContent=sgn(eBoa);el('vSeca').textContent=sgn(eSeca);el('vMacho').textContent=sgn(eMacho);
+    A.forEach((a,i)=>{el('adj'+i).textContent=adjOf(a);});
+    const bruto=A.slice().sort((x,y)=>y.obs-x.obs);
+    const ajust=A.slice().sort((x,y)=>adjOf(y)-adjOf(x));
+    draw(bruto,ajust);
+    el('rkBruto').textContent=bruto.map(a=>a.id).join(' · ');
+    el('rkAjust').textContent=ajust.map(a=>a.id).join(' · ');
+    // story
+    const rB={},rA={};bruto.forEach((a,i)=>rB[a.id]=i);ajust.forEach((a,i)=>rA[a.id]=i);
+    let riser=null,faller=null,up=0,dn=0;
+    A.forEach(a=>{const d=rB[a.id]-rA[a.id];if(d>up){up=d;riser=a;}if(d<dn){dn=d;faller=a;}});
+    let m;
+    if(up===0&&dn===0){
+      m='Com os três efeitos fixos em <b>zero</b>, não há régua para ajustar: o <b>ranking ajustado é idêntico ao bruto</b> ('+bruto.map(a=>a.id).join(' · ')+'). O modelo <b>y = Xb + Zu + e</b> só reorganiza o pódio quando <b>Xb</b> carrega algum efeito de fazenda ou sexo.';
+    }else{
+      m='';
+      if(faller)m+='<b>'+faller.id+'</b> liderava no peso bruto, mas <b>cai</b> após o ajuste — parte da vantagem vinha de efeitos fixos favoráveis (fazenda e/ou sexo), não de mérito. ';
+      if(riser)m+='<b>'+riser.id+'</b> <b>sobe</b>: foi medido em condição desfavorável e ainda manteve peso alto. Subtrair um efeito negativo <i>aumenta</i> o valor ajustado — <span style="font-family:var(--font-mono);color:var(--mg-navy-700)">'+exFormula(riser)+'</span>.';
+    }
+    el('explain').innerHTML=m;
+  }
+
+  ['eBoa','eSeca','eMacho'].forEach(id=>el(id).addEventListener('input',update));
+  el('preset').querySelectorAll('button').forEach(btn=>btn.addEventListener('click',()=>{
+    el('eBoa').value=btn.dataset.b;el('eSeca').value=btn.dataset.s;el('eMacho').value=btn.dataset.m;update();
+  }));
+  buildAnimals();update();
+</script>
+</body>
+</html>

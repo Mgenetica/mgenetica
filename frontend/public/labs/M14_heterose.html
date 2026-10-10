@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M14 · Cruzamentos e heterose — MGenética</title>
+<style>
+  :root{
+    --mg-ink:#0a1f38;--mg-navy-700:#1a4b78;--mg-navy-900:#061626;
+    --mg-cyan:#00a8d6;--mg-cyan-soft:#d6f1f9;--mg-mid:#4a9fd1;
+    --mg-muted:#5a7391;
+    --mg-bg:#fff;--mg-bg-soft:#f7f9fc;--mg-bg-tint:#eef3f9;
+    --mg-line:rgba(10,31,56,.10);--mg-line-strong:rgba(10,31,56,.18);
+    --mg-gold:#ffc107;--mg-gold-soft:#fff7e0;--mg-gold-border:#ffe08a;--mg-gold-ink:#7b4200;
+    --shadow-sm:0 1px 2px rgba(13,38,66,.05),0 1px 1px rgba(13,38,66,.04);
+    --font-body:"DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+    --font-display:"Lora",Georgia,"Times New Roman",serif;
+    --font-mono:"DM Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:var(--font-body);background:linear-gradient(180deg,#f7f9fc,#eef3f9);min-height:100vh;color:var(--mg-ink);line-height:1.6;padding:1.4rem 1rem 3rem;}
+  .page{max-width:840px;margin:0 auto;}
+  .back{display:inline-block;font-family:var(--font-mono);font-size:.74rem;color:var(--mg-muted);text-decoration:none;margin-bottom:1rem;letter-spacing:.03em;}
+  .back:hover{color:var(--mg-cyan);}
+  .eyebrow{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--mg-cyan);font-weight:600;}
+  h1{font-family:var(--font-display);font-size:1.75rem;font-weight:600;margin:.25rem 0 .4rem;line-height:1.18;}
+  .sub{color:var(--mg-muted);font-size:.96rem;margin-bottom:1.6rem;max-width:62ch;}
+  h2{font-family:var(--font-display);font-size:1.12rem;font-weight:600;color:var(--mg-navy-700);margin-bottom:.9rem;display:flex;align-items:center;gap:.5rem;}
+  h2 .n{display:inline-flex;align-items:center;justify-content:center;width:1.5rem;height:1.5rem;border-radius:50%;background:var(--mg-cyan);color:#fff;font-family:var(--font-mono);font-size:.8rem;font-weight:700;flex:none;}
+  .card{background:var(--mg-bg);border:1px solid var(--mg-line);border-radius:var(--radius);padding:1.4rem;margin-bottom:1.2rem;box-shadow:var(--shadow-sm);}
+  .slider-group{margin-bottom:1rem;}
+  .slider-group label{display:flex;justify-content:space-between;align-items:baseline;font-size:.86rem;margin-bottom:.35rem;font-weight:500;}
+  .slider-group label .v{font-family:var(--font-mono);font-weight:700;font-size:.95rem;}
+  input[type=range]{width:100%;height:6px;-webkit-appearance:none;appearance:none;background:var(--mg-bg-tint);border-radius:4px;outline:none;}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--mg-cyan);border:3px solid #fff;box-shadow:var(--shadow-sm);cursor:pointer;}
+  input[type=range]#F1::-webkit-slider-thumb{background:#ffc107;}
+  input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:var(--mg-cyan);border:3px solid #fff;cursor:pointer;}
+  .res-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem;margin-top:.3rem;}
+  .res{background:var(--mg-bg-soft);border:1px solid var(--mg-line);border-radius:12px;padding:.85rem .4rem;text-align:center;}
+  .res .lab{font-size:.68rem;color:var(--mg-muted);margin-bottom:.2rem;font-family:var(--font-mono);}
+  .res .val{font-family:var(--font-mono);font-size:1.4rem;font-weight:700;color:var(--mg-navy-700);}
+  .res.h .val{color:var(--mg-gold-ink);}
+  .formula{font-family:var(--font-mono);background:var(--mg-bg-tint);border:1px solid var(--mg-line);border-radius:8px;padding:.7rem .9rem;font-size:.84rem;color:var(--mg-navy-700);margin:.7rem 0 0;text-align:center;}
+  .legend{display:flex;gap:1.2rem;flex-wrap:wrap;font-size:.76rem;color:var(--mg-muted);margin-top:.4rem;justify-content:center;}
+  .legend span{display:inline-flex;align-items:center;gap:.35rem;}
+  .dot{width:11px;height:11px;border-radius:3px;display:inline-block;}
+  .note{border-left:3px solid var(--mg-cyan);background:var(--mg-cyan-soft);color:var(--mg-navy-900);padding:.75rem .9rem;border-radius:0 8px 8px 0;font-size:.86rem;margin-top:1rem;}
+  .try{font-size:.82rem;color:var(--mg-navy-700);background:var(--mg-bg-tint);border:1px dashed var(--mg-line-strong);border-radius:8px;padding:.6rem .8rem;margin-top:.9rem;}
+  .try b{color:var(--mg-cyan);}
+  .mg-foot{text-align:center;font-size:.74rem;color:var(--mg-muted);margin-top:2rem;font-family:var(--font-mono);}
+  canvas{width:100%;height:auto;display:block;}
+</style>
+<!-- MG-RUNTIME:start (gerado por scripts/apply_lab_runtime.py — não editar à mão) -->
+<style id="mg-runtime">
+/* mg-lab.css — runtime compartilhado dos labs interativos MGenética.
+   Fonte única: injetado inline em cada lab (mantém self-contained/offline).
+   Adiciona tema ESCURO (sobre os mesmos tokens --mg-* que os labs já usam),
+   foco visível, reduced-motion e utilitários de acessibilidade.
+   Deve vir DEPOIS do <style> do lab para sobrescrever o :root claro. */
+
+/* ----- Tema escuro: auto (prefers-color-scheme) + manual ([data-theme]) ----- */
+:root[data-theme="dark"],
+:root.mg-dark {
+  --mg-ink:#e8eef5;
+  --mg-navy-700:#5fa8da;
+  --mg-navy-900:#cdddec;
+  --mg-cyan:#34c0e8;
+  --mg-cyan-soft:#10344a;
+  --mg-mid:#6bb4dd;
+  --mg-muted:#9fb3c9;
+  --mg-bg:#0c1622;
+  --mg-bg-soft:#111f30;
+  --mg-bg-tint:#16263a;
+  --mg-line:rgba(220,235,250,.12);
+  --mg-line-strong:rgba(220,235,250,.22);
+  --mg-gold:#ffca28;
+  --mg-gold-soft:#33290f;
+  --mg-gold-border:#7a5a16;
+  --mg-gold-ink:#ffd97a;
+  --mg-red:#f08a5a;
+  --mg-red-soft:#3a2018;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]):not(.mg-light) {
+    --mg-ink:#e8eef5;
+    --mg-navy-700:#5fa8da;
+    --mg-navy-900:#cdddec;
+    --mg-cyan:#34c0e8;
+    --mg-cyan-soft:#10344a;
+    --mg-mid:#6bb4dd;
+    --mg-muted:#9fb3c9;
+    --mg-bg:#0c1622;
+    --mg-bg-soft:#111f30;
+    --mg-bg-tint:#16263a;
+    --mg-line:rgba(220,235,250,.12);
+    --mg-line-strong:rgba(220,235,250,.22);
+    --mg-gold:#ffca28;
+    --mg-gold-soft:#33290f;
+    --mg-gold-border:#7a5a16;
+    --mg-gold-ink:#ffd97a;
+    --mg-red:#f08a5a;
+    --mg-red-soft:#3a2018;
+  }
+}
+
+/* garante que o fundo/texto sigam os tokens (alguns labs herdam do body) */
+html, body { background: var(--mg-bg); color: var(--mg-ink); }
+:root { color-scheme: light dark; }
+
+/* ----- Acessibilidade ----- */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 3px solid var(--mg-cyan);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+.mg-visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ----- Controles do runtime (reset, legenda "como ler") ----- */
+.mg-reset-btn {
+  font: inherit; cursor: pointer;
+  border: 1px solid var(--mg-line-strong);
+  background: var(--mg-bg-soft); color: var(--mg-navy-700);
+  border-radius: 8px; padding: 6px 12px; font-weight: 600; font-size: 12.5px;
+}
+.mg-reset-btn:hover { border-color: var(--mg-cyan); }
+.mg-howto {
+  font-size: 12px; color: var(--mg-muted); margin: 6px 0 0; line-height: 1.5;
+}
+
+/* ----- Base responsiva (vale para todos, mesmo sem media query própria) ----- */
+img, canvas, svg, iframe, table { max-width: 100%; }
+canvas { height: auto; }
+@media (max-width: 640px) {
+  body { font-size: 15px; }
+}
+</style>
+<script id="mg-runtime">
+/* mg-lab.js — runtime compartilhado dos labs interativos MGenética.
+   Fonte única, injetado inline. Fornece:
+   - MG: tokens de cor (lidos do CSS) para o canvas usar e reagir ao tema.
+   - tema/idioma via ?theme=&lang= e via postMessage do site (iframe).
+   - auto-resize: reporta a altura ao parent (postMessage).
+   - i18n t(key) lendo <script type="application/json" id="i18n">.
+   - hook de reset ("voltar ao exemplo"). Tudo offline, sem dependências. */
+(function () {
+  "use strict";
+  var root = document.documentElement;
+  var TOKENS = {
+    ink: "--mg-ink", navy7: "--mg-navy-700", navy9: "--mg-navy-900",
+    cyan: "--mg-cyan", cyanSoft: "--mg-cyan-soft", mid: "--mg-mid", muted: "--mg-muted",
+    bg: "--mg-bg", bgSoft: "--mg-bg-soft", bgTint: "--mg-bg-tint",
+    line: "--mg-line", lineStrong: "--mg-line-strong",
+    gold: "--mg-gold", goldSoft: "--mg-gold-soft", goldBorder: "--mg-gold-border", goldInk: "--mg-gold-ink",
+    red: "--mg-red", redSoft: "--mg-red-soft"
+  };
+  var MG = {};
+  window.MG = MG; // canvas usa MG.ink, MG.cyan, ...
+
+  function readPalette() {
+    var cs = getComputedStyle(root);
+    for (var k in TOKENS) MG[k] = cs.getPropertyValue(TOKENS[k]).trim();
+  }
+
+  function params() {
+    try { return new URLSearchParams(location.search); } catch (e) { return new URLSearchParams(); }
+  }
+
+  // ---- tema -------------------------------------------------------------
+  function setTheme(theme) {
+    if (theme === "dark" || theme === "light") root.setAttribute("data-theme", theme);
+    else root.removeAttribute("data-theme"); // auto = segue o sistema/host
+    readPalette();
+    window.dispatchEvent(new CustomEvent("mg:themechange", { detail: { palette: MG } }));
+  }
+  // reage a mudança do sistema quando em modo auto
+  try {
+    var mq = window.matchMedia("(prefers-color-scheme: dark)");
+    mq.addEventListener("change", function () {
+      if (!root.hasAttribute("data-theme")) { readPalette(); window.dispatchEvent(new CustomEvent("mg:themechange", { detail: { palette: MG } })); }
+    });
+  } catch (e) {}
+
+  // ---- i18n -------------------------------------------------------------
+  var DICT = {};
+  var LANG = "pt-BR";
+  function loadDict() {
+    var el = document.getElementById("i18n");
+    if (!el) return;
+    try { DICT = JSON.parse(el.textContent) || {}; } catch (e) { DICT = {}; }
+  }
+  function t(key) {
+    var l = DICT[LANG] || {};
+    if (key in l) return l[key];
+    var base = DICT["pt-BR"] || {};
+    return key in base ? base[key] : key;
+  }
+  function setLang(lang) {
+    if (DICT[lang]) LANG = lang;
+    root.setAttribute("lang", LANG);
+    document.querySelectorAll("[data-i18n]").forEach(function (n) {
+      n.textContent = t(n.getAttribute("data-i18n"));
+    });
+    document.querySelectorAll("[data-i18n-aria]").forEach(function (n) {
+      n.setAttribute("aria-label", t(n.getAttribute("data-i18n-aria")));
+    });
+    window.dispatchEvent(new CustomEvent("mg:langchange", { detail: { lang: LANG } }));
+  }
+  window.MGi18n = { t: t, lang: function () { return LANG; } };
+
+  // ---- auto-resize (reporta altura ao iframe pai) -----------------------
+  var lastH = 0, raf = 0;
+  function reportHeight() {
+    var h = Math.ceil(document.documentElement.getBoundingClientRect().height);
+    if (h && h !== lastH) {
+      lastH = h;
+      try { parent.postMessage({ type: "mg-lab-height", id: document.title || "", height: h }, "*"); } catch (e) {}
+    }
+  }
+  function scheduleReport() { cancelAnimationFrame(raf); raf = requestAnimationFrame(reportHeight); }
+
+  // ---- mensagens do site (host controla tema/idioma) --------------------
+  window.addEventListener("message", function (ev) {
+    var d = ev && ev.data; if (!d || typeof d !== "object") return;
+    if (d.type === "mg-set-theme") setTheme(d.theme);
+    if (d.type === "mg-set-lang") setLang(d.lang);
+  });
+
+  // ---- reset ("voltar ao exemplo") --------------------------------------
+  document.addEventListener("click", function (ev) {
+    var b = ev.target.closest && ev.target.closest("[data-mg-reset]");
+    if (b && typeof window.MGReset === "function") { ev.preventDefault(); window.MGReset(); }
+  });
+
+  // ---- boot -------------------------------------------------------------
+  function boot() {
+    readPalette();
+    loadDict();
+    var p = params();
+    var th = p.get("theme"); if (th) setTheme(th); else readPalette();
+    var lg = p.get("lang"); setLang(lg || LANG);
+    if (window.ResizeObserver) new ResizeObserver(scheduleReport).observe(document.documentElement);
+    window.addEventListener("load", scheduleReport);
+    window.addEventListener("mg:themechange", scheduleReport);
+    setTimeout(reportHeight, 60);
+  }
+  // popula MG imediatamente (o <style> do lab já foi parseado), para o canvas
+  // do lab ver as cores certas mesmo se desenhar antes do DOMContentLoaded.
+  readPalette();
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
+  else boot();
+})();
+</script>
+<!-- MG-RUNTIME:end -->
+</head>
+<body>
+<div class="page">
+  <a class="back" href="../#catalog">← Trilha interativa MGenética</a>
+  <p class="eyebrow">Módulo 14 · Cruzamentos</p>
+  <h1>Heterose (vigor híbrido)</h1>
+  <p class="sub">A heterose aparece quando o cruzamento (F1) supera a <b>média dos pais</b>. Ela não se fixa: o ganho vem da combinação, não de genes transmissíveis. Ajuste pais e F1 e veja o vigor surgir acima da linha parental.</p>
+
+  <div class="card">
+    <h2><span class="n">1</span>Desempenho dos grupos</h2>
+    <div class="slider-group">
+      <label><span>Linha / raça A</span><span class="v" id="vA" style="color:#1a4b78">210</span></label>
+      <input type="range" id="A" min="150" max="260" step="1" value="210">
+    </div>
+    <div class="slider-group">
+      <label><span>Linha / raça B</span><span class="v" id="vB" style="color:#0a1f38">220</span></label>
+      <input type="range" id="B" min="150" max="260" step="1" value="220">
+    </div>
+    <div class="slider-group">
+      <label><span style="color:#7b4200">Cruzamento F1 (A × B)</span><span class="v" id="vF1" style="color:#7b4200">230</span></label>
+      <input type="range" id="F1" min="150" max="280" step="1" value="230">
+    </div>
+  </div>
+
+  <div class="card">
+    <h2><span class="n">2</span>F1 contra a média parental</h2>
+    <canvas id="cv" width="1440" height="600"></canvas>
+    <div class="legend">
+      <span><i class="dot" style="background:#1a4b78"></i> pai A</span>
+      <span><i class="dot" style="background:#0a1f38"></i> pai B</span>
+      <span><i style="display:inline-block;width:18px;border-top:2px dashed #5a7391"></i> média parental (MP)</span>
+      <span><i class="dot" style="background:#ffc107"></i> heterose (F1 − MP)</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2><span class="n">3</span>Resultados</h2>
+    <div class="res-grid">
+      <div class="res"><div class="lab">média parental MP</div><div class="val" id="MP">215,0</div></div>
+      <div class="res h"><div class="lab">heterose (absoluta)</div><div class="val" id="Habs">+15,0</div></div>
+      <div class="res h"><div class="lab">heterose (%)</div><div class="val" id="Hpct">+6,98%</div></div>
+    </div>
+    <div class="formula">MP = (A + B) / 2 &nbsp;·&nbsp; heterose = F1 − MP &nbsp;·&nbsp; heterose% = (F1 − MP) / MP × 100</div>
+  </div>
+
+  <div class="card">
+    <h2><span class="n">4</span>Heterose &times; complementaridade</h2>
+    <div class="note" id="explain"></div>
+    <div class="try"><b>Cuidado conceitual:</b> heterose exige que o F1 supere a MP. <b>Complementaridade</b> é diferente — não precisa de heterose: combina funções (ex.: linha materna fértil × linha paterna de desempenho). Um cruzamento pode valer a pena pela complementaridade mesmo sem heterose positiva em toda característica.</div>
+  </div>
+
+  <div class="mg-foot">MGenética · artefato interativo · derivado do texto M14 — Cruzamentos, heterose e complementaridade</div>
+</div>
+
+<script>
+  const cv=document.getElementById('cv'),ctx=cv.getContext('2d');ctx.scale(2,2);
+  const CW=720,CH=300;
+  const el=id=>document.getElementById(id);
+  function f1(x){return x.toFixed(1).replace('.',',');}
+  function f2(x){return x.toFixed(2).replace('.',',');}
+
+  function draw(A,B,F1,MP){
+    ctx.clearRect(0,0,CW,CH);
+    const x0=60,x1=700,yb=240,yTop=30;
+    const vals=[A,B,F1,MP];
+    let vmin=Math.min(...vals)-12,vmax=Math.max(...vals)+12;
+    vmin=Math.floor(vmin/10)*10;vmax=Math.ceil(vmax/10)*10;
+    const Y=v=>yb-(yb-yTop)*((v-vmin)/(vmax-vmin));
+    // y grid
+    ctx.font='10px monospace';ctx.textAlign='right';
+    for(let v=vmin;v<=vmax;v+=10){ctx.strokeStyle='rgba(10,31,56,.06)';ctx.beginPath();ctx.moveTo(x0,Y(v));ctx.lineTo(x1,Y(v));ctx.stroke();ctx.fillStyle='#5a7391';ctx.fillText(v,x0-8,Y(v)+3);}
+    // bars
+    const bw=110,xs=[150,330,560];
+    function bar(xc,v,col,label){ctx.fillStyle=col;ctx.fillRect(xc-bw/2,Y(v),bw,yb-Y(v));
+      ctx.fillStyle=col;ctx.font='bold 12px monospace';ctx.textAlign='center';ctx.fillText(label,xc,yb+16);
+      ctx.fillStyle='#fff';ctx.font='bold 12px monospace';ctx.fillText(f1(v),xc,Y(v)+16);}
+    bar(xs[0],A,'#1a4b78','Pai A');
+    bar(xs[1],B,'#0a1f38','Pai B');
+    // F1 bar: base navy up to MP, gold above MP (heterosis) if positive
+    const xc=xs[2];
+    if(F1>=MP){
+      ctx.fillStyle='#4a9fd1';ctx.fillRect(xc-bw/2,Y(MP),bw,yb-Y(MP));
+      ctx.fillStyle='#ffc107';ctx.fillRect(xc-bw/2,Y(F1),bw,Y(MP)-Y(F1));
+      ctx.fillStyle='#7b4200';ctx.font='bold 11px monospace';ctx.textAlign='center';
+      if(Y(MP)-Y(F1)>16)ctx.fillText('+'+f1(F1-MP),xc,(Y(F1)+Y(MP))/2+4);
+    }else{
+      ctx.fillStyle='#4a9fd1';ctx.fillRect(xc-bw/2,Y(F1),bw,yb-Y(F1));
+      ctx.fillStyle='#c2410c';ctx.font='bold 11px monospace';ctx.textAlign='center';ctx.fillText(f1(F1-MP),xc,Y(F1)-6);
+    }
+    ctx.fillStyle='#7b4200';ctx.font='bold 12px monospace';ctx.textAlign='center';ctx.fillText('F1 (A×B)',xc,yb+16);
+    ctx.fillStyle='#fff';ctx.fillText(f1(F1),xc,Y(Math.min(F1,MP))+16);
+    // MP dashed line across
+    ctx.strokeStyle='#5a7391';ctx.setLineDash([6,5]);ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(x0,Y(MP));ctx.lineTo(x1,Y(MP));ctx.stroke();ctx.setLineDash([]);
+    ctx.fillStyle='#5a7391';ctx.font='bold 10px monospace';ctx.textAlign='left';ctx.fillText('MP = '+f1(MP),x1-92,Y(MP)-6);
+  }
+
+  function update(){
+    const A=+el('A').value,B=+el('B').value,F1=+el('F1').value;
+    el('vA').textContent=A;el('vB').textContent=B;el('vF1').textContent=F1;
+    const MP=(A+B)/2,H=F1-MP,Hp=H/MP*100;
+    el('MP').textContent=f1(MP);
+    el('Habs').textContent=(H>=0?'+':'')+f1(H);
+    el('Hpct').textContent=(Hp>=0?'+':'')+f2(Hp)+'%';
+    draw(A,B,F1,MP);
+    const ex=el('explain');const best=Math.max(A,B);
+    let m;
+    if(H>0.5){m='<b>Heterose positiva de '+f2(Hp)+'%.</b> O F1 supera a média dos pais em '+f1(H)+' unidades';
+      if(F1>best)m+=' e supera até o melhor pai ('+f1(best)+') — vigor híbrido claro.';else m+=', embora ainda não ultrapasse o melhor pai isolado.';
+      m+=' Lembre: esse ganho vem da combinação heterozigótica e <b>não se transmite</b> integralmente à geração seguinte.';}
+    else if(H>=-0.5){m='Heterose ≈ 0: o F1 ficou praticamente na média parental. O cruzamento só se justifica por <b>complementaridade</b> de funções, não por vigor.';}
+    else{m='Heterose <b>negativa</b> ('+f2(Hp)+'%): o F1 ficou abaixo da média dos pais. Esse cruzamento específico não traz vigor para esta característica.';}
+    ex.innerHTML=m;
+  }
+  ['A','B','F1'].forEach(id=>el(id).addEventListener('input',update));
+  update();
+</script>
+<script type="application/json" id="dados">
+{
+  "controls": {
+    "A": {
+      "type": "range",
+      "min": 150,
+      "max": 260,
+      "step": 1,
+      "value": 210
+    },
+    "B": {
+      "type": "range",
+      "min": 150,
+      "max": 260,
+      "step": 1,
+      "value": 220
+    },
+    "F1": {
+      "type": "range",
+      "min": 150,
+      "max": 280,
+      "step": 1,
+      "value": 230
+    }
+  }
+}
+</script>
+<script id="dados-hydrator">
+(() => {
+  const node = document.getElementById('dados');
+  if (!node) return;
+  let data;
+  try { data = JSON.parse(node.textContent || '{}'); } catch (_) { return; }
+  const controls = data.controls || {};
+  for (const [id, cfg] of Object.entries(controls)) {
+    const target = document.getElementById(id);
+    if (!target || cfg == null || !Object.prototype.hasOwnProperty.call(cfg, 'value')) continue;
+    target.value = String(cfg.value);
+    target.dispatchEvent(new Event('input', { bubbles: true }));
+    target.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+  if (data.cruzamento && typeof update === 'function') {
+    try {
+      if (Object.prototype.hasOwnProperty.call(data.cruzamento, 'pai')) pai = data.cruzamento.pai;
+      if (Object.prototype.hasOwnProperty.call(data.cruzamento, 'mae')) mae = data.cruzamento.mae;
+      update();
+    } catch (_) {}
+  }
+})();
+</script>
+</body>
+</html>

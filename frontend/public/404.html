@@ -11,7 +11,7 @@
       const moduleMatch = filename && filename.match(/^modulo(\d{2})-/)
       let hash = ''
 
-      if (/\/plataforma\.html$/.test(path)) hash = 'auth'
+      if (/\/plataforma\.html$/.test(path)) hash = 'catalog'
       else if (/\/(en\/|es\/)?modules\/?$/.test(path)) hash = 'catalog'
       else if (moduleMatch) hash = 'course/module-' + moduleMatch[1]
 

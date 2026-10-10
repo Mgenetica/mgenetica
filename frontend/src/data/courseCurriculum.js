@@ -559,7 +559,9 @@ function formatCourseDetail(moduleRow, locale = 'pt-BR') {
     meta: buildMeta(moduleRow, locale),
     moduleMeta: [copy.dedicatedPage, moduleRow.legacyId, copy.moduleMetaQuiz],
     sections: buildSections(moduleRow, locale),
-    visualAsset: getCourseVisualAsset(moduleRow.id)
+    visualAsset: getCourseVisualAsset(moduleRow.id),
+    lab: moduleRow.lab,
+    labFile: moduleRow.labFile
   }
 }
 

@@ -3376,3 +3376,188 @@ h3,
     width: auto;
   }
 }
+
+/* Responsive QA fixes from FEW-17 ------------------------------------------------
+   Desktop must feel like a desktop product. Mobile must never rely on card overlap. */
+.brand-logo {
+  width: 58px;
+  height: 58px;
+}
+
+.brand-logo img {
+  width: 52px;
+  height: 52px;
+}
+
+.hero-proof-mark img {
+  width: 36px;
+  height: 36px;
+}
+
+.hero-proof-mark {
+  min-height: 54px;
+  padding: 9px 18px;
+}
+
+.hero-main {
+  grid-template-columns: minmax(0, 0.95fr) minmax(380px, 1.05fr);
+}
+
+.hero-brand-card {
+  position: relative;
+  width: 100%;
+  max-width: 560px;
+  justify-self: end;
+}
+
+.course-content {
+  width: min(100%, 1160px);
+  max-width: 1160px;
+}
+
+.course-content .module-card,
+.course-content .section-card {
+  padding: 26px 30px;
+}
+
+.course-content .module-title {
+  max-width: 24ch;
+}
+
+.course-content .module-description,
+.course-content .section-card p,
+.course-content .lesson-text,
+.lesson-section p,
+.lesson-text {
+  max-width: 92ch;
+}
+
+.course-visual-frame-wrap {
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.course-visual-frame {
+  min-width: 640px;
+}
+
+.course-lab-card {
+  overflow: hidden;
+}
+
+.course-lab-frame-wrap {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  overflow: hidden;
+}
+
+.course-lab-frame {
+  display: block;
+  width: 100%;
+  min-height: 620px;
+  height: var(--course-lab-height, 820px);
+  border: 0;
+  background: #fff;
+}
+
+@media (max-width: 980px) {
+  .hero-main {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-copy-card {
+    min-width: 0;
+    padding-right: 0;
+  }
+
+  .hero-brand-card {
+    max-width: none;
+    justify-self: stretch;
+  }
+
+  .hero-headline,
+  .hero-description {
+    max-width: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .app-shell {
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  .app-header {
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: stretch;
+  }
+
+  .header-brand,
+  .header-actions {
+    width: 100%;
+  }
+
+  .header-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .brand-logo {
+    width: 64px;
+    height: 64px;
+  }
+
+  .brand-logo img {
+    width: 58px;
+    height: 58px;
+  }
+
+  .hero-shell {
+    overflow: visible;
+  }
+
+  .hero-main,
+  .hero-copy-card,
+  .hero-brand-card {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .hero-brand-card {
+    min-height: 0;
+    padding: 18px;
+  }
+
+  .hero-proof-metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .brand-meta {
+    grid-template-columns: 1fr;
+  }
+
+  .brand-meta-item,
+  .hero-proof-metrics div {
+    min-width: 0;
+  }
+
+  .course-content .module-card,
+  .course-content .section-card {
+    padding: 18px;
+  }
+
+  .course-visual-frame-wrap {
+    margin-inline: -2px;
+  }
+
+  .course-lab-frame-wrap {
+    margin-inline: -2px;
+    border-radius: 6px;
+  }
+
+  .course-lab-frame {
+    min-height: 560px;
+  }
+}

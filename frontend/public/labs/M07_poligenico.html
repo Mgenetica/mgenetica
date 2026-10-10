@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M7 · De muitos genes à curva normal — MGenética</title>
+<style>
+  :root{
+    --mg-ink:#0a1f38;--mg-navy-700:#1a4b78;--mg-navy-900:#061626;
+    --mg-cyan:#00a8d6;--mg-cyan-soft:#d6f1f9;--mg-mid:#4a9fd1;
+    --mg-muted:#5a7391;
+    --mg-bg:#fff;--mg-bg-soft:#f7f9fc;--mg-bg-tint:#eef3f9;
+    --mg-line:rgba(10,31,56,.10);--mg-line-strong:rgba(10,31,56,.18);
+    --mg-gold:#ffc107;--mg-gold-soft:#fff7e0;--mg-gold-border:#ffe08a;--mg-gold-ink:#7b4200;
+    --shadow-sm:0 1px 2px rgba(13,38,66,.05),0 1px 1px rgba(13,38,66,.04);
+    --font-body:"DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+    --font-display:"Lora",Georgia,"Times New Roman",serif;
+    --font-mono:"DM Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:var(--font-body);background:linear-gradient(180deg,#f7f9fc,#eef3f9);min-height:100vh;color:var(--mg-ink);line-height:1.6;padding:1.4rem 1rem 3rem;}
+  .page{max-width:840px;margin:0 auto;}
+  .back{display:inline-block;font-family:var(--font-mono);font-size:.74rem;color:var(--mg-muted);text-decoration:none;margin-bottom:1rem;letter-spacing:.03em;}
+  .back:hover{color:var(--mg-cyan);}
+  .eyebrow{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--mg-cyan);font-weight:600;}
+  h1{font-family:var(--font-display);font-size:1.75rem;font-weight:600;margin:.25rem 0 .4rem;line-height:1.18;}
+  .sub{color:var(--mg-muted);font-size:.96rem;margin-bottom:1.6rem;max-width:62ch;}
+  h2{font-family:var(--font-display);font-size:1.12rem;font-weight:600;color:var(--mg-navy-700);margin-bottom:.9rem;display:flex;align-items:center;gap:.5rem;}
+  h2 .n{display:inline-flex;align-items:center;justify-content:center;width:1.5rem;height:1.5rem;border-radius:50%;background:var(--mg-cyan);color:#fff;font-family:var(--font-mono);font-size:.8rem;font-weight:700;flex:none;}
+  .card{background:var(--mg-bg);border:1px solid var(--mg-line);border-radius:var(--radius);padding:1.4rem;margin-bottom:1.2rem;box-shadow:var(--shadow-sm);}
+  .slider-group{margin-bottom:1rem;}
+  .slider-group label{display:flex;justify-content:space-between;align-items:baseline;font-size:.86rem;margin-bottom:.35rem;font-weight:500;}
+  .slider-group label .v{font-family:var(--font-mono);font-weight:700;color:var(--mg-navy-700);font-size:.95rem;}
+  input[type=range]{width:100%;height:6px;-webkit-appearance:none;appearance:none;background:var(--mg-bg-tint);border-radius:4px;outline:none;}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--mg-cyan);border:3px solid #fff;box-shadow:var(--shadow-sm);cursor:pointer;}
+  input[type=range].g::-webkit-slider-thumb{background:var(--mg-gold);}
+  input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:var(--mg-cyan);border:3px solid #fff;cursor:pointer;}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+  .chips{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.2rem;}
+  .chip{font-family:var(--font-mono);font-size:.76rem;font-weight:600;color:var(--mg-navy-700);background:var(--mg-bg-tint);border:1px solid var(--mg-line-strong);border-radius:20px;padding:.35rem .8rem;cursor:pointer;}
+  .chip:hover{border-color:var(--mg-cyan);color:var(--mg-cyan);}
+  .twores{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin-top:.3rem;}
+  .res{background:var(--mg-bg-soft);border:1px solid var(--mg-line);border-radius:12px;padding:1rem;text-align:center;}
+  .res .lab{font-size:.72rem;color:var(--mg-muted);margin-bottom:.25rem;font-family:var(--font-mono);}
+  .res .val{font-family:var(--font-mono);font-size:1.7rem;font-weight:700;color:var(--mg-navy-700);}
+  .legend{display:flex;gap:1.2rem;flex-wrap:wrap;font-size:.76rem;color:var(--mg-muted);margin-top:.4rem;justify-content:center;}
+  .legend span{display:inline-flex;align-items:center;gap:.35rem;}
+  .sw{width:14px;height:11px;border-radius:3px;display:inline-block;}
+  .ln{display:inline-block;width:20px;border-top:3px solid var(--mg-ink);}
+  .note{border-left:3px solid var(--mg-cyan);background:var(--mg-cyan-soft);color:var(--mg-navy-900);padding:.75rem .9rem;border-radius:0 8px 8px 0;font-size:.86rem;margin-top:1rem;}
+  .try{font-size:.82rem;color:var(--mg-navy-700);background:var(--mg-bg-tint);border:1px dashed var(--mg-line-strong);border-radius:8px;padding:.6rem .8rem;margin-top:.9rem;}
+  .try b{color:var(--mg-cyan);}
+  .mg-foot{text-align:center;font-size:.74rem;color:var(--mg-muted);margin-top:2rem;font-family:var(--font-mono);}
+  canvas{width:100%;height:auto;display:block;}
+</style>
+<!-- MG-RUNTIME:start (gerado por scripts/apply_lab_runtime.py — não editar à mão) -->
+<style id="mg-runtime">
+/* mg-lab.css — runtime compartilhado dos labs interativos MGenética.
+   Fonte única: injetado inline em cada lab (mantém self-contained/offline).
+   Adiciona tema ESCURO (sobre os mesmos tokens --mg-* que os labs já usam),
+   foco visível, reduced-motion e utilitários de acessibilidade.
+   Deve vir DEPOIS do <style> do lab para sobrescrever o :root claro. */
+
+/* ----- Tema escuro: auto (prefers-color-scheme) + manual ([data-theme]) ----- */
+:root[data-theme="dark"],
+:root.mg-dark {
+  --mg-ink:#e8eef5;
+  --mg-navy-700:#5fa8da;
+  --mg-navy-900:#cdddec;
+  --mg-cyan:#34c0e8;
+  --mg-cyan-soft:#10344a;
+  --mg-mid:#6bb4dd;
+  --mg-muted:#9fb3c9;
+  --mg-bg:#0c1622;
+  --mg-bg-soft:#111f30;
+  --mg-bg-tint:#16263a;
+  --mg-line:rgba(220,235,250,.12);
+  --mg-line-strong:rgba(220,235,250,.22);
+  --mg-gold:#ffca28;
+  --mg-gold-soft:#33290f;
+  --mg-gold-border:#7a5a16;
+  --mg-gold-ink:#ffd97a;
+  --mg-red:#f08a5a;
+  --mg-red-soft:#3a2018;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]):not(.mg-light) {
+    --mg-ink:#e8eef5;
+    --mg-navy-700:#5fa8da;
+    --mg-navy-900:#cdddec;
+    --mg-cyan:#34c0e8;
+    --mg-cyan-soft:#10344a;
+    --mg-mid:#6bb4dd;
+    --mg-muted:#9fb3c9;
+    --mg-bg:#0c1622;
+    --mg-bg-soft:#111f30;
+    --mg-bg-tint:#16263a;
+    --mg-line:rgba(220,235,250,.12);
+    --mg-line-strong:rgba(220,235,250,.22);
+    --mg-gold:#ffca28;
+    --mg-gold-soft:#33290f;
+    --mg-gold-border:#7a5a16;
+    --mg-gold-ink:#ffd97a;
+    --mg-red:#f08a5a;
+    --mg-red-soft:#3a2018;
+  }
+}
+
+/* garante que o fundo/texto sigam os tokens (alguns labs herdam do body) */
+html, body { background: var(--mg-bg); color: var(--mg-ink); }
+:root { color-scheme: light dark; }
+
+/* ----- Acessibilidade ----- */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 3px solid var(--mg-cyan);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+.mg-visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ----- Controles do runtime (reset, legenda "como ler") ----- */
+.mg-reset-btn {
+  font: inherit; cursor: pointer;
+  border: 1px solid var(--mg-line-strong);
+  background: var(--mg-bg-soft); color: var(--mg-navy-700);
+  border-radius: 8px; padding: 6px 12px; font-weight: 600; font-size: 12.5px;
+}
+.mg-reset-btn:hover { border-color: var(--mg-cyan); }
+.mg-howto {
+  font-size: 12px; color: var(--mg-muted); margin: 6px 0 0; line-height: 1.5;
+}
+
+/* ----- Base responsiva (vale para todos, mesmo sem media query própria) ----- */
+img, canvas, svg, iframe, table { max-width: 100%; }
+canvas { height: auto; }
+@media (max-width: 640px) {
+  body { font-size: 15px; }
+}
+</style>
+<script id="mg-runtime">
+/* mg-lab.js — runtime compartilhado dos labs interativos MGenética.
+   Fonte única, injetado inline. Fornece:
+   - MG: tokens de cor (lidos do CSS) para o canvas usar e reagir ao tema.
+   - tema/idioma via ?theme=&lang= e via postMessage do site (iframe).
+   - auto-resize: reporta a altura ao parent (postMessage).
+   - i18n t(key) lendo <script type="application/json" id="i18n">.
+   - hook de reset ("voltar ao exemplo"). Tudo offline, sem dependências. */
+(function () {
+  "use strict";
+  var root = document.documentElement;
+  var TOKENS = {
+    ink: "--mg-ink", navy7: "--mg-navy-700", navy9: "--mg-navy-900",
+    cyan: "--mg-cyan", cyanSoft: "--mg-cyan-soft", mid: "--mg-mid", muted: "--mg-muted",
+    bg: "--mg-bg", bgSoft: "--mg-bg-soft", bgTint: "--mg-bg-tint",
+    line: "--mg-line", lineStrong: "--mg-line-strong",
+    gold: "--mg-gold", goldSoft: "--mg-gold-soft", goldBorder: "--mg-gold-border", goldInk: "--mg-gold-ink",
+    red: "--mg-red", redSoft: "--mg-red-soft"
+  };
+  var MG = {};
+  window.MG = MG; // canvas usa MG.ink, MG.cyan, ...
+
+  function readPalette() {
+    var cs = getComputedStyle(root);
+    for (var k in TOKENS) MG[k] = cs.getPropertyValue(TOKENS[k]).trim();
+  }
+
+  function params() {
+    try { return new URLSearchParams(location.search); } catch (e) { return new URLSearchParams(); }
+  }
+
+  // ---- tema -------------------------------------------------------------
+  function setTheme(theme) {
+    if (theme === "dark" || theme === "light") root.setAttribute("data-theme", theme);
+    else root.removeAttribute("data-theme"); // auto = segue o sistema/host
+    readPalette();
+    window.dispatchEvent(new CustomEvent("mg:themechange", { detail: { palette: MG } }));
+  }
+  // reage a mudança do sistema quando em modo auto
+  try {
+    var mq = window.matchMedia("(prefers-color-scheme: dark)");
+    mq.addEventListener("change", function () {
+      if (!root.hasAttribute("data-theme")) { readPalette(); window.dispatchEvent(new CustomEvent("mg:themechange", { detail: { palette: MG } })); }
+    });
+  } catch (e) {}
+
+  // ---- i18n -------------------------------------------------------------
+  var DICT = {};
+  var LANG = "pt-BR";
+  function loadDict() {
+    var el = document.getElementById("i18n");
+    if (!el) return;
+    try { DICT = JSON.parse(el.textContent) || {}; } catch (e) { DICT = {}; }
+  }
+  function t(key) {
+    var l = DICT[LANG] || {};
+    if (key in l) return l[key];
+    var base = DICT["pt-BR"] || {};
+    return key in base ? base[key] : key;
+  }
+  function setLang(lang) {
+    if (DICT[lang]) LANG = lang;
+    root.setAttribute("lang", LANG);
+    document.querySelectorAll("[data-i18n]").forEach(function (n) {
+      n.textContent = t(n.getAttribute("data-i18n"));
+    });
+    document.querySelectorAll("[data-i18n-aria]").forEach(function (n) {
+      n.setAttribute("aria-label", t(n.getAttribute("data-i18n-aria")));
+    });
+    window.dispatchEvent(new CustomEvent("mg:langchange", { detail: { lang: LANG } }));
+  }
+  window.MGi18n = { t: t, lang: function () { return LANG; } };
+
+  // ---- auto-resize (reporta altura ao iframe pai) -----------------------
+  var lastH = 0, raf = 0;
+  function reportHeight() {
+    var h = Math.ceil(document.documentElement.getBoundingClientRect().height);
+    if (h && h !== lastH) {
+      lastH = h;
+      try { parent.postMessage({ type: "mg-lab-height", id: document.title || "", height: h }, "*"); } catch (e) {}
+    }
+  }
+  function scheduleReport() { cancelAnimationFrame(raf); raf = requestAnimationFrame(reportHeight); }
+
+  // ---- mensagens do site (host controla tema/idioma) --------------------
+  window.addEventListener("message", function (ev) {
+    var d = ev && ev.data; if (!d || typeof d !== "object") return;
+    if (d.type === "mg-set-theme") setTheme(d.theme);
+    if (d.type === "mg-set-lang") setLang(d.lang);
+  });
+
+  // ---- reset ("voltar ao exemplo") --------------------------------------
+  document.addEventListener("click", function (ev) {
+    var b = ev.target.closest && ev.target.closest("[data-mg-reset]");
+    if (b && typeof window.MGReset === "function") { ev.preventDefault(); window.MGReset(); }
+  });
+
+  // ---- boot -------------------------------------------------------------
+  function boot() {
+    readPalette();
+    loadDict();
+    var p = params();
+    var th = p.get("theme"); if (th) setTheme(th); else readPalette();
+    var lg = p.get("lang"); setLang(lg || LANG);
+    if (window.ResizeObserver) new ResizeObserver(scheduleReport).observe(document.documentElement);
+    window.addEventListener("load", scheduleReport);
+    window.addEventListener("mg:themechange", scheduleReport);
+    setTimeout(reportHeight, 60);
+  }
+  // popula MG imediatamente (o <style> do lab já foi parseado), para o canvas
+  // do lab ver as cores certas mesmo se desenhar antes do DOMContentLoaded.
+  readPalette();
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
+  else boot();
+})();
+</script>
+<!-- MG-RUNTIME:end -->
+</head>
+<body>
+<div class="page">
+  <a class="back" href="../#catalog">← Trilha interativa MGenética</a>
+  <p class="eyebrow">Módulo 7 · Genética quantitativa</p>
+  <h1>De muitos genes à curva normal</h1>
+  <p class="sub">Por que altura e peso não parecem ervilhas de Mendel? Cada loco soma 0, 1 ou 2 unidades. Com <b>um</b> loco há só 3 classes; some <b>muitos</b> locos pequenos e a soma vira um sino contínuo. Depois ligue o ambiente e veja as classes se borrarem.</p>
+
+  <div class="card">
+    <h2><span class="n">1</span>Quantos genes? Quanto ambiente?</h2>
+    <div class="grid2">
+      <div class="slider-group">
+        <label><span>Número de locos</span><span class="v" id="vL">3</span></label>
+        <input type="range" id="L" min="1" max="12" step="1" value="3">
+        <div class="chips"><span class="chip" data-l="1">1 loco</span><span class="chip" data-l="3">3 locos</span><span class="chip" data-l="6">6 locos</span><span class="chip" data-l="12">12 locos</span></div>
+      </div>
+      <div class="slider-group">
+        <label><span>Freq. do alelo "+" (r)</span><span class="v" id="vr">0,50</span></label>
+        <input type="range" id="r" min="0.05" max="0.95" step="0.05" value="0.5">
+        <label style="margin-top:.7rem"><span>Ambiente — desvio padrão (σ<sub>E</sub>)</span><span class="v" id="vsE">0,0</span></label>
+        <input type="range" class="g" id="sE" min="0" max="3" step="0.1" value="0">
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2><span class="n">2</span>Distribuição do valor</h2>
+    <canvas id="cv" width="1360" height="520"></canvas>
+    <div class="legend">
+      <span><i class="sw" style="background:var(--mg-mid)"></i> classes de valor genotípico G (discreto)</span>
+      <span><i class="ln"></i> aproximação normal de G</span>
+      <span><i class="sw" style="background:var(--mg-gold-soft);border:1px solid var(--mg-gold-border)"></i> fenótipo P = G + E</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2><span class="n">3</span>Leitura</h2>
+    <div class="twores">
+      <div class="res"><div class="lab">classes de G possíveis</div><div class="val" id="nClasses">7</div></div>
+      <div class="res"><div class="lab">média de G</div><div class="val" id="muG">3,0</div></div>
+      <div class="res"><div class="lab">desvio padrão de G</div><div class="val" id="sdG">1,2</div></div>
+    </div>
+    <div class="note" id="explain"></div>
+    <div class="try"><b>Veja o sino nascer:</b> arraste o número de locos de <b>1</b> até <b>12</b>. Com 1 loco há 3 barras (cara mendeliana); com 12 locos há 25 barras que preenchem a curva normal. Depois suba σ<sub>E</sub>: o ambiente transforma as barras discretas numa faixa contínua — é o <i>P = G + E</i>.</div>
+  </div>
+
+  <div class="mg-foot">MGenética · artefato interativo · derivado do texto M7 — Noções de genética quantitativa</div>
+</div>
+
+<script>
+  const cv=document.getElementById('cv'),ctx=cv.getContext('2d');ctx.scale(2,2);
+  const CW=680,CH=260;
+  const el=id=>document.getElementById(id);
+  let L=3,r=0.5,sE=0;
+  function f1(x){return x.toFixed(1).replace('.',',');}
+  function f2(x){return x.toFixed(2).replace('.',',');}
+  function locusPmf(r){return [(1-r)*(1-r),2*r*(1-r),r*r];}
+  function convolve(a,b){const o=new Array(a.length+b.length-1).fill(0);for(let i=0;i<a.length;i++)for(let j=0;j<b.length;j++)o[i+j]+=a[i]*b[j];return o;}
+  function gPmf(L,r){let d=[1];const lp=locusPmf(r);for(let i=0;i<L;i++)d=convolve(d,lp);return d;}
+  function dnorm(x,mu,sd){return Math.exp(-((x-mu)*(x-mu))/(2*sd*sd))/(sd*Math.sqrt(2*Math.PI));}
+
+  function draw(){
+    ctx.clearRect(0,0,CW,CH);
+    const pmf=gPmf(L,r),n=2*L;
+    const mu=2*r*L, varG=2*r*(1-r)*L, sdG=Math.sqrt(varG);
+    const x0=40,x1=662,yb=222,yTop=18;
+    const lo=-0.6,hi=n+0.6;
+    const X=v=>x0+(x1-x0)*((v-lo)/(hi-lo));
+    const peakG=sdG>0?dnorm(mu,mu,sdG):0;
+    const ymax=Math.max(Math.max.apply(null,pmf),peakG)*1.12;
+    const Y=d=>yb-(yb-yTop)*(d/ymax);
+    // baseline
+    ctx.strokeStyle='rgba(10,31,56,.18)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(x0,yb);ctx.lineTo(x1,yb);ctx.stroke();
+    // x ticks
+    ctx.fillStyle='#5a7391';ctx.font='10px monospace';ctx.textAlign='center';
+    const stepK=n>14?2:1;
+    for(let k=0;k<=n;k+=stepK){ctx.fillText(k,X(k),yb+16);}
+    ctx.fillText('valor (unidades de efeito)',(x0+x1)/2,yb+32);
+    // phenotype area P=G+E (continuous): convolve genotype normal with N(0,sE)
+    if(sE>0){
+      const sdP=Math.sqrt(varG+sE*sE);
+      ctx.beginPath();
+      let first=true;
+      for(let v=lo;v<=hi;v+=0.05){const x=X(v),y=Y(dnorm(v,mu,sdP));if(first){ctx.moveTo(X(lo),yb);ctx.lineTo(x,y);first=false;}else ctx.lineTo(x,y);}
+      ctx.lineTo(X(hi),yb);ctx.closePath();
+      ctx.fillStyle='rgba(255,193,7,.22)';ctx.fill();
+      ctx.strokeStyle='#e0a800';ctx.lineWidth=2;ctx.beginPath();
+      let f2_=true;for(let v=lo;v<=hi;v+=0.05){const x=X(v),y=Y(dnorm(v,mu,sdP));f2_?(ctx.moveTo(x,y),f2_=false):ctx.lineTo(x,y);}ctx.stroke();
+    }
+    // bars (genotype value classes)
+    const halfw=Math.min((X(1)-X(0))*0.42,26);
+    for(let k=0;k<=n;k++){
+      const top=Y(pmf[k]);
+      ctx.fillStyle='#4a9fd1';
+      ctx.fillRect(X(k)-halfw,top,halfw*2,yb-top);
+      ctx.strokeStyle='#fff';ctx.lineWidth=1;ctx.strokeRect(X(k)-halfw,top,halfw*2,yb-top);
+    }
+    // genotype normal curve
+    if(sdG>0){
+      ctx.strokeStyle='#0a1f38';ctx.lineWidth=2.5;ctx.beginPath();
+      let first=true;for(let v=lo;v<=hi;v+=0.04){const x=X(v),y=Y(dnorm(v,mu,sdG));first?(ctx.moveTo(x,y),first=false):ctx.lineTo(x,y);}ctx.stroke();
+    }
+    return {n,mu,sdG};
+  }
+
+  function update(){
+    L=+el('L').value;r=+el('r').value;sE=+el('sE').value;
+    el('vL').textContent=L;el('vr').textContent=f2(r);el('vsE').textContent=f1(sE);
+    const s=draw();
+    el('nClasses').textContent=(s.n+1);
+    el('muG').textContent=f1(s.mu);
+    el('sdG').textContent=f1(s.sdG);
+    let m='Com <b>'+L+' loco'+(L>1?'s':'')+'</b>, a soma 0/1/2 produz <b>'+(s.n+1)+' classes</b> de valor genotípico (de 0 a '+s.n+'). ';
+    if(L<=2)m+='Poucos locos → a característica ainda parece dividida em caixas, como em Mendel.';
+    else if(L>=6)m+='Muitos locos pequenos somados → as barras já preenchem um <b>sino</b>: a característica virou contínua, sem fronteira rígida entre "baixo" e "alto".';
+    else m+='Já aparecem vários valores intermediários — a forma começa a lembrar uma curva.';
+    if(sE>0)m+=' Com σ<sub>E</sub> = '+f1(sE)+', o ambiente <b>borra</b> as classes discretas numa faixa contínua (área dourada): dois animais com o mesmo G terminam em fenótipos diferentes.';
+    el('explain').innerHTML=m;
+  }
+  ['L','r','sE'].forEach(id=>el(id).addEventListener('input',update));
+  document.querySelectorAll('.chip').forEach(c=>c.addEventListener('click',()=>{el('L').value=c.getAttribute('data-l');update();}));
+  update();
+</script>
+<script type="application/json" id="dados">
+{
+  "controls": {
+    "L": {
+      "type": "range",
+      "min": 1,
+      "max": 12,
+      "step": 1,
+      "value": 3
+    },
+    "r": {
+      "type": "range",
+      "min": 0.05,
+      "max": 0.95,
+      "step": 0.05,
+      "value": 0.5
+    },
+    "sE": {
+      "type": "range",
+      "min": 0,
+      "max": 3,
+      "step": 0.1,
+      "value": 0
+    }
+  }
+}
+</script>
+<script id="dados-hydrator">
+(() => {
+  const node = document.getElementById('dados');
+  if (!node) return;
+  let data;
+  try { data = JSON.parse(node.textContent || '{}'); } catch (_) { return; }
+  const controls = data.controls || {};
+  for (const [id, cfg] of Object.entries(controls)) {
+    const target = document.getElementById(id);
+    if (!target || cfg == null || !Object.prototype.hasOwnProperty.call(cfg, 'value')) continue;
+    target.value = String(cfg.value);
+    target.dispatchEvent(new Event('input', { bubbles: true }));
+    target.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+  if (data.cruzamento && typeof update === 'function') {
+    try {
+      if (Object.prototype.hasOwnProperty.call(data.cruzamento, 'pai')) pai = data.cruzamento.pai;
+      if (Object.prototype.hasOwnProperty.call(data.cruzamento, 'mae')) mae = data.cruzamento.mae;
+      update();
+    } catch (_) {}
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M17 · BLUP e modelo animal — MGenética</title>
+<style>
+  :root{
+    --mg-ink:#0a1f38;--mg-navy-700:#1a4b78;--mg-navy-900:#061626;
+    --mg-cyan:#00a8d6;--mg-cyan-soft:#d6f1f9;--mg-mid:#4a9fd1;
+    --mg-muted:#5a7391;
+    --mg-bg:#fff;--mg-bg-soft:#f7f9fc;--mg-bg-tint:#eef3f9;
+    --mg-line:rgba(10,31,56,.10);--mg-line-strong:rgba(10,31,56,.18);
+    --mg-gold:#ffc107;--mg-gold-soft:#fff7e0;--mg-gold-border:#ffe08a;--mg-gold-ink:#7b4200;
+    --shadow-sm:0 1px 2px rgba(13,38,66,.05),0 1px 1px rgba(13,38,66,.04);
+    --font-body:"DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+    --font-display:"Lora",Georgia,"Times New Roman",serif;
+    --font-mono:"DM Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:var(--font-body);background:linear-gradient(180deg,#f7f9fc,#eef3f9);min-height:100vh;color:var(--mg-ink);line-height:1.6;padding:1.4rem 1rem 3rem;}
+  .page{max-width:840px;margin:0 auto;}
+  .back{display:inline-block;font-family:var(--font-mono);font-size:.74rem;color:var(--mg-muted);text-decoration:none;margin-bottom:1rem;letter-spacing:.03em;}
+  .back:hover{color:var(--mg-cyan);}
+  .eyebrow{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--mg-cyan);font-weight:600;}
+  h1{font-family:var(--font-display);font-size:1.75rem;font-weight:600;margin:.25rem 0 .4rem;line-height:1.18;}
+  .sub{color:var(--mg-muted);font-size:.96rem;margin-bottom:1.6rem;max-width:62ch;}
+  h2{font-family:var(--font-display);font-size:1.12rem;font-weight:600;color:var(--mg-navy-700);margin-bottom:.9rem;display:flex;align-items:center;gap:.5rem;}
+  h2 .n{display:inline-flex;align-items:center;justify-content:center;width:1.5rem;height:1.5rem;border-radius:50%;background:var(--mg-cyan);color:#fff;font-family:var(--font-mono);font-size:.8rem;font-weight:700;flex:none;}
+  .card{background:var(--mg-bg);border:1px solid var(--mg-line);border-radius:var(--radius);padding:1.4rem;margin-bottom:1.2rem;box-shadow:var(--shadow-sm);}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+  .slider-group{margin-bottom:1rem;}
+  .slider-group label{display:flex;justify-content:space-between;align-items:baseline;font-size:.86rem;margin-bottom:.35rem;font-weight:500;}
+  .slider-group label .v{font-family:var(--font-mono);font-weight:700;color:var(--mg-navy-700);font-size:.95rem;}
+  input[type=range]{width:100%;height:6px;-webkit-appearance:none;appearance:none;background:var(--mg-bg-tint);border-radius:4px;outline:none;}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--mg-cyan);border:3px solid #fff;box-shadow:var(--shadow-sm);cursor:pointer;}
+  input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:var(--mg-cyan);border:3px solid #fff;cursor:pointer;}
+  .res-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem;margin-top:.3rem;}
+  .res{background:var(--mg-bg-soft);border:1px solid var(--mg-line);border-radius:12px;padding:.85rem .4rem;text-align:center;}
+  .res .lab{font-size:.68rem;color:var(--mg-muted);margin-bottom:.2rem;font-family:var(--font-mono);}
+  .res .val{font-family:var(--font-mono);font-size:1.4rem;font-weight:700;color:var(--mg-cyan);}
+  .res.f .val{color:#7b4200;}
+  .formula{font-family:var(--font-mono);background:var(--mg-bg-tint);border:1px solid var(--mg-line);border-radius:8px;padding:.7rem .9rem;font-size:.84rem;color:var(--mg-navy-700);margin:.7rem 0 0;text-align:center;}
+  .legend{display:flex;gap:1rem;flex-wrap:wrap;font-size:.74rem;color:var(--mg-muted);margin-top:.4rem;justify-content:center;}
+  .legend span{display:inline-flex;align-items:center;gap:.3rem;}
+  .dot{width:11px;height:11px;border-radius:50%;display:inline-block;}
+  .note{border-left:3px solid var(--mg-cyan);background:var(--mg-cyan-soft);color:var(--mg-navy-900);padding:.75rem .9rem;border-radius:0 8px 8px 0;font-size:.86rem;margin-top:1rem;}
+  .warn{border-left:3px solid var(--mg-gold);background:var(--mg-gold-soft);color:var(--mg-gold-ink);padding:.6rem .85rem;border-radius:0 8px 8px 0;font-size:.82rem;margin-top:.8rem;}
+  .try{font-size:.82rem;color:var(--mg-navy-700);background:var(--mg-bg-tint);border:1px dashed var(--mg-line-strong);border-radius:8px;padding:.6rem .8rem;margin-top:.9rem;}
+  .try b{color:var(--mg-cyan);}
+  .btn{font-family:var(--font-mono);font-size:.78rem;border:1px solid var(--mg-cyan);background:#fff;color:var(--mg-navy-700);border-radius:8px;padding:.4rem .7rem;cursor:pointer;transition:.15s;}
+  .btn:hover{background:var(--mg-cyan);color:#fff;}
+  .mg-foot{text-align:center;font-size:.74rem;color:var(--mg-muted);margin-top:2rem;font-family:var(--font-mono);}
+  canvas{width:100%;height:auto;display:block;}
+</style>
+<!-- MG-RUNTIME:start (gerado por scripts/apply_lab_runtime.py — não editar à mão) -->
+<style id="mg-runtime">
+/* mg-lab.css — runtime compartilhado dos labs interativos MGenética.
+   Fonte única: injetado inline em cada lab (mantém self-contained/offline).
+   Adiciona tema ESCURO (sobre os mesmos tokens --mg-* que os labs já usam),
+   foco visível, reduced-motion e utilitários de acessibilidade.
+   Deve vir DEPOIS do <style> do lab para sobrescrever o :root claro. */
+
+/* ----- Tema escuro: auto (prefers-color-scheme) + manual ([data-theme]) ----- */
+:root[data-theme="dark"],
+:root.mg-dark {
+  --mg-ink:#e8eef5;
+  --mg-navy-700:#5fa8da;
+  --mg-navy-900:#cdddec;
+  --mg-cyan:#34c0e8;
+  --mg-cyan-soft:#10344a;
+  --mg-mid:#6bb4dd;
+  --mg-muted:#9fb3c9;
+  --mg-bg:#0c1622;
+  --mg-bg-soft:#111f30;
+  --mg-bg-tint:#16263a;
+  --mg-line:rgba(220,235,250,.12);
+  --mg-line-strong:rgba(220,235,250,.22);
+  --mg-gold:#ffca28;
+  --mg-gold-soft:#33290f;
+  --mg-gold-border:#7a5a16;
+  --mg-gold-ink:#ffd97a;
+  --mg-red:#f08a5a;
+  --mg-red-soft:#3a2018;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]):not(.mg-light) {
+    --mg-ink:#e8eef5;
+    --mg-navy-700:#5fa8da;
+    --mg-navy-900:#cdddec;
+    --mg-cyan:#34c0e8;
+    --mg-cyan-soft:#10344a;
+    --mg-mid:#6bb4dd;
+    --mg-muted:#9fb3c9;
+    --mg-bg:#0c1622;
+    --mg-bg-soft:#111f30;
+    --mg-bg-tint:#16263a;
+    --mg-line:rgba(220,235,250,.12);
+    --mg-line-strong:rgba(220,235,250,.22);
+    --mg-gold:#ffca28;
+    --mg-gold-soft:#33290f;
+    --mg-gold-border:#7a5a16;
+    --mg-gold-ink:#ffd97a;
+    --mg-red:#f08a5a;
+    --mg-red-soft:#3a2018;
+  }
+}
+
+/* garante que o fundo/texto sigam os tokens (alguns labs herdam do body) */
+html, body { background: var(--mg-bg); color: var(--mg-ink); }
+:root { color-scheme: light dark; }
+
+/* ----- Acessibilidade ----- */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 3px solid var(--mg-cyan);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+.mg-visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ----- Controles do runtime (reset, legenda "como ler") ----- */
+.mg-reset-btn {
+  font: inherit; cursor: pointer;
+  border: 1px solid var(--mg-line-strong);
+  background: var(--mg-bg-soft); color: var(--mg-navy-700);
+  border-radius: 8px; padding: 6px 12px; font-weight: 600; font-size: 12.5px;
+}
+.mg-reset-btn:hover { border-color: var(--mg-cyan); }
+.mg-howto {
+  font-size: 12px; color: var(--mg-muted); margin: 6px 0 0; line-height: 1.5;
+}
+
+/* ----- Base responsiva (vale para todos, mesmo sem media query própria) ----- */
+img, canvas, svg, iframe, table { max-width: 100%; }
+canvas { height: auto; }
+@media (max-width: 640px) {
+  body { font-size: 15px; }
+}
+</style>
+<script id="mg-runtime">
+/* mg-lab.js — runtime compartilhado dos labs interativos MGenética.
+   Fonte única, injetado inline. Fornece:
+   - MG: tokens de cor (lidos do CSS) para o canvas usar e reagir ao tema.
+   - tema/idioma via ?theme=&lang= e via postMessage do site (iframe).
+   - auto-resize: reporta a altura ao parent (postMessage).
+   - i18n t(key) lendo <script type="application/json" id="i18n">.
+   - hook de reset ("voltar ao exemplo"). Tudo offline, sem dependências. */
+(function () {
+  "use strict";
+  var root = document.documentElement;
+  var TOKENS = {
+    ink: "--mg-ink", navy7: "--mg-navy-700", navy9: "--mg-navy-900",
+    cyan: "--mg-cyan", cyanSoft: "--mg-cyan-soft", mid: "--mg-mid", muted: "--mg-muted",
+    bg: "--mg-bg", bgSoft: "--mg-bg-soft", bgTint: "--mg-bg-tint",
+    line: "--mg-line", lineStrong: "--mg-line-strong",
+    gold: "--mg-gold", goldSoft: "--mg-gold-soft", goldBorder: "--mg-gold-border", goldInk: "--mg-gold-ink",
+    red: "--mg-red", redSoft: "--mg-red-soft"
+  };
+  var MG = {};
+  window.MG = MG; // canvas usa MG.ink, MG.cyan, ...
+
+  function readPalette() {
+    var cs = getComputedStyle(root);
+    for (var k in TOKENS) MG[k] = cs.getPropertyValue(TOKENS[k]).trim();
+  }
+
+  function params() {
+    try { return new URLSearchParams(location.search); } catch (e) { return new URLSearchParams(); }
+  }
+
+  // ---- tema -------------------------------------------------------------
+  function setTheme(theme) {
+    if (theme === "dark" || theme === "light") root.setAttribute("data-theme", theme);
+    else root.removeAttribute("data-theme"); // auto = segue o sistema/host
+    readPalette();
+    window.dispatchEvent(new CustomEvent("mg:themechange", { detail: { palette: MG } }));
+  }
+  // reage a mudança do sistema quando em modo auto
+  try {
+    var mq = window.matchMedia("(prefers-color-scheme: dark)");
+    mq.addEventListener("change", function () {
+      if (!root.hasAttribute("data-theme")) { readPalette(); window.dispatchEvent(new CustomEvent("mg:themechange", { detail: { palette: MG } })); }
+    });
+  } catch (e) {}
+
+  // ---- i18n -------------------------------------------------------------
+  var DICT = {};
+  var LANG = "pt-BR";
+  function loadDict() {
+    var el = document.getElementById("i18n");
+    if (!el) return;
+    try { DICT = JSON.parse(el.textContent) || {}; } catch (e) { DICT = {}; }
+  }
+  function t(key) {
+    var l = DICT[LANG] || {};
+    if (key in l) return l[key];
+    var base = DICT["pt-BR"] || {};
+    return key in base ? base[key] : key;
+  }
+  function setLang(lang) {
+    if (DICT[lang]) LANG = lang;
+    root.setAttribute("lang", LANG);
+    document.querySelectorAll("[data-i18n]").forEach(function (n) {
+      n.textContent = t(n.getAttribute("data-i18n"));
+    });
+    document.querySelectorAll("[data-i18n-aria]").forEach(function (n) {
+      n.setAttribute("aria-label", t(n.getAttribute("data-i18n-aria")));
+    });
+    window.dispatchEvent(new CustomEvent("mg:langchange", { detail: { lang: LANG } }));
+  }
+  window.MGi18n = { t: t, lang: function () { return LANG; } };
+
+  // ---- auto-resize (reporta altura ao iframe pai) -----------------------
+  var lastH = 0, raf = 0;
+  function reportHeight() {
+    var h = Math.ceil(document.documentElement.getBoundingClientRect().height);
+    if (h && h !== lastH) {
+      lastH = h;
+      try { parent.postMessage({ type: "mg-lab-height", id: document.title || "", height: h }, "*"); } catch (e) {}
+    }
+  }
+  function scheduleReport() { cancelAnimationFrame(raf); raf = requestAnimationFrame(reportHeight); }
+
+  // ---- mensagens do site (host controla tema/idioma) --------------------
+  window.addEventListener("message", function (ev) {
+    var d = ev && ev.data; if (!d || typeof d !== "object") return;
+    if (d.type === "mg-set-theme") setTheme(d.theme);
+    if (d.type === "mg-set-lang") setLang(d.lang);
+  });
+
+  // ---- reset ("voltar ao exemplo") --------------------------------------
+  document.addEventListener("click", function (ev) {
+    var b = ev.target.closest && ev.target.closest("[data-mg-reset]");
+    if (b && typeof window.MGReset === "function") { ev.preventDefault(); window.MGReset(); }
+  });
+
+  // ---- boot -------------------------------------------------------------
+  function boot() {
+    readPalette();
+    loadDict();
+    var p = params();
+    var th = p.get("theme"); if (th) setTheme(th); else readPalette();
+    var lg = p.get("lang"); setLang(lg || LANG);
+    if (window.ResizeObserver) new ResizeObserver(scheduleReport).observe(document.documentElement);
+    window.addEventListener("load", scheduleReport);
+    window.addEventListener("mg:themechange", scheduleReport);
+    setTimeout(reportHeight, 60);
+  }
+  // popula MG imediatamente (o <style> do lab já foi parseado), para o canvas
+  // do lab ver as cores certas mesmo se desenhar antes do DOMContentLoaded.
+  readPalette();
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
+  else boot();
+})();
+</script>
+<!-- MG-RUNTIME:end -->
+</head>
+<body>
+<div class="page">
+  <a class="back" href="../#catalog">← Trilha interativa MGenética</a>
+  <p class="eyebrow">Módulo 17 · BLUP e modelo animal</p>
+  <h1>Encolhimento: do desvio cru ao EBV</h1>
+  <p class="sub">Um desempenho de +20 não vira +20 de mérito genético. O BLUP "encolhe" o desvio observado na direção da média — quanto menos confiável a informação, mais ele encolhe. Veja o fator λ puxando a estimativa.</p>
+
+  <div class="card">
+    <h2><span class="n">1</span>Encolhimento do próprio registro</h2>
+    <div class="grid2">
+      <div class="slider-group">
+        <label><span>Desvio observado y (pontos acima da média)</span><span class="v" id="vy">20</span></label>
+        <input type="range" id="y" min="-30" max="30" step="1" value="20">
+      </div>
+      <div class="slider-group">
+        <label><span>Herdabilidade h²</span><span class="v" id="vh2">0,30</span></label>
+        <input type="range" id="h2" min="0.05" max="0.95" step="0.01" value="0.30">
+      </div>
+    </div>
+    <canvas id="cv" width="1440" height="420"></canvas>
+    <div class="legend">
+      <span><i class="dot" style="background:#5a7391"></i> média (0)</span>
+      <span><i class="dot" style="background:#0a1f38"></i> desvio cru y</span>
+      <span><i class="dot" style="background:#00a8d6"></i> EBV encolhido = h²·y</span>
+    </div>
+    <div class="res-grid" style="margin-top:1rem;">
+      <div class="res"><div class="lab">EBV didático = h²·y</div><div class="val" id="ebv">6,0</div></div>
+      <div class="res f"><div class="lab">fator λ = (1−h²)/h²</div><div class="val" id="lam">2,33</div></div>
+      <div class="res"><div class="lab">encolhimento</div><div class="val" id="shr">70%</div></div>
+    </div>
+    <div class="formula">EBV = h² · y &nbsp;·&nbsp; λ = (1 − h²) / h² &nbsp;·&nbsp; encolhimento = 1 − h²</div>
+    <div class="warn">λ alto = resíduo pesa mais que a genética aditiva ⇒ confie menos no desvio cru e encolha mais. Quando h² sobe, λ cai e o desvio recebe mais peso.</div>
+  </div>
+
+  <div class="card">
+    <h2><span class="n">2</span>Somando a informação da família</h2>
+    <p style="font-size:.84rem;color:var(--mg-muted);margin-bottom:.8rem;">O jovem ainda não tem filhos avaliados. Os parentes carregam evidência: combinamos a média parental com o registro próprio (pesos didáticos 0,60 / 0,40).</p>
+    <div class="grid2">
+      <div class="slider-group">
+        <label><span>EBV do pai</span><span class="v" id="vpai">12</span></label>
+        <input type="range" id="pai" min="-20" max="20" step="1" value="12">
+      </div>
+      <div class="slider-group">
+        <label><span>EBV da mãe</span><span class="v" id="vmae">4</span></label>
+        <input type="range" id="mae" min="-20" max="20" step="1" value="4">
+      </div>
+    </div>
+    <div class="res-grid">
+      <div class="res"><div class="lab">média parental</div><div class="val" id="mp">8,0</div></div>
+      <div class="res"><div class="lab">próprio (h²·y)</div><div class="val" id="own">6,0</div></div>
+      <div class="res" style="border-color:var(--mg-cyan)"><div class="lab">EBV com família</div><div class="val" id="comb" style="color:#0a7a99">7,2</div></div>
+    </div>
+    <div class="formula">EBV<sub>família</sub> = 0,60 · média parental + 0,40 · (h² · y)</div>
+    <button class="btn" id="ex" style="margin-top:.8rem;">Exemplo do curso (y=20, pai=12, mãe=4)</button>
+  </div>
+
+  <div class="card">
+    <h2><span class="n">3</span>Leitura</h2>
+    <div class="note" id="explain"></div>
+    <div class="try"><b>Experimente:</b> suba h² para 0,90. O EBV quase iguala o desvio cru (λ → 0,1) — com alta herdabilidade o fenótipo já é um bom estimador. Agora desça para 0,10: o EBV encolhe quase a zero (λ = 9) e a <b>família domina</b> a estimativa. É essa lógica que o BLUP completo generaliza com a matriz de parentesco A.</div>
+  </div>
+
+  <div class="mg-foot">MGenética · artefato interativo · derivado do texto M17 — BLUP e modelo animal</div>
+</div>
+
+<script>
+  const cv=document.getElementById('cv'),ctx=cv.getContext('2d');ctx.scale(2,2);
+  const CW=720,CH=210;
+  const el=id=>document.getElementById(id);
+  function f1(x){return x.toFixed(1).replace('.',',');}
+  function f2(x){return x.toFixed(2).replace('.',',');}
+
+  function draw(y,ebv){
+    ctx.clearRect(0,0,CW,CH);
+    const x0=50,x1=700,yc=110;
+    const lim=30;
+    const X=v=>x0+(x1-x0)*((v+lim)/(2*lim));
+    // axis line
+    ctx.strokeStyle='rgba(10,31,56,.25)';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(x0,yc);ctx.lineTo(x1,yc);ctx.stroke();
+    ctx.fillStyle='#5a7391';ctx.font='10px monospace';ctx.textAlign='center';
+    for(let v=-30;v<=30;v+=10){ctx.strokeStyle='rgba(10,31,56,.12)';ctx.beginPath();ctx.moveTo(X(v),yc-5);ctx.lineTo(X(v),yc+5);ctx.stroke();ctx.fillStyle='#5a7391';ctx.fillText(v,X(v),yc+20);}
+    // shrink arrow from y to ebv
+    ctx.strokeStyle='#00a8d6';ctx.lineWidth=2;ctx.setLineDash([5,4]);
+    ctx.beginPath();ctx.moveTo(X(y),yc-34);ctx.lineTo(X(ebv),yc-34);ctx.stroke();ctx.setLineDash([]);
+    const dir=ebv<y?-1:1;
+    ctx.beginPath();ctx.moveTo(X(ebv),yc-34);ctx.lineTo(X(ebv)-dir*8,yc-38);ctx.lineTo(X(ebv)-dir*8,yc-30);ctx.closePath();ctx.fillStyle='#00a8d6';ctx.fill();
+    ctx.fillStyle='#0a7a99';ctx.font='bold 11px monospace';ctx.textAlign='center';ctx.fillText('encolhe →',(X(y)+X(ebv))/2,yc-40);
+    // mean marker
+    function mark(v,col,label,up){ctx.fillStyle=col;ctx.beginPath();ctx.arc(X(v),yc,7,0,7);ctx.fill();ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.stroke();
+      ctx.fillStyle=col;ctx.font='bold 12px monospace';ctx.textAlign='center';ctx.fillText(label,X(v),yc+(up?-46:42));}
+    mark(0,'#5a7391','média',false);
+    mark(y,'#0a1f38','y = '+f1(y),true);
+    mark(ebv,'#00a8d6','EBV = '+f1(ebv),false);
+  }
+
+  function update(){
+    const y=+el('y').value,h2=+el('h2').value;
+    el('vy').textContent=y;el('vh2').textContent=f2(h2);
+    const ebv=h2*y,lam=(1-h2)/h2;
+    el('ebv').textContent=f1(ebv);el('lam').textContent=f2(lam);
+    el('shr').textContent=Math.round((1-h2)*100)+'%';
+    draw(y,ebv);
+    // family
+    const pai=+el('pai').value,mae=+el('mae').value;
+    el('vpai').textContent=pai;el('vmae').textContent=mae;
+    const mp=(pai+mae)/2,comb=0.6*mp+0.4*ebv;
+    el('mp').textContent=f1(mp);el('own').textContent=f1(ebv);el('comb').textContent=f1(comb);
+    const ex=el('explain');
+    ex.innerHTML='O desvio observado <b>y = '+f1(y)+'</b> encolhe para um EBV de <b>'+f1(ebv)+'</b> ('+Math.round((1-h2)*100)+'% do desvio foi descontado como ruído ambiental). '+
+      'Sozinho, o registro próprio sugere '+f1(ebv)+'; a família sugere '+f1(mp)+'; a combinação didática fica em <b>'+f1(comb)+'</b>. '+
+      'Isso evita dois erros: transformar todo o +'+f1(y)+' em mérito genético e, ao mesmo tempo, ignorar parentes avaliados.';
+  }
+  ['y','h2','pai','mae'].forEach(id=>el(id).addEventListener('input',update));
+  el('ex').addEventListener('click',()=>{el('y').value=20;el('h2').value=0.30;el('pai').value=12;el('mae').value=4;update();});
+  update();
+</script>
+<script type="application/json" id="dados">
+{
+  "controls": {
+    "y": {
+      "type": "range",
+      "min": -30,
+      "max": 30,
+      "step": 1,
+      "value": 20
+    },
+    "h2": {
+      "type": "range",
+      "min": 0.05,
+      "max": 0.95,
+      "step": 0.01,
+      "value": 0.3
+    },
+    "pai": {
+      "type": "range",
+      "min": -20,
+      "max": 20,
+      "step": 1,
+      "value": 12
+    },
+    "mae": {
+      "type": "range",
+      "min": -20,
+      "max": 20,
+      "step": 1,
+      "value": 4
+    }
+  }
+}
+</script>
+<script id="dados-hydrator">
+(() => {
+  const node = document.getElementById('dados');
+  if (!node) return;
+  let data;
+  try { data = JSON.parse(node.textContent || '{}'); } catch (_) { return; }
+  const controls = data.controls || {};
+  for (const [id, cfg] of Object.entries(controls)) {
+    const target = document.getElementById(id);
+    if (!target || cfg == null || !Object.prototype.hasOwnProperty.call(cfg, 'value')) continue;
+    target.value = String(cfg.value);
+    target.dispatchEvent(new Event('input', { bubbles: true }));
+    target.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+  if (data.cruzamento && typeof update === 'function') {
+    try {
+      if (Object.prototype.hasOwnProperty.call(data.cruzamento, 'pai')) pai = data.cruzamento.pai;
+      if (Object.prototype.hasOwnProperty.call(data.cruzamento, 'mae')) mae = data.cruzamento.mae;
+      update();
+    } catch (_) {}
+  }
+})();
+</script>
+</body>
+</html>

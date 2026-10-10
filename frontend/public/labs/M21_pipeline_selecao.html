@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M21 · Pipeline de seleção — MGenética</title>
+<style>
+  :root{
+    --mg-ink:#0a1f38;--mg-navy-700:#1a4b78;--mg-navy-900:#061626;
+    --mg-cyan:#00a8d6;--mg-cyan-soft:#d6f1f9;--mg-mid:#4a9fd1;
+    --mg-muted:#5a7391;
+    --mg-bg:#fff;--mg-bg-soft:#f7f9fc;--mg-bg-tint:#eef3f9;
+    --mg-line:rgba(10,31,56,.10);--mg-line-strong:rgba(10,31,56,.18);
+    --mg-gold:#ffc107;--mg-gold-soft:#fff7e0;--mg-gold-border:#ffe08a;--mg-gold-ink:#7b4200;
+    --mg-red:#c2410c;--mg-red-soft:#fdece3;
+    --shadow-sm:0 1px 2px rgba(13,38,66,.05),0 1px 1px rgba(13,38,66,.04);
+    --font-body:"DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+    --font-display:"Lora",Georgia,"Times New Roman",serif;
+    --font-mono:"DM Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:var(--font-body);background:linear-gradient(180deg,#f7f9fc,#eef3f9);min-height:100vh;color:var(--mg-ink);line-height:1.6;padding:1.4rem 1rem 3rem;}
+  .page{max-width:840px;margin:0 auto;}
+  .back{display:inline-block;font-family:var(--font-mono);font-size:.74rem;color:var(--mg-muted);text-decoration:none;margin-bottom:1rem;letter-spacing:.03em;}
+  .back:hover{color:var(--mg-cyan);}
+  .eyebrow{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--mg-cyan);font-weight:600;}
+  h1{font-family:var(--font-display);font-size:1.75rem;font-weight:600;margin:.25rem 0 .4rem;line-height:1.18;}
+  .sub{color:var(--mg-muted);font-size:.96rem;margin-bottom:1.6rem;max-width:62ch;}
+  h2{font-family:var(--font-display);font-size:1.12rem;font-weight:600;color:var(--mg-navy-700);margin-bottom:.9rem;display:flex;align-items:center;gap:.5rem;}
+  h2 .n{display:inline-flex;align-items:center;justify-content:center;width:1.5rem;height:1.5rem;border-radius:50%;background:var(--mg-cyan);color:#fff;font-family:var(--font-mono);font-size:.8rem;font-weight:700;flex:none;}
+  .card{background:var(--mg-bg);border:1px solid var(--mg-line);border-radius:var(--radius);padding:1.4rem;margin-bottom:1.2rem;box-shadow:var(--shadow-sm);}
+  .steps{display:flex;gap:.4rem;flex-wrap:wrap;}
+  .step{flex:1 1 0;min-width:104px;background:var(--mg-bg-soft);border:1px solid var(--mg-line);border-radius:10px;padding:.6rem .55rem;text-align:center;}
+  .step.act{border-color:var(--mg-cyan);background:var(--mg-cyan-soft);}
+  .step .si{font-family:var(--font-mono);font-size:.7rem;color:var(--mg-cyan);font-weight:700;}
+  .step .st{font-size:.74rem;color:var(--mg-navy-700);font-weight:600;margin-top:.1rem;line-height:1.2;}
+  .step .sd{font-size:.64rem;color:var(--mg-muted);margin-top:.2rem;line-height:1.2;}
+  .tablewrap{overflow-x:auto;}
+  .stat{width:100%;border-collapse:collapse;font-size:.8rem;min-width:540px;}
+  .stat th,.stat td{padding:.5rem .45rem;text-align:center;border-bottom:1px solid var(--mg-line);}
+  .stat th{font-family:var(--font-mono);font-size:.64rem;text-transform:uppercase;letter-spacing:.03em;color:var(--mg-muted);font-weight:600;}
+  .stat td{font-family:var(--font-mono);color:var(--mg-navy-700);}
+  .stat tr td:first-child{font-weight:700;color:var(--mg-ink);}
+  .badge{font-family:var(--font-mono);font-size:.64rem;font-weight:700;padding:.2rem .5rem;border-radius:999px;display:inline-block;white-space:nowrap;}
+  .badge.keep{background:var(--mg-cyan-soft);color:var(--mg-navy-700);}
+  .badge.warn{background:var(--mg-gold-soft);color:var(--mg-gold-ink);border:1px solid var(--mg-gold-border);}
+  .badge.drop{background:var(--mg-red-soft);color:var(--mg-red);}
+  .controls{display:grid;grid-template-columns:1fr 1fr;gap:1rem 1.4rem;margin-bottom:.6rem;align-items:end;}
+  @media(max-width:560px){.controls{grid-template-columns:1fr;}}
+  .slider-group label{display:flex;justify-content:space-between;align-items:baseline;font-size:.78rem;margin-bottom:.25rem;font-weight:500;}
+  .slider-group label .v{font-family:var(--font-mono);font-weight:700;color:var(--mg-navy-700);font-size:.85rem;}
+  input[type=range]{width:100%;height:5px;-webkit-appearance:none;appearance:none;background:var(--mg-bg-tint);border-radius:4px;outline:none;}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:17px;height:17px;border-radius:50%;background:var(--mg-cyan);border:3px solid #fff;box-shadow:var(--shadow-sm);cursor:pointer;}
+  input[type=range]::-moz-range-thumb{width:15px;height:15px;border-radius:50%;background:var(--mg-cyan);border:3px solid #fff;cursor:pointer;}
+  .qcgate{display:flex;align-items:center;gap:.6rem;}
+  .qcgate .lb{font-size:.78rem;font-weight:500;}
+  .seg{display:inline-flex;border:1px solid var(--mg-line-strong);border-radius:10px;overflow:hidden;}
+  .seg button{font-family:var(--font-mono);font-size:.78rem;font-weight:600;padding:.4rem .8rem;border:0;background:var(--mg-bg);color:var(--mg-navy-700);cursor:pointer;border-right:1px solid var(--mg-line);}
+  .seg button:last-child{border-right:0;}
+  .seg button.on{background:var(--mg-cyan);color:#fff;}
+  .formula{font-family:var(--font-mono);font-size:.84rem;color:var(--mg-navy-700);background:var(--mg-bg-tint);border:1px solid var(--mg-line);border-radius:8px;padding:.6rem .8rem;margin:.4rem 0 1rem;text-align:center;}
+  canvas{width:100%;height:auto;display:block;}
+  .twores{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-top:1rem;}
+  @media(max-width:520px){.twores{grid-template-columns:1fr;}}
+  .res{background:var(--mg-bg-soft);border:1px solid var(--mg-line);border-radius:12px;padding:1rem;text-align:center;}
+  .res.fin{border-color:var(--mg-cyan);background:var(--mg-cyan-soft);}
+  .res .lab{font-size:.7rem;color:var(--mg-muted);margin-bottom:.3rem;font-family:var(--font-mono);}
+  .res .val{font-family:var(--font-mono);font-size:1.4rem;font-weight:700;color:var(--mg-navy-700);letter-spacing:.08em;}
+  .note{border-left:3px solid var(--mg-cyan);background:var(--mg-cyan-soft);color:var(--mg-navy-900);padding:.8rem .95rem;border-radius:0 8px 8px 0;font-size:.86rem;margin-top:.4rem;}
+  .try{font-size:.82rem;color:var(--mg-navy-700);background:var(--mg-bg-tint);border:1px dashed var(--mg-line-strong);border-radius:8px;padding:.6rem .8rem;margin-top:.9rem;}
+  .try b{color:var(--mg-cyan);}
+  .mg-foot{text-align:center;font-size:.74rem;color:var(--mg-muted);margin-top:2rem;font-family:var(--font-mono);}
+</style>
+<!-- MG-RUNTIME:start (gerado por scripts/apply_lab_runtime.py — não editar à mão) -->
+<style id="mg-runtime">
+/* mg-lab.css — runtime compartilhado dos labs interativos MGenética.
+   Fonte única: injetado inline em cada lab (mantém self-contained/offline).
+   Adiciona tema ESCURO (sobre os mesmos tokens --mg-* que os labs já usam),
+   foco visível, reduced-motion e utilitários de acessibilidade.
+   Deve vir DEPOIS do <style> do lab para sobrescrever o :root claro. */
+
+/* ----- Tema escuro: auto (prefers-color-scheme) + manual ([data-theme]) ----- */
+:root[data-theme="dark"],
+:root.mg-dark {
+  --mg-ink:#e8eef5;
+  --mg-navy-700:#5fa8da;
+  --mg-navy-900:#cdddec;
+  --mg-cyan:#34c0e8;
+  --mg-cyan-soft:#10344a;
+  --mg-mid:#6bb4dd;
+  --mg-muted:#9fb3c9;
+  --mg-bg:#0c1622;
+  --mg-bg-soft:#111f30;
+  --mg-bg-tint:#16263a;
+  --mg-line:rgba(220,235,250,.12);
+  --mg-line-strong:rgba(220,235,250,.22);
+  --mg-gold:#ffca28;
+  --mg-gold-soft:#33290f;
+  --mg-gold-border:#7a5a16;
+  --mg-gold-ink:#ffd97a;
+  --mg-red:#f08a5a;
+  --mg-red-soft:#3a2018;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]):not(.mg-light) {
+    --mg-ink:#e8eef5;
+    --mg-navy-700:#5fa8da;
+    --mg-navy-900:#cdddec;
+    --mg-cyan:#34c0e8;
+    --mg-cyan-soft:#10344a;
+    --mg-mid:#6bb4dd;
+    --mg-muted:#9fb3c9;
+    --mg-bg:#0c1622;
+    --mg-bg-soft:#111f30;
+    --mg-bg-tint:#16263a;
+    --mg-line:rgba(220,235,250,.12);
+    --mg-line-strong:rgba(220,235,250,.22);
+    --mg-gold:#ffca28;
+    --mg-gold-soft:#33290f;
+    --mg-gold-border:#7a5a16;
+    --mg-gold-ink:#ffd97a;
+    --mg-red:#f08a5a;
+    --mg-red-soft:#3a2018;
+  }
+}
+
+/* garante que o fundo/texto sigam os tokens (alguns labs herdam do body) */
+html, body { background: var(--mg-bg); color: var(--mg-ink); }
+:root { color-scheme: light dark; }
+
+/* ----- Acessibilidade ----- */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 3px solid var(--mg-cyan);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+.mg-visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ----- Controles do runtime (reset, legenda "como ler") ----- */
+.mg-reset-btn {
+  font: inherit; cursor: pointer;
+  border: 1px solid var(--mg-line-strong);
+  background: var(--mg-bg-soft); color: var(--mg-navy-700);
+  border-radius: 8px; padding: 6px 12px; font-weight: 600; font-size: 12.5px;
+}
+.mg-reset-btn:hover { border-color: var(--mg-cyan); }
+.mg-howto {
+  font-size: 12px; color: var(--mg-muted); margin: 6px 0 0; line-height: 1.5;
+}
+
+/* ----- Base responsiva (vale para todos, mesmo sem media query própria) ----- */
+img, canvas, svg, iframe, table { max-width: 100%; }
+canvas { height: auto; }
+@media (max-width: 640px) {
+  body { font-size: 15px; }
+}
+</style>
+<script id="mg-runtime">
+/* mg-lab.js — runtime compartilhado dos labs interativos MGenética.
+   Fonte única, injetado inline. Fornece:
+   - MG: tokens de cor (lidos do CSS) para o canvas usar e reagir ao tema.
+   - tema/idioma via ?theme=&lang= e via postMessage do site (iframe).
+   - auto-resize: reporta a altura ao parent (postMessage).
+   - i18n t(key) lendo <script type="application/json" id="i18n">.
+   - hook de reset ("voltar ao exemplo"). Tudo offline, sem dependências. */
+(function () {
+  "use strict";
+  var root = document.documentElement;
+  var TOKENS = {
+    ink: "--mg-ink", navy7: "--mg-navy-700", navy9: "--mg-navy-900",
+    cyan: "--mg-cyan", cyanSoft: "--mg-cyan-soft", mid: "--mg-mid", muted: "--mg-muted",
+    bg: "--mg-bg", bgSoft: "--mg-bg-soft", bgTint: "--mg-bg-tint",
+    line: "--mg-line", lineStrong: "--mg-line-strong",
+    gold: "--mg-gold", goldSoft: "--mg-gold-soft", goldBorder: "--mg-gold-border", goldInk: "--mg-gold-ink",
+    red: "--mg-red", redSoft: "--mg-red-soft"
+  };
+  var MG = {};
+  window.MG = MG; // canvas usa MG.ink, MG.cyan, ...
+
+  function readPalette() {
+    var cs = getComputedStyle(root);
+    for (var k in TOKENS) MG[k] = cs.getPropertyValue(TOKENS[k]).trim();
+  }
+
+  function params() {
+    try { return new URLSearchParams(location.search); } catch (e) { return new URLSearchParams(); }
+  }
+
+  // ---- tema -------------------------------------------------------------
+  function setTheme(theme) {
+    if (theme === "dark" || theme === "light") root.setAttribute("data-theme", theme);
+    else root.removeAttribute("data-theme"); // auto = segue o sistema/host
+    readPalette();
+    window.dispatchEvent(new CustomEvent("mg:themechange", { detail: { palette: MG } }));
+  }
+  // reage a mudança do sistema quando em modo auto
+  try {
+    var mq = window.matchMedia("(prefers-color-scheme: dark)");
+    mq.addEventListener("change", function () {
+      if (!root.hasAttribute("data-theme")) { readPalette(); window.dispatchEvent(new CustomEvent("mg:themechange", { detail: { palette: MG } })); }
+    });
+  } catch (e) {}
+
+  // ---- i18n -------------------------------------------------------------
+  var DICT = {};
+  var LANG = "pt-BR";
+  function loadDict() {
+    var el = document.getElementById("i18n");
+    if (!el) return;
+    try { DICT = JSON.parse(el.textContent) || {}; } catch (e) { DICT = {}; }
+  }
+  function t(key) {
+    var l = DICT[LANG] || {};
+    if (key in l) return l[key];
+    var base = DICT["pt-BR"] || {};
+    return key in base ? base[key] : key;
+  }
+  function setLang(lang) {
+    if (DICT[lang]) LANG = lang;
+    root.setAttribute("lang", LANG);
+    document.querySelectorAll("[data-i18n]").forEach(function (n) {
+      n.textContent = t(n.getAttribute("data-i18n"));
+    });
+    document.querySelectorAll("[data-i18n-aria]").forEach(function (n) {
+      n.setAttribute("aria-label", t(n.getAttribute("data-i18n-aria")));
+    });
+    window.dispatchEvent(new CustomEvent("mg:langchange", { detail: { lang: LANG } }));
+  }
+  window.MGi18n = { t: t, lang: function () { return LANG; } };
+
+  // ---- auto-resize (reporta altura ao iframe pai) -----------------------
+  var lastH = 0, raf = 0;
+  function reportHeight() {
+    var h = Math.ceil(document.documentElement.getBoundingClientRect().height);
+    if (h && h !== lastH) {
+      lastH = h;
+      try { parent.postMessage({ type: "mg-lab-height", id: document.title || "", height: h }, "*"); } catch (e) {}
+    }
+  }
+  function scheduleReport() { cancelAnimationFrame(raf); raf = requestAnimationFrame(reportHeight); }
+
+  // ---- mensagens do site (host controla tema/idioma) --------------------
+  window.addEventListener("message", function (ev) {
+    var d = ev && ev.data; if (!d || typeof d !== "object") return;
+    if (d.type === "mg-set-theme") setTheme(d.theme);
+    if (d.type === "mg-set-lang") setLang(d.lang);
+  });
+
+  // ---- reset ("voltar ao exemplo") --------------------------------------
+  document.addEventListener("click", function (ev) {
+    var b = ev.target.closest && ev.target.closest("[data-mg-reset]");
+    if (b && typeof window.MGReset === "function") { ev.preventDefault(); window.MGReset(); }
+  });
+
+  // ---- boot -------------------------------------------------------------
+  function boot() {
+    readPalette();
+    loadDict();
+    var p = params();
+    var th = p.get("theme"); if (th) setTheme(th); else readPalette();
+    var lg = p.get("lang"); setLang(lg || LANG);
+    if (window.ResizeObserver) new ResizeObserver(scheduleReport).observe(document.documentElement);
+    window.addEventListener("load", scheduleReport);
+    window.addEventListener("mg:themechange", scheduleReport);
+    setTimeout(reportHeight, 60);
+  }
+  // popula MG imediatamente (o <style> do lab já foi parseado), para o canvas
+  // do lab ver as cores certas mesmo se desenhar antes do DOMContentLoaded.
+  readPalette();
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
+  else boot();
+})();
+</script>
+<!-- MG-RUNTIME:end -->
+</head>
+<body>
+<div class="page">
+  <a class="back" href="../#catalog">← Trilha interativa MGenética</a>
+  <p class="eyebrow">Módulo 21 · Projeto final</p>
+  <h1>O comitê de seleção: evidência, não preferência</h1>
+  <p class="sub">O projeto final junta tudo: fenótipo corrigido, EBV, DEP, acurácia, parentesco e controle de qualidade viram um ranking <b>defendido</b>. O índice didático é <b>score = DEP − k·parentesco</b> — ganho esperado menos risco de endogamia. Mas score sozinho não decide: a regra de qualidade tem a última palavra.</p>
+
+  <div class="card">
+    <h2><span class="n">1</span>O pipeline em 6 passos</h2>
+    <div class="steps">
+      <div class="step"><div class="si">1</div><div class="st">Dados de entrada</div><div class="sd">animal, fenótipo, pedigree, genótipos</div></div>
+      <div class="step"><div class="si">2</div><div class="st">Controle de qualidade</div><div class="sd">missing, call rate, MAF, HWE</div></div>
+      <div class="step"><div class="si">3</div><div class="st">Ajuste fenotípico</div><div class="sd">separar ambiente e grupo</div></div>
+      <div class="step act"><div class="si">4</div><div class="st">Integrar mérito</div><div class="sd">EBV, DEP, acurácia</div></div>
+      <div class="step act"><div class="si">5</div><div class="st">Penalizar risco</div><div class="sd">parentesco / endogamia</div></div>
+      <div class="step act"><div class="si">6</div><div class="st">Ranking + relatório</div><div class="sd">score, regra, justificativa</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2><span class="n">2</span>Os 4 garanhões candidatos</h2>
+    <div class="tablewrap">
+      <table class="stat">
+        <thead><tr><th>Animal</th><th>Fen. corr.</th><th>EBV</th><th>DEP</th><th>Acurácia</th><th>Parentesco</th><th>QC genômico</th></tr></thead>
+        <tbody id="candbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2><span class="n">3</span>Índice e ranking</h2>
+    <div class="formula" id="formula">score = DEP − 10 · parentesco</div>
+    <div class="controls">
+      <div class="slider-group"><label><span>Peso da penalidade (k)</span><span class="v" id="vK">10</span></label>
+        <input type="range" id="k" min="0" max="30" step="1" value="10"></div>
+      <div class="slider-group"><label><span>Acurácia mínima da regra</span><span class="v" id="vAcc">0,50</span></label>
+        <input type="range" id="accMin" min="0.30" max="0.80" step="0.01" value="0.50"></div>
+    </div>
+    <div class="qcgate">
+      <span class="lb">Regra de qualidade (QC):</span>
+      <div class="seg" id="qcseg"><button data-q="on" class="on">aplicar</button><button data-q="off">ignorar</button></div>
+    </div>
+    <canvas id="cv" width="1240" height="420" style="margin-top:1rem"></canvas>
+    <div class="twores">
+      <div class="res"><div class="lab">ranking por score (ganho − risco)</div><div class="val" id="rkScore">A · B · D · C</div></div>
+      <div class="res fin"><div class="lab">ranking final (após regra de qualidade)</div><div class="val" id="rkFinal">A · B · C · D</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2><span class="n">4</span>O relatório</h2>
+    <div class="note" id="report"></div>
+    <div class="try"><b>Experimente:</b> em <i>ignorar</i> a regra de qualidade, <b>D</b> sobe acima de <b>C</b> (score 7,0 &gt; 6,5). Volte para <i>aplicar</i>: D despenca para último — QC reprovado e acurácia 0,40 &lt; 0,50. Aumente o peso <b>k</b> e veja o parentesco alto de A corroer sua liderança. O número organiza; a regra protege.</div>
+  </div>
+
+  <div class="mg-foot">MGenética · artefato interativo · derivado do texto M21 — Projeto final: pipeline completo de seleção</div>
+</div>
+
+<!-- ▼▼▼ DADOS EDITÁVEIS — altere os exemplos aqui (números e rótulos). A lógica abaixo não precisa ser tocada. ▼▼▼ -->
+<script type="application/json" id="dados">
+{
+  "candidatos": [
+    {
+      "id": "A",
+      "fen": 108,
+      "ebv": 24,
+      "dep": 12,
+      "acc": 0.62,
+      "par": 0.2,
+      "qc": true,
+      "qcLab": "aprovado"
+    },
+    {
+      "id": "B",
+      "fen": 104,
+      "ebv": 18,
+      "dep": 9,
+      "acc": 0.76,
+      "par": 0.02,
+      "qc": true,
+      "qcLab": "aprovado"
+    },
+    {
+      "id": "C",
+      "fen": 112,
+      "ebv": 14,
+      "dep": 7,
+      "acc": 0.54,
+      "par": 0.05,
+      "qc": true,
+      "qcLab": "aprovado c/ ressalva"
+    },
+    {
+      "id": "D",
+      "fen": 101,
+      "ebv": 20,
+      "dep": 10,
+      "acc": 0.4,
+      "par": 0.3,
+      "qc": false,
+      "qcLab": "reprovado"
+    }
+  ]
+}
+</script>
+<!-- ▲▲▲ FIM DOS DADOS EDITÁVEIS ▲▲▲ -->
+
+<script>
+  const el=id=>document.getElementById(id);
+  const DADOS=JSON.parse(el('dados').textContent);
+  function f1(x){return (x<0?'−':'')+Math.abs(x).toFixed(1).replace('.',',');}
+  function f2(x){return (x<0?'−':'')+Math.abs(x).toFixed(2).replace('.',',');}
+  const A=DADOS.candidatos;
+  let K=10,accMin=0.50,qcGate=true;
+  const score=a=>a.dep-K*a.par;
+  const eligible=a=>(!qcGate||a.qc)&&a.acc>=accMin-1e-9;
+
+  function buildCand(){
+    const tb=el('candbody');tb.innerHTML='';
+    A.forEach(a=>{
+      const cls=a.qc?(a.qcLab.indexOf('ressalva')>=0?'warn':'keep'):'drop';
+      const tr=document.createElement('tr');
+      tr.innerHTML='<td>'+a.id+'</td><td>'+a.fen+'</td><td>'+a.ebv+'</td><td>'+a.dep+'</td>'+
+        '<td>'+f2(a.acc)+'</td><td>'+f2(a.par)+'</td>'+
+        '<td><span class="badge '+cls+'">'+a.qcLab+'</span></td>';
+      tb.appendChild(tr);
+    });
+  }
+
+  const cv=el('cv'),cx=cv.getContext('2d');cx.scale(2,2);
+  const CW=620,CH=210;
+  function draw(finalOrder){
+    cx.clearRect(0,0,CW,CH);
+    const scores=A.map(score);
+    const lo=Math.min(0,...scores),hi=Math.max(...scores)*1.05+0.6;
+    const xL=70,xR=470,X=v=>xL+(v-lo)/(hi-lo)*(xR-xL);
+    const rowH=46,top=20,x0=X(0);
+    // zero baseline
+    cx.strokeStyle='rgba(10,31,56,.22)';cx.setLineDash([3,3]);cx.lineWidth=1;cx.beginPath();cx.moveTo(x0,8);cx.lineTo(x0,CH-8);cx.stroke();cx.setLineDash([]);
+    finalOrder.forEach((a,r)=>{
+      const y=top+r*rowH+rowH/2,s=score(a),elig=eligible(a),topOne=(r===0&&elig);
+      // label
+      cx.textAlign='left';cx.font='bold 13px monospace';cx.fillStyle=elig?'#0a1f38':'#c2410c';
+      cx.fillText((elig?'':'✗ ')+(r+1)+'º '+a.id,6,y+4);
+      // bar
+      const xs=X(s),bx=Math.min(x0,xs),bw=Math.abs(xs-x0);
+      cx.fillStyle=!elig?'rgba(194,65,12,.28)':(topOne?'#ffc107':'#00a8d6');
+      cx.fillRect(bx,y-12,bw,24);
+      if(topOne){cx.strokeStyle='#7b4200';cx.lineWidth=2;cx.strokeRect(bx,y-12,bw,24);}
+      if(!elig){cx.strokeStyle='rgba(194,65,12,.5)';cx.lineWidth=1;for(let xx=bx+6;xx<bx+bw;xx+=8){cx.beginPath();cx.moveTo(xx,y-12);cx.lineTo(xx-10,y+12);cx.stroke();}}
+      // value
+      cx.fillStyle='#0a1f38';cx.font='bold 12px monospace';cx.textAlign='left';cx.fillText(f1(s),xs+6,y+4);
+      // detail
+      cx.fillStyle='#5a7391';cx.font='10px monospace';cx.fillText('DEP '+a.dep+' − '+K+'·'+f2(a.par),xs+40,y+4);
+    });
+  }
+
+  function update(){
+    K=+el('k').value;accMin=+el('accMin').value;
+    el('vK').textContent=K;el('vAcc').textContent=f2(accMin);
+    el('formula').textContent='score = DEP − '+K+' · parentesco';
+    buildCand();
+    const byScore=A.slice().sort((x,y)=>score(y)-score(x));
+    const byFinal=A.slice().sort((x,y)=>{
+      const ex=eligible(x)?1:0,ey=eligible(y)?1:0;
+      return ey-ex || score(y)-score(x);
+    });
+    draw(byFinal);
+    el('rkScore').textContent=byScore.map(a=>a.id).join(' · ');
+    el('rkFinal').textContent=byFinal.map(a=>a.id).join(' · ');
+    // report
+    const excl=A.filter(a=>!eligible(a)),sel=byFinal[0];
+    const reason=a=>!qcGate?'':(!a.qc?'QC reprovado':(a.acc<accMin?'acurácia '+f2(a.acc)+' < '+f2(accMin):''));
+    let m='Por <b>score puro</b> (ganho − risco): '+byScore.map(a=>a.id).join(' · ')+'. ';
+    if(qcGate&&excl.length){
+      m+='A regra de qualidade (QC aprovado e acurácia ≥ '+f2(accMin)+') exclui '+excl.map(a=>'<b>'+a.id+'</b> ('+reason(a)+')').join('; ')+', empurrando-o(s) para o fim. ';
+    }else if(!qcGate){
+      m+='Com a regra <b>desligada</b>, o ranking final segue só o score — inclusive animais com dados ruins. ';
+    }else{
+      m+='Todos os candidatos passam na regra de qualidade. ';
+    }
+    m+='<b>Ranking final: '+byFinal.map(a=>a.id).join(' · ')+'.</b> ';
+    if(eligible(sel)){
+      m+='Recomendação: selecionar <b>'+sel.id+'</b> (score '+f1(score(sel))+')';
+      m+=sel.par>=0.15?', com <b>controle de acasalamento</b> — parentesco '+f2(sel.par)+' é alto. ':'. ';
+    }else{
+      m+='Nenhum candidato atende à regra de qualidade com os critérios atuais. ';
+    }
+    m+='Lição central: <i>número bom com dado ruim não sustenta seleção</i> — o relatório integra ganho, risco e qualidade da evidência.';
+    el('report').innerHTML=m;
+  }
+
+  ['k','accMin'].forEach(id=>el(id).addEventListener('input',update));
+  el('qcseg').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{
+    el('qcseg').querySelectorAll('button').forEach(x=>x.classList.remove('on'));b.classList.add('on');
+    qcGate=b.getAttribute('data-q')==='on';update();
+  }));
+  update();
+</script>
+</body>
+</html>

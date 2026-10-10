@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M15 · Ranking por DEP/EBV — MGenética</title>
+<style>
+  :root{
+    --mg-ink:#0a1f38;--mg-navy-700:#1a4b78;--mg-navy-900:#061626;
+    --mg-cyan:#00a8d6;--mg-cyan-soft:#d6f1f9;--mg-mid:#4a9fd1;
+    --mg-muted:#5a7391;
+    --mg-bg:#fff;--mg-bg-soft:#f7f9fc;--mg-bg-tint:#eef3f9;
+    --mg-line:rgba(10,31,56,.10);--mg-line-strong:rgba(10,31,56,.18);
+    --mg-gold:#ffc107;--mg-gold-soft:#fff7e0;--mg-gold-border:#ffe08a;--mg-gold-ink:#7b4200;
+    --shadow-sm:0 1px 2px rgba(13,38,66,.05),0 1px 1px rgba(13,38,66,.04);
+    --font-body:"DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+    --font-display:"Lora",Georgia,"Times New Roman",serif;
+    --font-mono:"DM Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:var(--font-body);background:linear-gradient(180deg,#f7f9fc,#eef3f9);min-height:100vh;color:var(--mg-ink);line-height:1.6;padding:1.4rem 1rem 3rem;}
+  .page{max-width:840px;margin:0 auto;}
+  .back{display:inline-block;font-family:var(--font-mono);font-size:.74rem;color:var(--mg-muted);text-decoration:none;margin-bottom:1rem;letter-spacing:.03em;}
+  .back:hover{color:var(--mg-cyan);}
+  .eyebrow{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--mg-cyan);font-weight:600;}
+  h1{font-family:var(--font-display);font-size:1.75rem;font-weight:600;margin:.25rem 0 .4rem;line-height:1.18;}
+  .sub{color:var(--mg-muted);font-size:.96rem;margin-bottom:1.6rem;max-width:62ch;}
+  h2{font-family:var(--font-display);font-size:1.12rem;font-weight:600;color:var(--mg-navy-700);margin-bottom:.9rem;display:flex;align-items:center;gap:.5rem;}
+  h2 .n{display:inline-flex;align-items:center;justify-content:center;width:1.5rem;height:1.5rem;border-radius:50%;background:var(--mg-cyan);color:#fff;font-family:var(--font-mono);font-size:.8rem;font-weight:700;flex:none;}
+  .card{background:var(--mg-bg);border:1px solid var(--mg-line);border-radius:var(--radius);padding:1.4rem;margin-bottom:1.2rem;box-shadow:var(--shadow-sm);}
+  .animals{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;}
+  @media(max-width:640px){.animals{grid-template-columns:1fr;}}
+  .an{border:1px solid var(--mg-line);border-radius:12px;padding:.9rem;background:var(--mg-bg-soft);}
+  .an .h{display:flex;align-items:center;gap:.5rem;margin-bottom:.6rem;}
+  .an .tag{width:1.7rem;height:1.7rem;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--font-mono);font-weight:700;}
+  .an .dep{margin-left:auto;font-family:var(--font-mono);font-size:.78rem;color:var(--mg-muted);}
+  .an .dep b{color:var(--mg-navy-700);font-size:1rem;}
+  .slider-group{margin-bottom:.7rem;}
+  .slider-group label{display:flex;justify-content:space-between;align-items:baseline;font-size:.78rem;margin-bottom:.25rem;font-weight:500;}
+  .slider-group label .v{font-family:var(--font-mono);font-weight:700;color:var(--mg-navy-700);font-size:.85rem;}
+  input[type=range]{width:100%;height:5px;-webkit-appearance:none;appearance:none;background:var(--mg-bg-tint);border-radius:4px;outline:none;}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:17px;height:17px;border-radius:50%;background:var(--mg-cyan);border:3px solid #fff;box-shadow:var(--shadow-sm);cursor:pointer;}
+  input[type=range]::-moz-range-thumb{width:15px;height:15px;border-radius:50%;background:var(--mg-cyan);border:3px solid #fff;cursor:pointer;}
+  .critrow{display:flex;align-items:center;gap:.7rem;flex-wrap:wrap;margin-bottom:1rem;}
+  .critrow .lb{font-size:.84rem;color:var(--mg-muted);}
+  .seg{display:inline-flex;border:1px solid var(--mg-line-strong);border-radius:10px;overflow:hidden;}
+  .seg button{font-family:var(--font-mono);font-size:.8rem;font-weight:600;padding:.45rem .9rem;border:0;background:var(--mg-bg);color:var(--mg-navy-700);cursor:pointer;border-right:1px solid var(--mg-line);}
+  .seg button:last-child{border-right:0;}
+  .seg button.on{background:var(--mg-cyan);color:#fff;}
+  .res{background:var(--mg-bg-soft);border:1px solid var(--mg-line);border-radius:12px;padding:1rem;text-align:center;margin-top:.3rem;}
+  .res .lab{font-size:.72rem;color:var(--mg-muted);margin-bottom:.25rem;font-family:var(--font-mono);}
+  .res .val{font-family:var(--font-mono);font-size:1.6rem;font-weight:700;color:var(--mg-navy-700);letter-spacing:.08em;}
+  .note{border-left:3px solid var(--mg-cyan);background:var(--mg-cyan-soft);color:var(--mg-navy-900);padding:.75rem .9rem;border-radius:0 8px 8px 0;font-size:.86rem;margin-top:1rem;}
+  .try{font-size:.82rem;color:var(--mg-navy-700);background:var(--mg-bg-tint);border:1px dashed var(--mg-line-strong);border-radius:8px;padding:.6rem .8rem;margin-top:.9rem;}
+  .try b{color:var(--mg-cyan);}
+  .legend{display:flex;gap:1.2rem;flex-wrap:wrap;font-size:.76rem;color:var(--mg-muted);margin-top:.4rem;justify-content:center;}
+  .legend span{display:inline-flex;align-items:center;gap:.35rem;}
+  .mg-foot{text-align:center;font-size:.74rem;color:var(--mg-muted);margin-top:2rem;font-family:var(--font-mono);}
+  canvas{width:100%;height:auto;display:block;}
+</style>
+<!-- MG-RUNTIME:start (gerado por scripts/apply_lab_runtime.py — não editar à mão) -->
+<style id="mg-runtime">
+/* mg-lab.css — runtime compartilhado dos labs interativos MGenética.
+   Fonte única: injetado inline em cada lab (mantém self-contained/offline).
+   Adiciona tema ESCURO (sobre os mesmos tokens --mg-* que os labs já usam),
+   foco visível, reduced-motion e utilitários de acessibilidade.
+   Deve vir DEPOIS do <style> do lab para sobrescrever o :root claro. */
+
+/* ----- Tema escuro: auto (prefers-color-scheme) + manual ([data-theme]) ----- */
+:root[data-theme="dark"],
+:root.mg-dark {
+  --mg-ink:#e8eef5;
+  --mg-navy-700:#5fa8da;
+  --mg-navy-900:#cdddec;
+  --mg-cyan:#34c0e8;
+  --mg-cyan-soft:#10344a;
+  --mg-mid:#6bb4dd;
+  --mg-muted:#9fb3c9;
+  --mg-bg:#0c1622;
+  --mg-bg-soft:#111f30;
+  --mg-bg-tint:#16263a;
+  --mg-line:rgba(220,235,250,.12);
+  --mg-line-strong:rgba(220,235,250,.22);
+  --mg-gold:#ffca28;
+  --mg-gold-soft:#33290f;
+  --mg-gold-border:#7a5a16;
+  --mg-gold-ink:#ffd97a;
+  --mg-red:#f08a5a;
+  --mg-red-soft:#3a2018;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]):not(.mg-light) {
+    --mg-ink:#e8eef5;
+    --mg-navy-700:#5fa8da;
+    --mg-navy-900:#cdddec;
+    --mg-cyan:#34c0e8;
+    --mg-cyan-soft:#10344a;
+    --mg-mid:#6bb4dd;
+    --mg-muted:#9fb3c9;
+    --mg-bg:#0c1622;
+    --mg-bg-soft:#111f30;
+    --mg-bg-tint:#16263a;
+    --mg-line:rgba(220,235,250,.12);
+    --mg-line-strong:rgba(220,235,250,.22);
+    --mg-gold:#ffca28;
+    --mg-gold-soft:#33290f;
+    --mg-gold-border:#7a5a16;
+    --mg-gold-ink:#ffd97a;
+    --mg-red:#f08a5a;
+    --mg-red-soft:#3a2018;
+  }
+}
+
+/* garante que o fundo/texto sigam os tokens (alguns labs herdam do body) */
+html, body { background: var(--mg-bg); color: var(--mg-ink); }
+:root { color-scheme: light dark; }
+
+/* ----- Acessibilidade ----- */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 3px solid var(--mg-cyan);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+.mg-visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ----- Controles do runtime (reset, legenda "como ler") ----- */
+.mg-reset-btn {
+  font: inherit; cursor: pointer;
+  border: 1px solid var(--mg-line-strong);
+  background: var(--mg-bg-soft); color: var(--mg-navy-700);
+  border-radius: 8px; padding: 6px 12px; font-weight: 600; font-size: 12.5px;
+}
+.mg-reset-btn:hover { border-color: var(--mg-cyan); }
+.mg-howto {
+  font-size: 12px; color: var(--mg-muted); margin: 6px 0 0; line-height: 1.5;
+}
+
+/* ----- Base responsiva (vale para todos, mesmo sem media query própria) ----- */
+img, canvas, svg, iframe, table { max-width: 100%; }
+canvas { height: auto; }
+@media (max-width: 640px) {
+  body { font-size: 15px; }
+}
+</style>
+<script id="mg-runtime">
+/* mg-lab.js — runtime compartilhado dos labs interativos MGenética.
+   Fonte única, injetado inline. Fornece:
+   - MG: tokens de cor (lidos do CSS) para o canvas usar e reagir ao tema.
+   - tema/idioma via ?theme=&lang= e via postMessage do site (iframe).
+   - auto-resize: reporta a altura ao parent (postMessage).
+   - i18n t(key) lendo <script type="application/json" id="i18n">.
+   - hook de reset ("voltar ao exemplo"). Tudo offline, sem dependências. */
+(function () {
+  "use strict";
+  var root = document.documentElement;
+  var TOKENS = {
+    ink: "--mg-ink", navy7: "--mg-navy-700", navy9: "--mg-navy-900",
+    cyan: "--mg-cyan", cyanSoft: "--mg-cyan-soft", mid: "--mg-mid", muted: "--mg-muted",
+    bg: "--mg-bg", bgSoft: "--mg-bg-soft", bgTint: "--mg-bg-tint",
+    line: "--mg-line", lineStrong: "--mg-line-strong",
+    gold: "--mg-gold", goldSoft: "--mg-gold-soft", goldBorder: "--mg-gold-border", goldInk: "--mg-gold-ink",
+    red: "--mg-red", redSoft: "--mg-red-soft"
+  };
+  var MG = {};
+  window.MG = MG; // canvas usa MG.ink, MG.cyan, ...
+
+  function readPalette() {
+    var cs = getComputedStyle(root);
+    for (var k in TOKENS) MG[k] = cs.getPropertyValue(TOKENS[k]).trim();
+  }
+
+  function params() {
+    try { return new URLSearchParams(location.search); } catch (e) { return new URLSearchParams(); }
+  }
+
+  // ---- tema -------------------------------------------------------------
+  function setTheme(theme) {
+    if (theme === "dark" || theme === "light") root.setAttribute("data-theme", theme);
+    else root.removeAttribute("data-theme"); // auto = segue o sistema/host
+    readPalette();
+    window.dispatchEvent(new CustomEvent("mg:themechange", { detail: { palette: MG } }));
+  }
+  // reage a mudança do sistema quando em modo auto
+  try {
+    var mq = window.matchMedia("(prefers-color-scheme: dark)");
+    mq.addEventListener("change", function () {
+      if (!root.hasAttribute("data-theme")) { readPalette(); window.dispatchEvent(new CustomEvent("mg:themechange", { detail: { palette: MG } })); }
+    });
+  } catch (e) {}
+
+  // ---- i18n -------------------------------------------------------------
+  var DICT = {};
+  var LANG = "pt-BR";
+  function loadDict() {
+    var el = document.getElementById("i18n");
+    if (!el) return;
+    try { DICT = JSON.parse(el.textContent) || {}; } catch (e) { DICT = {}; }
+  }
+  function t(key) {
+    var l = DICT[LANG] || {};
+    if (key in l) return l[key];
+    var base = DICT["pt-BR"] || {};
+    return key in base ? base[key] : key;
+  }
+  function setLang(lang) {
+    if (DICT[lang]) LANG = lang;
+    root.setAttribute("lang", LANG);
+    document.querySelectorAll("[data-i18n]").forEach(function (n) {
+      n.textContent = t(n.getAttribute("data-i18n"));
+    });
+    document.querySelectorAll("[data-i18n-aria]").forEach(function (n) {
+      n.setAttribute("aria-label", t(n.getAttribute("data-i18n-aria")));
+    });
+    window.dispatchEvent(new CustomEvent("mg:langchange", { detail: { lang: LANG } }));
+  }
+  window.MGi18n = { t: t, lang: function () { return LANG; } };
+
+  // ---- auto-resize (reporta altura ao iframe pai) -----------------------
+  var lastH = 0, raf = 0;
+  function reportHeight() {
+    var h = Math.ceil(document.documentElement.getBoundingClientRect().height);
+    if (h && h !== lastH) {
+      lastH = h;
+      try { parent.postMessage({ type: "mg-lab-height", id: document.title || "", height: h }, "*"); } catch (e) {}
+    }
+  }
+  function scheduleReport() { cancelAnimationFrame(raf); raf = requestAnimationFrame(reportHeight); }
+
+  // ---- mensagens do site (host controla tema/idioma) --------------------
+  window.addEventListener("message", function (ev) {
+    var d = ev && ev.data; if (!d || typeof d !== "object") return;
+    if (d.type === "mg-set-theme") setTheme(d.theme);
+    if (d.type === "mg-set-lang") setLang(d.lang);
+  });
+
+  // ---- reset ("voltar ao exemplo") --------------------------------------
+  document.addEventListener("click", function (ev) {
+    var b = ev.target.closest && ev.target.closest("[data-mg-reset]");
+    if (b && typeof window.MGReset === "function") { ev.preventDefault(); window.MGReset(); }
+  });
+
+  // ---- boot -------------------------------------------------------------
+  function boot() {
+    readPalette();
+    loadDict();
+    var p = params();
+    var th = p.get("theme"); if (th) setTheme(th); else readPalette();
+    var lg = p.get("lang"); setLang(lg || LANG);
+    if (window.ResizeObserver) new ResizeObserver(scheduleReport).observe(document.documentElement);
+    window.addEventListener("load", scheduleReport);
+    window.addEventListener("mg:themechange", scheduleReport);
+    setTimeout(reportHeight, 60);
+  }
+  // popula MG imediatamente (o <style> do lab já foi parseado), para o canvas
+  // do lab ver as cores certas mesmo se desenhar antes do DOMContentLoaded.
+  readPalette();
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
+  else boot();
+})();
+</script>
+<!-- MG-RUNTIME:end -->
+</head>
+<body>
+<div class="page">
+  <a class="back" href="../#catalog">← Trilha interativa MGenética</a>
+  <p class="eyebrow">Módulo 15 · Avaliação genética</p>
+  <h1>Ranking por DEP, EBV e acurácia</h1>
+  <p class="sub">Maior fenótipo não basta. O <b>EBV</b> estima o mérito genético; a <b>DEP = EBV/2</b> prevê o que vai para os filhos; a <b>acurácia</b> diz quão firme é a estimativa. Mude o critério de ordenação e veja o ranking — e o pódio — mudar de dono.</p>
+
+  <div class="card">
+    <h2><span class="n">1</span>Três garanhões</h2>
+    <div class="animals" id="animals"></div>
+  </div>
+
+  <div class="card">
+    <h2><span class="n">2</span>Ranking</h2>
+    <div class="critrow">
+      <span class="lb">Ordenar por:</span>
+      <div class="seg" id="crit">
+        <button data-c="dep" class="on">DEP</button><button data-c="corr">Fenótipo corrigido</button><button data-c="acc">Acurácia</button>
+      </div>
+    </div>
+    <canvas id="cv" width="1240" height="360"></canvas>
+    <div class="legend">
+      <span>barra = DEP (mérito esperado nos filhos)</span>
+      <span><i style="display:inline-block;width:22px;border-top:2px solid #5a7391"></i> faixa de incerteza (encolhe com a acurácia)</span>
+    </div>
+    <div class="res"><div class="lab" id="rankLab">ordem por DEP</div><div class="val" id="rankTxt">A · B · C</div></div>
+  </div>
+
+  <div class="card">
+    <h2><span class="n">3</span>Como defender a escolha</h2>
+    <div class="note" id="explain"></div>
+    <div class="try"><b>O paradoxo do boletim:</b> ordene por <b>fenótipo corrigido</b> — lidera <b>B</b> (108). Agora ordene por <b>DEP</b> — lidera <b>A</b> (EBV 20 → DEP 10). O animal de melhor desempenho aparente não é o de maior mérito transmissível. E A, apesar do maior DEP, tem a maior <i>incerteza</i> (acc 0,55): a barra de erro mais larga.</div>
+  </div>
+
+  <div class="mg-foot">MGenética · artefato interativo · derivado do texto M15 — Avaliação genética: DEP/EBV e ranking de animais</div>
+</div>
+
+<!-- ▼▼▼ DADOS EDITÁVEIS — altere o exemplo aqui (ebv, acurácia, fenótipo corrigido). A lógica abaixo não precisa ser tocada. ▼▼▼ -->
+<script type="application/json" id="dados">
+{
+  "animais": [
+    {
+      "id": "A",
+      "ebv": 20,
+      "acc": 0.55,
+      "corr": 104,
+      "color": "#1a4b78"
+    },
+    {
+      "id": "B",
+      "ebv": 8,
+      "acc": 0.85,
+      "corr": 108,
+      "color": "#00a8d6"
+    },
+    {
+      "id": "C",
+      "ebv": -4,
+      "acc": 0.7,
+      "corr": 100,
+      "color": "#4a9fd1"
+    }
+  ]
+}
+</script>
+<!-- ▲▲▲ FIM DOS DADOS EDITÁVEIS ▲▲▲ -->
+
+<script>
+  const cv=document.getElementById('cv'),ctx=cv.getContext('2d');ctx.scale(2,2);
+  const CW=620,CH=180;
+  const el=id=>document.getElementById(id);
+  const DADOS=JSON.parse(el('dados').textContent);
+  let crit='dep';
+  const A=DADOS.animais;
+  function f2(x){return (x<0?'−':'')+Math.abs(x).toFixed(2).replace('.',',');}
+  function fi(x){return (x<0?'−':'')+Math.abs(x);}
+
+  function buildControls(){
+    const wrap=el('animals');wrap.innerHTML='';
+    A.forEach((a,i)=>{
+      const d=document.createElement('div');d.className='an';
+      d.innerHTML=
+        '<div class="h"><span class="tag" style="background:'+a.color+'">'+a.id+'</span>'+
+        '<span class="dep">DEP <b id="dep'+i+'">'+fi(a.ebv/2)+'</b></span></div>'+
+        '<div class="slider-group"><label><span>EBV</span><span class="v" id="vebv'+i+'">'+fi(a.ebv)+'</span></label>'+
+        '<input type="range" id="ebv'+i+'" min="-20" max="30" step="2" value="'+a.ebv+'"></div>'+
+        '<div class="slider-group"><label><span>Acurácia</span><span class="v" id="vacc'+i+'">'+f2(a.acc)+'</span></label>'+
+        '<input type="range" id="acc'+i+'" min="0.30" max="0.99" step="0.01" value="'+a.acc+'"></div>'+
+        '<div class="slider-group"><label><span>Fenótipo corrigido</span><span class="v" id="vcorr'+i+'">'+fi(a.corr)+'</span></label>'+
+        '<input type="range" id="corr'+i+'" min="90" max="120" step="1" value="'+a.corr+'"></div>';
+      wrap.appendChild(d);
+    });
+    A.forEach((a,i)=>{
+      el('ebv'+i).addEventListener('input',update);
+      el('acc'+i).addEventListener('input',update);
+      el('corr'+i).addEventListener('input',update);
+    });
+  }
+
+  function draw(sorted){
+    ctx.clearRect(0,0,CW,CH);
+    const xL=40,xR=560,lo=-8,hi=14;
+    const X=v=>xL+(xR-xL)*((v-lo)/(hi-lo));
+    const x0=X(0);
+    // zero line
+    ctx.strokeStyle='rgba(10,31,56,.20)';ctx.setLineDash([4,4]);ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(x0,8);ctx.lineTo(x0,CH-8);ctx.stroke();ctx.setLineDash([]);
+    ctx.fillStyle='#5a7391';ctx.font='10px monospace';ctx.textAlign='center';ctx.fillText('0',x0,CH-2);
+    const rh=CH/3;
+    sorted.forEach((a,r)=>{
+      const cy=r*rh+rh/2-4;
+      const dep=a.ebv/2;
+      const hw=8*Math.sqrt(1-a.acc*a.acc);   // faixa de incerteza ilustrativa
+      // bar 0->dep
+      const bx=Math.min(x0,X(dep)),bw=Math.abs(X(dep)-x0);
+      ctx.fillStyle=a.color;ctx.fillRect(bx,cy-11,bw,22);
+      // whisker
+      ctx.strokeStyle='#5a7391';ctx.lineWidth=2;
+      ctx.beginPath();ctx.moveTo(X(dep-hw),cy);ctx.lineTo(X(dep+hw),cy);
+      ctx.moveTo(X(dep-hw),cy-6);ctx.lineTo(X(dep-hw),cy+6);
+      ctx.moveTo(X(dep+hw),cy-6);ctx.lineTo(X(dep+hw),cy+6);ctx.stroke();
+      // rank + animal label
+      ctx.fillStyle='#0a1f38';ctx.font='bold 13px monospace';ctx.textAlign='left';
+      ctx.fillText((r+1)+'º  '+a.id,xL-34<0?2:8,cy+4);
+      // metrics text
+      ctx.fillStyle='#5a7391';ctx.font='11px monospace';ctx.textAlign='right';
+      ctx.fillText('DEP '+fi(dep)+'  ·  corr '+fi(a.corr)+'  ·  acc '+f2(a.acc),xR+0,cy+4);
+    });
+  }
+
+  function update(){
+    A.forEach((a,i)=>{
+      a.ebv=+el('ebv'+i).value;a.acc=+el('acc'+i).value;a.corr=+el('corr'+i).value;
+      el('vebv'+i).textContent=fi(a.ebv);el('vacc'+i).textContent=f2(a.acc);el('vcorr'+i).textContent=fi(a.corr);
+      el('dep'+i).textContent=fi(a.ebv/2);
+    });
+    const key={dep:a=>a.ebv/2,corr:a=>a.corr,acc:a=>a.acc}[crit];
+    const sorted=A.slice().sort((x,y)=>key(y)-key(x));
+    draw(sorted);
+    const labs={dep:'ordem por DEP',corr:'ordem por fenótipo corrigido',acc:'ordem por acurácia'};
+    el('rankLab').textContent=labs[crit];
+    el('rankTxt').textContent=sorted.map(a=>a.id).join(' · ');
+    // explanation: compare DEP order vs corr order
+    const byDep=A.slice().sort((x,y)=>y.ebv-x.ebv).map(a=>a.id);
+    const byCorr=A.slice().sort((x,y)=>y.corr-x.corr).map(a=>a.id);
+    const best=A.reduce((m,a)=>a.ebv/2>m.ebv/2?a:m);
+    const firm=A.reduce((m,a)=>a.acc>m.acc?a:m);
+    let m='Por <b>DEP</b>, o líder é <b>'+byDep[0]+'</b> (maior mérito esperado nos filhos). ';
+    if(byDep[0]!==byCorr[0]) m+='Mas por <b>fenótipo corrigido</b> o líder é <b>'+byCorr[0]+'</b> — desempenho aparente ≠ mérito transmissível. ';
+    m+='A estimativa mais <b>firme</b> é a de <b>'+firm.id+'</b> (acc '+f2(firm.acc)+', barra de erro estreita); a de <b>'+best.id+'</b> tem o maior DEP, porém mais incerteza se a acurácia for baixa. A decisão precisa declarar o critério: máximo ganho (DEP) ou menor risco (acurácia).';
+    el('explain').innerHTML=m;
+  }
+  el('crit').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{
+    el('crit').querySelectorAll('button').forEach(x=>x.classList.remove('on'));b.classList.add('on');crit=b.getAttribute('data-c');update();
+  }));
+  buildControls();update();
+</script>
+</body>
+</html>

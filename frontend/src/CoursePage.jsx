@@ -3,6 +3,7 @@ import Icon from './components/Icon'
 import AppHeader from './components/AppHeader'
 import ActionButton from './components/ActionButton'
 import LessonText from './components/LessonText'
+import LabEmbed from './components/LabEmbed'
 
 function publicAssetUrl(src) {
   const base = import.meta.env.BASE_URL || '/'
@@ -34,6 +35,22 @@ function CourseVisualAsset({ asset }) {
         </figure>
       )}
       {asset.caption ? <p className="course-visual-caption">{asset.caption}</p> : null}
+    </section>
+  )
+}
+
+function CourseLab({ detail }) {
+  if (!detail?.lab) return null
+  const title = `Laboratório interativo: ${detail.title}`
+
+  return (
+    <section className="section-card course-lab-card" aria-labelledby={`course-lab-title-${detail.id}`}>
+      <div className="section-eyebrow">Interativo</div>
+      <h3 id={`course-lab-title-${detail.id}`}>Laboratório interativo</h3>
+      <p className="course-visual-caption">{detail.title}</p>
+      <div className="course-lab-frame-wrap">
+        <LabEmbed lab={detail.lab} title={title} />
+      </div>
     </section>
   )
 }
@@ -71,7 +88,7 @@ function StudyPath({ detail }) {
   )
 }
 
-export default function CoursePage({ course, detail, progress, onBack, onOpenQuiz, onOpenCatalog, onOpenCourse, nextCourse, onLogout, loadingAuth, locale, onLocaleChange, t }) {
+export default function CoursePage({ publicAccess = false, course, detail, progress, onBack, onOpenQuiz, onOpenCatalog, onOpenCourse, nextCourse, onLogout, loadingAuth, locale, onLocaleChange, t }) {
   return (
     <div className="app-shell">
       <AppHeader brandName={course.title} brandTagline={t('coursePage.dedicatedPage')} status="" locale={locale} onLocaleChange={onLocaleChange} t={t} className="course-header">
@@ -83,9 +100,9 @@ export default function CoursePage({ course, detail, progress, onBack, onOpenQui
             {t('coursePage.catalog')}
           </ActionButton>
         ) : null}
-        <ActionButton type="button" variant="secondary" onClick={onLogout} disabled={loadingAuth} icon={<Icon name="lock" size={16} />}>
+        {!publicAccess && <ActionButton type="button" variant="secondary" onClick={onLogout} disabled={loadingAuth} icon={<Icon name="lock" size={16} />}>
           {t('common.logout')}
-        </ActionButton>
+        </ActionButton>}
       </AppHeader>
       <a className="skip-link" href="#main-content">{t('common.skipToContent') || 'Skip to content'}</a>
       {detail ? (
@@ -104,7 +121,7 @@ export default function CoursePage({ course, detail, progress, onBack, onOpenQui
             <p className="module-description">{detail.description}</p>
           </article>
           <StudyPath detail={detail} />
-          <section className="section-card">
+          {!publicAccess && <section className="section-card">
             <div className="section-eyebrow">{t('coursePage.progressEyebrow')}</div>
             <h3>{t('coursePage.progressTitle')}</h3>
             <div className="content-grid catalog-grid">
@@ -121,7 +138,7 @@ export default function CoursePage({ course, detail, progress, onBack, onOpenQui
                 <p className="course-description">{progress ? t('coursePage.progressAttemptsValue', { count: progress.attempts || 0 }) : t('coursePage.progressPending')}</p>
               </article>
             </div>
-          </section>
+          </section>}
           {detail.sections.map((section) => (
             <React.Fragment key={section.eyebrow + section.title}>
               <SectionCard
@@ -134,21 +151,22 @@ export default function CoursePage({ course, detail, progress, onBack, onOpenQui
                 scientific={section.scientific}
               />
               {detail.visualAsset?.placement === 'after-concept' && section.scientific ? <CourseVisualAsset asset={detail.visualAsset} /> : null}
+              {detail.lab && section.part === 'lab' ? <CourseLab detail={detail} /> : null}
             </React.Fragment>
           ))}
-          <section className="section-card">
+          {!publicAccess && <section className="section-card">
             <div className="section-eyebrow">{t('coursePage.actionEyebrow')}</div>
             <h3>{t('coursePage.actionTitle')}</h3>
             <p>{t('coursePage.afterQuizCopy')}</p>
             <div className="hero-actions section-actions">
-              <ActionButton type="button" variant="primary" onClick={onOpenQuiz} icon={<Icon name="arrowRight" size={16} />}>
+              <ActionButton type="button" variant="primary" disabled={!onOpenQuiz} onClick={onOpenQuiz} icon={<Icon name="arrowRight" size={16} />}>
                 {t('coursePage.openQuiz')}
               </ActionButton>
               <ActionButton type="button" variant="secondary" onClick={onBack} icon={<Icon name="arrowLeft" size={16} />}>
                 {t('coursePage.backToCatalog')}
               </ActionButton>
             </div>
-          </section>
+          </section>}
           <section className="section-card">
             <div className="section-eyebrow">{t('coursePage.closingEyebrow')}</div>
             <h3>{t('coursePage.closingTitle')}</h3>

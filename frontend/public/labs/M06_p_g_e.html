@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M6 · P = G + E — MGenética</title>
+<style>
+  :root{
+    --mg-ink:#0a1f38;--mg-navy-700:#1a4b78;--mg-navy-900:#061626;
+    --mg-cyan:#00a8d6;--mg-cyan-soft:#d6f1f9;--mg-mid:#4a9fd1;
+    --mg-muted:#5a7391;
+    --mg-bg:#fff;--mg-bg-soft:#f7f9fc;--mg-bg-tint:#eef3f9;
+    --mg-line:rgba(10,31,56,.10);--mg-line-strong:rgba(10,31,56,.18);
+    --mg-gold:#ffc107;--mg-gold-soft:#fff7e0;--mg-gold-border:#ffe08a;--mg-gold-ink:#7b4200;
+    --mg-red:#c2410c;
+    --shadow-sm:0 1px 2px rgba(13,38,66,.05),0 1px 1px rgba(13,38,66,.04);
+    --font-body:"DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+    --font-display:"Lora",Georgia,"Times New Roman",serif;
+    --font-mono:"DM Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:var(--font-body);background:linear-gradient(180deg,#f7f9fc,#eef3f9);min-height:100vh;color:var(--mg-ink);line-height:1.6;padding:1.4rem 1rem 3rem;}
+  .page{max-width:840px;margin:0 auto;}
+  .back{display:inline-block;font-family:var(--font-mono);font-size:.74rem;color:var(--mg-muted);text-decoration:none;margin-bottom:1rem;letter-spacing:.03em;}
+  .back:hover{color:var(--mg-cyan);}
+  .eyebrow{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--mg-cyan);font-weight:600;}
+  h1{font-family:var(--font-display);font-size:1.75rem;font-weight:600;margin:.25rem 0 .4rem;line-height:1.18;}
+  .sub{color:var(--mg-muted);font-size:.96rem;margin-bottom:1.6rem;max-width:62ch;}
+  h2{font-family:var(--font-display);font-size:1.12rem;font-weight:600;color:var(--mg-navy-700);margin-bottom:.9rem;display:flex;align-items:center;gap:.5rem;}
+  h2 .n{display:inline-flex;align-items:center;justify-content:center;width:1.5rem;height:1.5rem;border-radius:50%;background:var(--mg-cyan);color:#fff;font-family:var(--font-mono);font-size:.8rem;font-weight:700;flex:none;}
+  .card{background:var(--mg-bg);border:1px solid var(--mg-line);border-radius:var(--radius);padding:1.4rem;margin-bottom:1.2rem;box-shadow:var(--shadow-sm);}
+  .animal{border:1px solid var(--mg-line);border-radius:12px;padding:.9rem 1rem;margin-bottom:.8rem;background:var(--mg-bg-soft);}
+  .animal h3{font-family:var(--font-mono);font-size:.95rem;color:var(--mg-navy-700);margin-bottom:.6rem;display:flex;justify-content:space-between;}
+  .animal h3 .p{color:var(--mg-cyan);font-weight:700;}
+  .mini{display:grid;grid-template-columns:auto 1fr auto;gap:.6rem;align-items:center;font-size:.8rem;margin-bottom:.4rem;}
+  .mini .tag{font-family:var(--font-mono);font-weight:700;width:54px;}
+  .mini .num{font-family:var(--font-mono);font-weight:700;width:42px;text-align:right;}
+  input[type=range]{width:100%;height:6px;-webkit-appearance:none;appearance:none;background:var(--mg-bg-tint);border-radius:4px;outline:none;}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--mg-cyan);border:3px solid #fff;box-shadow:var(--shadow-sm);cursor:pointer;}
+  input[type=range].g::-webkit-slider-thumb{background:#0a1f38;}
+  input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--mg-cyan);border:3px solid #fff;cursor:pointer;}
+  .formula{font-family:var(--font-mono);background:var(--mg-bg-tint);border:1px solid var(--mg-line);border-radius:8px;padding:.7rem .9rem;font-size:.9rem;color:var(--mg-navy-700);margin:.2rem 0 0;text-align:center;}
+  .legend{display:flex;gap:1.2rem;flex-wrap:wrap;font-size:.78rem;color:var(--mg-muted);margin-top:.5rem;justify-content:center;}
+  .legend span{display:inline-flex;align-items:center;gap:.35rem;}
+  .dot{width:12px;height:12px;border-radius:3px;display:inline-block;}
+  .ranks{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+  .rank h4{font-family:var(--font-mono);font-size:.8rem;text-transform:uppercase;letter-spacing:.05em;color:var(--mg-muted);margin-bottom:.5rem;}
+  .rank ol{list-style:none;counter-reset:r;}
+  .rank li{counter-increment:r;display:flex;align-items:center;gap:.5rem;padding:.45rem .6rem;border-radius:8px;margin-bottom:.35rem;font-family:var(--font-mono);font-size:.86rem;background:var(--mg-bg-soft);border:1px solid var(--mg-line);}
+  .rank li::before{content:counter(r);display:inline-flex;align-items:center;justify-content:center;width:1.3rem;height:1.3rem;border-radius:50%;background:var(--mg-navy-700);color:#fff;font-size:.72rem;font-weight:700;}
+  .rank li.top{border-color:var(--mg-cyan);background:var(--mg-cyan-soft);}
+  .note{border-left:3px solid var(--mg-cyan);background:var(--mg-cyan-soft);color:var(--mg-navy-900);padding:.75rem .9rem;border-radius:0 8px 8px 0;font-size:.86rem;margin-top:1rem;}
+  .try{font-size:.82rem;color:var(--mg-navy-700);background:var(--mg-bg-tint);border:1px dashed var(--mg-line-strong);border-radius:8px;padding:.6rem .8rem;margin-top:.9rem;}
+  .try b{color:var(--mg-cyan);}
+  .mg-foot{text-align:center;font-size:.74rem;color:var(--mg-muted);margin-top:2rem;font-family:var(--font-mono);}
+  canvas{width:100%;height:auto;display:block;}
+</style>
+<!-- MG-RUNTIME:start (gerado por scripts/apply_lab_runtime.py — não editar à mão) -->
+<style id="mg-runtime">
+/* mg-lab.css — runtime compartilhado dos labs interativos MGenética.
+   Fonte única: injetado inline em cada lab (mantém self-contained/offline).
+   Adiciona tema ESCURO (sobre os mesmos tokens --mg-* que os labs já usam),
+   foco visível, reduced-motion e utilitários de acessibilidade.
+   Deve vir DEPOIS do <style> do lab para sobrescrever o :root claro. */
+
+/* ----- Tema escuro: auto (prefers-color-scheme) + manual ([data-theme]) ----- */
+:root[data-theme="dark"],
+:root.mg-dark {
+  --mg-ink:#e8eef5;
+  --mg-navy-700:#5fa8da;
+  --mg-navy-900:#cdddec;
+  --mg-cyan:#34c0e8;
+  --mg-cyan-soft:#10344a;
+  --mg-mid:#6bb4dd;
+  --mg-muted:#9fb3c9;
+  --mg-bg:#0c1622;
+  --mg-bg-soft:#111f30;
+  --mg-bg-tint:#16263a;
+  --mg-line:rgba(220,235,250,.12);
+  --mg-line-strong:rgba(220,235,250,.22);
+  --mg-gold:#ffca28;
+  --mg-gold-soft:#33290f;
+  --mg-gold-border:#7a5a16;
+  --mg-gold-ink:#ffd97a;
+  --mg-red:#f08a5a;
+  --mg-red-soft:#3a2018;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]):not(.mg-light) {
+    --mg-ink:#e8eef5;
+    --mg-navy-700:#5fa8da;
+    --mg-navy-900:#cdddec;
+    --mg-cyan:#34c0e8;
+    --mg-cyan-soft:#10344a;
+    --mg-mid:#6bb4dd;
+    --mg-muted:#9fb3c9;
+    --mg-bg:#0c1622;
+    --mg-bg-soft:#111f30;
+    --mg-bg-tint:#16263a;
+    --mg-line:rgba(220,235,250,.12);
+    --mg-line-strong:rgba(220,235,250,.22);
+    --mg-gold:#ffca28;
+    --mg-gold-soft:#33290f;
+    --mg-gold-border:#7a5a16;
+    --mg-gold-ink:#ffd97a;
+    --mg-red:#f08a5a;
+    --mg-red-soft:#3a2018;
+  }
+}
+
+/* garante que o fundo/texto sigam os tokens (alguns labs herdam do body) */
+html, body { background: var(--mg-bg); color: var(--mg-ink); }
+:root { color-scheme: light dark; }
+
+/* ----- Acessibilidade ----- */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 3px solid var(--mg-cyan);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+.mg-visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ----- Controles do runtime (reset, legenda "como ler") ----- */
+.mg-reset-btn {
+  font: inherit; cursor: pointer;
+  border: 1px solid var(--mg-line-strong);
+  background: var(--mg-bg-soft); color: var(--mg-navy-700);
+  border-radius: 8px; padding: 6px 12px; font-weight: 600; font-size: 12.5px;
+}
+.mg-reset-btn:hover { border-color: var(--mg-cyan); }
+.mg-howto {
+  font-size: 12px; color: var(--mg-muted); margin: 6px 0 0; line-height: 1.5;
+}
+
+/* ----- Base responsiva (vale para todos, mesmo sem media query própria) ----- */
+img, canvas, svg, iframe, table { max-width: 100%; }
+canvas { height: auto; }
+@media (max-width: 640px) {
+  body { font-size: 15px; }
+}
+</style>
+<script id="mg-runtime">
+/* mg-lab.js — runtime compartilhado dos labs interativos MGenética.
+   Fonte única, injetado inline. Fornece:
+   - MG: tokens de cor (lidos do CSS) para o canvas usar e reagir ao tema.
+   - tema/idioma via ?theme=&lang= e via postMessage do site (iframe).
+   - auto-resize: reporta a altura ao parent (postMessage).
+   - i18n t(key) lendo <script type="application/json" id="i18n">.
+   - hook de reset ("voltar ao exemplo"). Tudo offline, sem dependências. */
+(function () {
+  "use strict";
+  var root = document.documentElement;
+  var TOKENS = {
+    ink: "--mg-ink", navy7: "--mg-navy-700", navy9: "--mg-navy-900",
+    cyan: "--mg-cyan", cyanSoft: "--mg-cyan-soft", mid: "--mg-mid", muted: "--mg-muted",
+    bg: "--mg-bg", bgSoft: "--mg-bg-soft", bgTint: "--mg-bg-tint",
+    line: "--mg-line", lineStrong: "--mg-line-strong",
+    gold: "--mg-gold", goldSoft: "--mg-gold-soft", goldBorder: "--mg-gold-border", goldInk: "--mg-gold-ink",
+    red: "--mg-red", redSoft: "--mg-red-soft"
+  };
+  var MG = {};
+  window.MG = MG; // canvas usa MG.ink, MG.cyan, ...
+
+  function readPalette() {
+    var cs = getComputedStyle(root);
+    for (var k in TOKENS) MG[k] = cs.getPropertyValue(TOKENS[k]).trim();
+  }
+
+  function params() {
+    try { return new URLSearchParams(location.search); } catch (e) { return new URLSearchParams(); }
+  }
+
+  // ---- tema -------------------------------------------------------------
+  function setTheme(theme) {
+    if (theme === "dark" || theme === "light") root.setAttribute("data-theme", theme);
+    else root.removeAttribute("data-theme"); // auto = segue o sistema/host
+    readPalette();
+    window.dispatchEvent(new CustomEvent("mg:themechange", { detail: { palette: MG } }));
+  }
+  // reage a mudança do sistema quando em modo auto
+  try {
+    var mq = window.matchMedia("(prefers-color-scheme: dark)");
+    mq.addEventListener("change", function () {
+      if (!root.hasAttribute("data-theme")) { readPalette(); window.dispatchEvent(new CustomEvent("mg:themechange", { detail: { palette: MG } })); }
+    });
+  } catch (e) {}
+
+  // ---- i18n -------------------------------------------------------------
+  var DICT = {};
+  var LANG = "pt-BR";
+  function loadDict() {
+    var el = document.getElementById("i18n");
+    if (!el) return;
+    try { DICT = JSON.parse(el.textContent) || {}; } catch (e) { DICT = {}; }
+  }
+  function t(key) {
+    var l = DICT[LANG] || {};
+    if (key in l) return l[key];
+    var base = DICT["pt-BR"] || {};
+    return key in base ? base[key] : key;
+  }
+  function setLang(lang) {
+    if (DICT[lang]) LANG = lang;
+    root.setAttribute("lang", LANG);
+    document.querySelectorAll("[data-i18n]").forEach(function (n) {
+      n.textContent = t(n.getAttribute("data-i18n"));
+    });
+    document.querySelectorAll("[data-i18n-aria]").forEach(function (n) {
+      n.setAttribute("aria-label", t(n.getAttribute("data-i18n-aria")));
+    });
+    window.dispatchEvent(new CustomEvent("mg:langchange", { detail: { lang: LANG } }));
+  }
+  window.MGi18n = { t: t, lang: function () { return LANG; } };
+
+  // ---- auto-resize (reporta altura ao iframe pai) -----------------------
+  var lastH = 0, raf = 0;
+  function reportHeight() {
+    var h = Math.ceil(document.documentElement.getBoundingClientRect().height);
+    if (h && h !== lastH) {
+      lastH = h;
+      try { parent.postMessage({ type: "mg-lab-height", id: document.title || "", height: h }, "*"); } catch (e) {}
+    }
+  }
+  function scheduleReport() { cancelAnimationFrame(raf); raf = requestAnimationFrame(reportHeight); }
+
+  // ---- mensagens do site (host controla tema/idioma) --------------------
+  window.addEventListener("message", function (ev) {
+    var d = ev && ev.data; if (!d || typeof d !== "object") return;
+    if (d.type === "mg-set-theme") setTheme(d.theme);
+    if (d.type === "mg-set-lang") setLang(d.lang);
+  });
+
+  // ---- reset ("voltar ao exemplo") --------------------------------------
+  document.addEventListener("click", function (ev) {
+    var b = ev.target.closest && ev.target.closest("[data-mg-reset]");
+    if (b && typeof window.MGReset === "function") { ev.preventDefault(); window.MGReset(); }
+  });
+
+  // ---- boot -------------------------------------------------------------
+  function boot() {
+    readPalette();
+    loadDict();
+    var p = params();
+    var th = p.get("theme"); if (th) setTheme(th); else readPalette();
+    var lg = p.get("lang"); setLang(lg || LANG);
+    if (window.ResizeObserver) new ResizeObserver(scheduleReport).observe(document.documentElement);
+    window.addEventListener("load", scheduleReport);
+    window.addEventListener("mg:themechange", scheduleReport);
+    setTimeout(reportHeight, 60);
+  }
+  // popula MG imediatamente (o <style> do lab já foi parseado), para o canvas
+  // do lab ver as cores certas mesmo se desenhar antes do DOMContentLoaded.
+  readPalette();
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
+  else boot();
+})();
+</script>
+<!-- MG-RUNTIME:end -->
+</head>
+<body>
+<div class="page">
+  <a class="back" href="../#catalog">← Trilha interativa MGenética</a>
+  <p class="eyebrow">Módulo 6 · Valores e médias</p>
+  <h1>Fenótipo = Genótipo + Ambiente</h1>
+  <p class="sub">O que você mede (P) não é o que se transmite (G). O ambiente (E) some ou subtrai. Ajuste os três animais do exemplo e descubra por que o maior fenótipo nem sempre é o melhor genótipo.</p>
+
+  <div class="card">
+    <h2><span class="n">1</span>Três animais, três histórias</h2>
+    <p style="font-size:.84rem;color:var(--mg-muted);margin-bottom:1rem;">Valores em cm de desvio em relação à média de referência. P = G + E é calculado automaticamente.</p>
+    <div id="controls"></div>
+  </div>
+
+  <div class="card">
+    <h2><span class="n">2</span>Decomposição visual</h2>
+    <canvas id="cv" width="1440" height="560"></canvas>
+    <div class="legend">
+      <span><i class="dot" style="background:#0a1f38"></i> G — genótipo (transmissível)</span>
+      <span><i class="dot" style="background:#00a8d6"></i> E positivo</span>
+      <span><i class="dot" style="background:#c2410c"></i> E negativo</span>
+      <span><i style="display:inline-block;width:18px;border-top:2px dashed #7b4200"></i> média de P</span>
+    </div>
+    <div class="formula">P = G + E</div>
+  </div>
+
+  <div class="card">
+    <h2><span class="n">3</span>O ranking depende do que você olha</h2>
+    <div class="ranks">
+      <div class="rank"><h4>Ranking por fenótipo (P) — o que você vê</h4><ol id="rankP"></ol></div>
+      <div class="rank"><h4>Ranking por genótipo (G) — o que se transmite</h4><ol id="rankG"></ol></div>
+    </div>
+    <div class="note" id="paradox"></div>
+    <div class="try"><b>Experimente:</b> volte aos valores iniciais (Animal B: G = 12, E = −2). B tem o <b>maior G</b>, mas só o 2º maior P, porque o ambiente o prejudicou. Selecionar pelo fenótipo cru descartaria o melhor genótipo — é por isso que o curso desenvolve EBV/DEP (M15) e BLUP (M17).</div>
+  </div>
+
+  <div class="mg-foot">MGenética · artefato interativo · derivado do texto M6 — Valores e médias: fenótipo, genótipo e ambiente</div>
+</div>
+
+<!-- ▼▼▼ DADOS EDITÁVEIS — altere o exemplo aqui (G = genótipo, E = ambiente; valores iniciais dos controles). ▼▼▼ -->
+<script type="application/json" id="dados">
+{
+  "animais": [
+    {
+      "id": "A",
+      "name": "Animal A",
+      "G": 10,
+      "E": 1
+    },
+    {
+      "id": "B",
+      "name": "Animal B",
+      "G": 12,
+      "E": -2
+    },
+    {
+      "id": "C",
+      "name": "Animal C",
+      "G": 8,
+      "E": 3
+    }
+  ]
+}
+</script>
+<!-- ▲▲▲ FIM DOS DADOS EDITÁVEIS ▲▲▲ -->
+
+<script>
+  const C={cyan:'#00a8d6',navy:'#0a1f38',navy7:'#1a4b78',muted:'#5a7391',gold:'#7b4200',red:'#c2410c'};
+  const DADOS=JSON.parse(document.getElementById('dados').textContent);
+  const animals=DADOS.animais;
+  const cv=document.getElementById('cv'),ctx=cv.getContext('2d');ctx.scale(2,2);
+  const CW=720,CH=280;
+  function f1(x){return (Math.round(x*10)/10).toFixed(1).replace('.',',');}
+  function sgn(x){return (x>=0?'+':'')+f1(x);}
+
+  // build controls
+  const cont=document.getElementById('controls');
+  animals.forEach((a,i)=>{
+    const d=document.createElement('div');d.className='animal';
+    d.innerHTML=`<h3><span>${a.name}</span><span class="p">P = <span id="P${a.id}">0</span> cm</span></h3>
+      <div class="mini"><span class="tag" style="color:#0a1f38">G</span><input type="range" class="g" id="G${a.id}" min="0" max="16" step="0.5" value="${a.G}"><span class="num" id="Gv${a.id}">${a.G}</span></div>
+      <div class="mini"><span class="tag" style="color:#00a8d6">E</span><input type="range" id="E${a.id}" min="-5" max="5" step="0.5" value="${a.E}"><span class="num" id="Ev${a.id}">${a.E}</span></div>`;
+    cont.appendChild(d);
+  });
+
+  function draw(data){
+    ctx.clearRect(0,0,CW,CH);
+    const x0=110,x1=690,vmax=18;
+    const X=v=>x0+(x1-x0)*(v/vmax);
+    const rowH=70,top=24;
+    const meanP=data.reduce((s,a)=>s+a.P,0)/data.length;
+    // grid
+    ctx.font='11px monospace';ctx.textAlign='center';
+    for(let v=0;v<=18;v+=3){ctx.strokeStyle='rgba(10,31,56,.07)';ctx.beginPath();ctx.moveTo(X(v),top-6);ctx.lineTo(X(v),top+rowH*data.length-10);ctx.stroke();
+      ctx.fillStyle=C.muted;ctx.fillText(v,X(v),top+rowH*data.length+4);}
+    // mean line
+    ctx.strokeStyle=C.gold;ctx.setLineDash([6,5]);ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(X(meanP),top-8);ctx.lineTo(X(meanP),top+rowH*data.length-12);ctx.stroke();ctx.setLineDash([]);
+    ctx.fillStyle=C.gold;ctx.font='bold 10px monospace';ctx.fillText('média P='+f1(meanP),X(meanP),top-12);
+    data.forEach((a,i)=>{
+      const y=top+i*rowH+18,h=22;
+      // name
+      ctx.fillStyle=C.navy;ctx.font='bold 13px monospace';ctx.textAlign='right';ctx.fillText(a.id,x0-14,y+16);
+      // G bar (navy) from 0 to G
+      ctx.fillStyle=C.navy;ctx.fillRect(X(0),y,X(a.G)-X(0),h);
+      // E segment
+      if(a.E>=0){ctx.fillStyle=C.cyan;ctx.fillRect(X(a.G),y,X(a.G+a.E)-X(a.G),h);}
+      else{ctx.fillStyle=C.red;ctx.fillRect(X(a.P),y,X(a.G)-X(a.P),h);
+        // hatch
+        ctx.save();ctx.beginPath();ctx.rect(X(a.P),y,X(a.G)-X(a.P),h);ctx.clip();
+        ctx.strokeStyle='rgba(255,255,255,.4)';ctx.lineWidth=1;
+        for(let xx=X(a.P)-h;xx<X(a.G);xx+=6){ctx.beginPath();ctx.moveTo(xx,y+h);ctx.lineTo(xx+h,y);ctx.stroke();}ctx.restore();}
+      // P marker
+      ctx.strokeStyle=C.navy;ctx.lineWidth=2.5;ctx.beginPath();ctx.moveTo(X(a.P),y-4);ctx.lineTo(X(a.P),y+h+4);ctx.stroke();
+      // labels
+      ctx.fillStyle='#fff';ctx.font='bold 11px monospace';ctx.textAlign='center';
+      if(X(a.G)-X(0)>34)ctx.fillText('G '+f1(a.G),(X(0)+X(a.G))/2,y+15);
+      ctx.fillStyle=C.navy;ctx.textAlign='left';ctx.font='bold 12px monospace';
+      ctx.fillText('P='+f1(a.P),X(Math.max(a.P,a.G))+10,y+15);
+    });
+  }
+
+  function update(){
+    const data=animals.map(a=>{
+      const G=parseFloat(document.getElementById('G'+a.id).value);
+      const E=parseFloat(document.getElementById('E'+a.id).value);
+      const P=G+E;
+      document.getElementById('Gv'+a.id).textContent=f1(G);
+      document.getElementById('Ev'+a.id).textContent=sgn(E);
+      document.getElementById('P'+a.id).textContent=f1(P);
+      return {id:a.id,name:a.name,G,E,P};
+    });
+    draw(data);
+    // rankings
+    const byP=[...data].sort((x,y)=>y.P-x.P);
+    const byG=[...data].sort((x,y)=>y.G-x.G);
+    const li=(a,metric,top)=>`<li class="${top?'top':''}">${a.name} · ${metric}=${f1(a[metric])}</li>`;
+    document.getElementById('rankP').innerHTML=byP.map((a,i)=>li(a,'P',i===0)).join('');
+    document.getElementById('rankG').innerHTML=byG.map((a,i)=>li(a,'G',i===0)).join('');
+    const pbox=document.getElementById('paradox');
+    if(byP[0].id!==byG[0].id){
+      pbox.style.borderLeftColor='#ffc107';pbox.style.background='#fff7e0';pbox.style.color='#7b4200';
+      pbox.innerHTML='<b>Paradoxo detectado!</b> O 1º colocado por fenótipo ('+byP[0].name+') <b>não</b> é o melhor por genótipo ('+byG[0].name+'). O ambiente disfarçou o mérito genético — selecionar pelo P cru levaria à decisão errada.';
+    }else{
+      pbox.style.borderLeftColor='#00a8d6';pbox.style.background='#d6f1f9';pbox.style.color='#0a1f38';
+      pbox.innerHTML='Neste cenário, o melhor fenótipo coincide com o melhor genótipo. Mas isso é sorte do ambiente — mude os valores de E e veja o ranking se separar.';
+    }
+  }
+  animals.forEach(a=>{document.getElementById('G'+a.id).addEventListener('input',update);document.getElementById('E'+a.id).addEventListener('input',update);});
+  update();
+</script>
+</body>
+</html>

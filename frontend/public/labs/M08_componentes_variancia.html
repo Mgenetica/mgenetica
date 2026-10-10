@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M8 · Componentes de variância — MGenética</title>
+<style>
+  :root{
+    --mg-ink:#0a1f38;--mg-navy-700:#1a4b78;--mg-navy-900:#061626;
+    --mg-cyan:#00a8d6;--mg-cyan-soft:#d6f1f9;--mg-mid:#4a9fd1;
+    --mg-muted:#5a7391;
+    --mg-bg:#fff;--mg-bg-soft:#f7f9fc;--mg-bg-tint:#eef3f9;
+    --mg-line:rgba(10,31,56,.10);--mg-line-strong:rgba(10,31,56,.18);
+    --mg-gold:#ffc107;--mg-gold-soft:#fff7e0;--mg-gold-border:#ffe08a;--mg-gold-ink:#7b4200;
+    --shadow-sm:0 1px 2px rgba(13,38,66,.05),0 1px 1px rgba(13,38,66,.04);
+    --font-body:"DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+    --font-display:"Lora",Georgia,"Times New Roman",serif;
+    --font-mono:"DM Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:var(--font-body);background:linear-gradient(180deg,#f7f9fc,#eef3f9);min-height:100vh;color:var(--mg-ink);line-height:1.6;padding:1.4rem 1rem 3rem;}
+  .page{max-width:840px;margin:0 auto;}
+  .back{display:inline-block;font-family:var(--font-mono);font-size:.74rem;color:var(--mg-muted);text-decoration:none;margin-bottom:1rem;letter-spacing:.03em;}
+  .back:hover{color:var(--mg-cyan);}
+  .eyebrow{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--mg-cyan);font-weight:600;}
+  h1{font-family:var(--font-display);font-size:1.75rem;font-weight:600;margin:.25rem 0 .4rem;line-height:1.18;}
+  .sub{color:var(--mg-muted);font-size:.96rem;margin-bottom:1.6rem;max-width:62ch;}
+  h2{font-family:var(--font-display);font-size:1.12rem;font-weight:600;color:var(--mg-navy-700);margin-bottom:.9rem;display:flex;align-items:center;gap:.5rem;}
+  h2 .n{display:inline-flex;align-items:center;justify-content:center;width:1.5rem;height:1.5rem;border-radius:50%;background:var(--mg-cyan);color:#fff;font-family:var(--font-mono);font-size:.8rem;font-weight:700;flex:none;}
+  .card{background:var(--mg-bg);border:1px solid var(--mg-line);border-radius:var(--radius);padding:1.4rem;margin-bottom:1.2rem;box-shadow:var(--shadow-sm);}
+  .slider-group{margin-bottom:1rem;}
+  .slider-group label{display:flex;justify-content:space-between;align-items:baseline;font-size:.86rem;margin-bottom:.35rem;font-weight:500;}
+  .slider-group label .nm{display:inline-flex;align-items:center;gap:.4rem;}
+  .slider-group label .v{font-family:var(--font-mono);font-weight:700;font-size:.95rem;}
+  .sw{width:12px;height:12px;border-radius:3px;display:inline-block;}
+  input[type=range]{width:100%;height:6px;-webkit-appearance:none;appearance:none;background:var(--mg-bg-tint);border-radius:4px;outline:none;}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--mg-cyan);border:3px solid #fff;box-shadow:var(--shadow-sm);cursor:pointer;}
+  input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--mg-cyan);border:3px solid #fff;cursor:pointer;}
+  canvas{width:100%;max-width:300px;height:auto;display:block;margin:0 auto;}
+  .twocol{display:grid;grid-template-columns:300px 1fr;gap:1.2rem;align-items:center;}
+  @media(max-width:620px){.twocol{grid-template-columns:1fr;}}
+  .stack{display:flex;height:38px;border-radius:8px;overflow:hidden;border:1px solid var(--mg-line);font-family:var(--font-mono);font-size:.76rem;font-weight:700;}
+  .stack>div{display:flex;align-items:center;justify-content:center;color:#fff;transition:flex-basis .35s ease;overflow:hidden;}
+  .res-grid{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-top:1rem;}
+  .res{background:var(--mg-bg-soft);border:1px solid var(--mg-line);border-radius:12px;padding:.9rem;text-align:center;}
+  .res .lab{font-size:.72rem;color:var(--mg-muted);margin-bottom:.25rem;font-family:var(--font-mono);}
+  .res .val{font-family:var(--font-mono);font-size:1.55rem;font-weight:700;}
+  .res .hint{font-size:.74rem;color:var(--mg-muted);margin-top:.25rem;}
+  .formula{font-family:var(--font-mono);background:var(--mg-bg-tint);border:1px solid var(--mg-line);border-radius:8px;padding:.7rem .9rem;font-size:.86rem;color:var(--mg-navy-700);margin:.6rem 0;text-align:center;}
+  .btn{font-family:var(--font-mono);font-size:.8rem;border:1px solid var(--mg-cyan);background:#fff;color:var(--mg-navy-700);border-radius:8px;padding:.4rem .8rem;cursor:pointer;transition:.15s;margin-right:.4rem;}
+  .btn:hover{background:var(--mg-cyan);color:#fff;}
+  .note{border-left:3px solid var(--mg-cyan);background:var(--mg-cyan-soft);color:var(--mg-navy-900);padding:.75rem .9rem;border-radius:0 8px 8px 0;font-size:.86rem;margin-top:1rem;}
+  .try{font-size:.82rem;color:var(--mg-navy-700);background:var(--mg-bg-tint);border:1px dashed var(--mg-line-strong);border-radius:8px;padding:.6rem .8rem;margin-top:.9rem;}
+  .try b{color:var(--mg-cyan);}
+  .mg-foot{text-align:center;font-size:.74rem;color:var(--mg-muted);margin-top:2rem;font-family:var(--font-mono);}
+</style>
+<!-- MG-RUNTIME:start (gerado por scripts/apply_lab_runtime.py — não editar à mão) -->
+<style id="mg-runtime">
+/* mg-lab.css — runtime compartilhado dos labs interativos MGenética.
+   Fonte única: injetado inline em cada lab (mantém self-contained/offline).
+   Adiciona tema ESCURO (sobre os mesmos tokens --mg-* que os labs já usam),
+   foco visível, reduced-motion e utilitários de acessibilidade.
+   Deve vir DEPOIS do <style> do lab para sobrescrever o :root claro. */
+
+/* ----- Tema escuro: auto (prefers-color-scheme) + manual ([data-theme]) ----- */
+:root[data-theme="dark"],
+:root.mg-dark {
+  --mg-ink:#e8eef5;
+  --mg-navy-700:#5fa8da;
+  --mg-navy-900:#cdddec;
+  --mg-cyan:#34c0e8;
+  --mg-cyan-soft:#10344a;
+  --mg-mid:#6bb4dd;
+  --mg-muted:#9fb3c9;
+  --mg-bg:#0c1622;
+  --mg-bg-soft:#111f30;
+  --mg-bg-tint:#16263a;
+  --mg-line:rgba(220,235,250,.12);
+  --mg-line-strong:rgba(220,235,250,.22);
+  --mg-gold:#ffca28;
+  --mg-gold-soft:#33290f;
+  --mg-gold-border:#7a5a16;
+  --mg-gold-ink:#ffd97a;
+  --mg-red:#f08a5a;
+  --mg-red-soft:#3a2018;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]):not(.mg-light) {
+    --mg-ink:#e8eef5;
+    --mg-navy-700:#5fa8da;
+    --mg-navy-900:#cdddec;
+    --mg-cyan:#34c0e8;
+    --mg-cyan-soft:#10344a;
+    --mg-mid:#6bb4dd;
+    --mg-muted:#9fb3c9;
+    --mg-bg:#0c1622;
+    --mg-bg-soft:#111f30;
+    --mg-bg-tint:#16263a;
+    --mg-line:rgba(220,235,250,.12);
+    --mg-line-strong:rgba(220,235,250,.22);
+    --mg-gold:#ffca28;
+    --mg-gold-soft:#33290f;
+    --mg-gold-border:#7a5a16;
+    --mg-gold-ink:#ffd97a;
+    --mg-red:#f08a5a;
+    --mg-red-soft:#3a2018;
+  }
+}
+
+/* garante que o fundo/texto sigam os tokens (alguns labs herdam do body) */
+html, body { background: var(--mg-bg); color: var(--mg-ink); }
+:root { color-scheme: light dark; }
+
+/* ----- Acessibilidade ----- */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 3px solid var(--mg-cyan);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+.mg-visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ----- Controles do runtime (reset, legenda "como ler") ----- */
+.mg-reset-btn {
+  font: inherit; cursor: pointer;
+  border: 1px solid var(--mg-line-strong);
+  background: var(--mg-bg-soft); color: var(--mg-navy-700);
+  border-radius: 8px; padding: 6px 12px; font-weight: 600; font-size: 12.5px;
+}
+.mg-reset-btn:hover { border-color: var(--mg-cyan); }
+.mg-howto {
+  font-size: 12px; color: var(--mg-muted); margin: 6px 0 0; line-height: 1.5;
+}
+
+/* ----- Base responsiva (vale para todos, mesmo sem media query própria) ----- */
+img, canvas, svg, iframe, table { max-width: 100%; }
+canvas { height: auto; }
+@media (max-width: 640px) {
+  body { font-size: 15px; }
+}
+</style>
+<script id="mg-runtime">
+/* mg-lab.js — runtime compartilhado dos labs interativos MGenética.
+   Fonte única, injetado inline. Fornece:
+   - MG: tokens de cor (lidos do CSS) para o canvas usar e reagir ao tema.
+   - tema/idioma via ?theme=&lang= e via postMessage do site (iframe).
+   - auto-resize: reporta a altura ao parent (postMessage).
+   - i18n t(key) lendo <script type="application/json" id="i18n">.
+   - hook de reset ("voltar ao exemplo"). Tudo offline, sem dependências. */
+(function () {
+  "use strict";
+  var root = document.documentElement;
+  var TOKENS = {
+    ink: "--mg-ink", navy7: "--mg-navy-700", navy9: "--mg-navy-900",
+    cyan: "--mg-cyan", cyanSoft: "--mg-cyan-soft", mid: "--mg-mid", muted: "--mg-muted",
+    bg: "--mg-bg", bgSoft: "--mg-bg-soft", bgTint: "--mg-bg-tint",
+    line: "--mg-line", lineStrong: "--mg-line-strong",
+    gold: "--mg-gold", goldSoft: "--mg-gold-soft", goldBorder: "--mg-gold-border", goldInk: "--mg-gold-ink",
+    red: "--mg-red", redSoft: "--mg-red-soft"
+  };
+  var MG = {};
+  window.MG = MG; // canvas usa MG.ink, MG.cyan, ...
+
+  function readPalette() {
+    var cs = getComputedStyle(root);
+    for (var k in TOKENS) MG[k] = cs.getPropertyValue(TOKENS[k]).trim();
+  }
+
+  function params() {
+    try { return new URLSearchParams(location.search); } catch (e) { return new URLSearchParams(); }
+  }
+
+  // ---- tema -------------------------------------------------------------
+  function setTheme(theme) {
+    if (theme === "dark" || theme === "light") root.setAttribute("data-theme", theme);
+    else root.removeAttribute("data-theme"); // auto = segue o sistema/host
+    readPalette();
+    window.dispatchEvent(new CustomEvent("mg:themechange", { detail: { palette: MG } }));
+  }
+  // reage a mudança do sistema quando em modo auto
+  try {
+    var mq = window.matchMedia("(prefers-color-scheme: dark)");
+    mq.addEventListener("change", function () {
+      if (!root.hasAttribute("data-theme")) { readPalette(); window.dispatchEvent(new CustomEvent("mg:themechange", { detail: { palette: MG } })); }
+    });
+  } catch (e) {}
+
+  // ---- i18n -------------------------------------------------------------
+  var DICT = {};
+  var LANG = "pt-BR";
+  function loadDict() {
+    var el = document.getElementById("i18n");
+    if (!el) return;
+    try { DICT = JSON.parse(el.textContent) || {}; } catch (e) { DICT = {}; }
+  }
+  function t(key) {
+    var l = DICT[LANG] || {};
+    if (key in l) return l[key];
+    var base = DICT["pt-BR"] || {};
+    return key in base ? base[key] : key;
+  }
+  function setLang(lang) {
+    if (DICT[lang]) LANG = lang;
+    root.setAttribute("lang", LANG);
+    document.querySelectorAll("[data-i18n]").forEach(function (n) {
+      n.textContent = t(n.getAttribute("data-i18n"));
+    });
+    document.querySelectorAll("[data-i18n-aria]").forEach(function (n) {
+      n.setAttribute("aria-label", t(n.getAttribute("data-i18n-aria")));
+    });
+    window.dispatchEvent(new CustomEvent("mg:langchange", { detail: { lang: LANG } }));
+  }
+  window.MGi18n = { t: t, lang: function () { return LANG; } };
+
+  // ---- auto-resize (reporta altura ao iframe pai) -----------------------
+  var lastH = 0, raf = 0;
+  function reportHeight() {
+    var h = Math.ceil(document.documentElement.getBoundingClientRect().height);
+    if (h && h !== lastH) {
+      lastH = h;
+      try { parent.postMessage({ type: "mg-lab-height", id: document.title || "", height: h }, "*"); } catch (e) {}
+    }
+  }
+  function scheduleReport() { cancelAnimationFrame(raf); raf = requestAnimationFrame(reportHeight); }
+
+  // ---- mensagens do site (host controla tema/idioma) --------------------
+  window.addEventListener("message", function (ev) {
+    var d = ev && ev.data; if (!d || typeof d !== "object") return;
+    if (d.type === "mg-set-theme") setTheme(d.theme);
+    if (d.type === "mg-set-lang") setLang(d.lang);
+  });
+
+  // ---- reset ("voltar ao exemplo") --------------------------------------
+  document.addEventListener("click", function (ev) {
+    var b = ev.target.closest && ev.target.closest("[data-mg-reset]");
+    if (b && typeof window.MGReset === "function") { ev.preventDefault(); window.MGReset(); }
+  });
+
+  // ---- boot -------------------------------------------------------------
+  function boot() {
+    readPalette();
+    loadDict();
+    var p = params();
+    var th = p.get("theme"); if (th) setTheme(th); else readPalette();
+    var lg = p.get("lang"); setLang(lg || LANG);
+    if (window.ResizeObserver) new ResizeObserver(scheduleReport).observe(document.documentElement);
+    window.addEventListener("load", scheduleReport);
+    window.addEventListener("mg:themechange", scheduleReport);
+    setTimeout(reportHeight, 60);
+  }
+  // popula MG imediatamente (o <style> do lab já foi parseado), para o canvas
+  // do lab ver as cores certas mesmo se desenhar antes do DOMContentLoaded.
+  readPalette();
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
+  else boot();
+})();
+</script>
+<!-- MG-RUNTIME:end -->
+</head>
+<body>
+<div class="page">
+  <a class="back" href="../#catalog">← Trilha interativa MGenética</a>
+  <p class="eyebrow">Módulo 8 · Genética quantitativa</p>
+  <h1>Componentes de variância</h1>
+  <p class="sub">A variação fenotípica total (VP) se reparte em peças. Só uma delas — a aditiva (VA) — passa de forma confiável para os filhos. Ajuste as peças e veja a herdabilidade nascer da proporção.</p>
+
+  <div class="card">
+    <h2><span class="n">1</span>Reparta a variância (em unidades²)</h2>
+    <div class="slider-group">
+      <label><span class="nm"><i class="sw" style="background:#0a1f38"></i> VA — aditiva</span><span class="v" id="vVA" style="color:#0a1f38">40</span></label>
+      <input type="range" id="VA" min="0" max="80" step="1" value="40">
+    </div>
+    <div class="slider-group">
+      <label><span class="nm"><i class="sw" style="background:#00a8d6"></i> VD — dominância</span><span class="v" id="vVD" style="color:#00a8d6">10</span></label>
+      <input type="range" id="VD" min="0" max="80" step="1" value="10">
+    </div>
+    <div class="slider-group">
+      <label><span class="nm"><i class="sw" style="background:#4a9fd1"></i> VI — interação (epistasia)</span><span class="v" id="vVI" style="color:#4a9fd1">5</span></label>
+      <input type="range" id="VI" min="0" max="80" step="1" value="5">
+    </div>
+    <div class="slider-group">
+      <label><span class="nm"><i class="sw" style="background:#ffc107"></i> VE — ambiente</span><span class="v" id="vVE" style="color:#7b4200">45</span></label>
+      <input type="range" id="VE" min="0" max="80" step="1" value="45">
+    </div>
+    <button class="btn" id="reset">Exemplo do curso (40·10·5·45)</button>
+    <button class="btn" id="dbl">Dobrar VE</button>
+  </div>
+
+  <div class="card">
+    <h2><span class="n">2</span>Partição de VP</h2>
+    <div class="twocol">
+      <canvas id="cv" width="600" height="600"></canvas>
+      <div>
+        <div class="stack" id="stack"></div>
+        <p style="font-size:.78rem;color:var(--mg-muted);margin-top:.5rem;">VP total = <b id="VP" style="font-family:var(--font-mono);color:var(--mg-navy-700)">100</b> unidades². As fatias são proporções de VP.</p>
+        <div class="res-grid">
+          <div class="res"><div class="lab">h² (sentido estrito)</div><div class="val" id="h2" style="color:#00a8d6">0,40</div><div class="hint">VA / VP — o que se transmite</div></div>
+          <div class="res"><div class="lab">H² (sentido amplo)</div><div class="val" id="H2" style="color:#1a4b78">0,55</div><div class="hint">(VA+VD+VI) / VP</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="formula">VP = VA + VD + VI + VE &nbsp;·&nbsp; h² = VA / VP &nbsp;·&nbsp; H² = (VA + VD + VI) / VP</div>
+  </div>
+
+  <div class="card">
+    <h2><span class="n">3</span>Leitura</h2>
+    <div class="note" id="explain"></div>
+    <div class="try"><b>Experimente:</b> clique em "Dobrar VE". VA continua 40, mas VP sobe para 145 e h² cai de 0,40 para 0,28. <b>A herdabilidade não é uma propriedade fixa da característica</b> — ela depende de quanta variação ambiental existe no rebanho e no ambiente de avaliação.</div>
+  </div>
+
+  <div class="mg-foot">MGenética · artefato interativo · derivado do texto M8 — Componentes de variância</div>
+</div>
+
+<script>
+  const COL={VA:'#0a1f38',VD:'#00a8d6',VI:'#4a9fd1',VE:'#ffc107'};
+  const cv=document.getElementById('cv'),ctx=cv.getContext('2d');ctx.scale(2,2);
+  const CW=300,CH=300,cx=150,cy=150,rOut=120,rIn=66;
+  function f3(x){return x.toFixed(3).replace('.',',');}
+  const el=id=>document.getElementById(id);
+
+  function donut(parts,VP){
+    ctx.clearRect(0,0,CW,CH);
+    let ang=-Math.PI/2;
+    parts.forEach(pt=>{
+      if(pt.v<=0)return;
+      const a2=ang+(pt.v/VP)*2*Math.PI;
+      ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,rOut,ang,a2);ctx.closePath();
+      ctx.fillStyle=pt.c;ctx.fill();
+      ang=a2;
+    });
+    // inner hole
+    ctx.beginPath();ctx.arc(cx,cy,rIn,0,7);ctx.fillStyle='#fff';ctx.fill();
+    ctx.fillStyle='#5a7391';ctx.font='12px monospace';ctx.textAlign='center';ctx.fillText('VP',cx,cy-8);
+    ctx.fillStyle='#0a1f38';ctx.font='bold 26px monospace';ctx.fillText(VP,cx,cy+18);
+  }
+
+  function update(){
+    const VA=+el('VA').value,VD=+el('VD').value,VI=+el('VI').value,VE=+el('VE').value;
+    el('vVA').textContent=VA;el('vVD').textContent=VD;el('vVI').textContent=VI;el('vVE').textContent=VE;
+    const VP=VA+VD+VI+VE;el('VP').textContent=VP;
+    if(VP===0)return;
+    const h2=VA/VP,H2=(VA+VD+VI)/VP;
+    el('h2').textContent=f3(h2);el('H2').textContent=f3(H2);
+    donut([{v:VA,c:COL.VA},{v:VD,c:COL.VD},{v:VI,c:COL.VI},{v:VE,c:COL.VE}],VP);
+    const segs=[['VA',VA,COL.VA],['VD',VD,COL.VD],['VI',VI,COL.VI],['VE',VE,COL.VE]];
+    el('stack').innerHTML=segs.map(s=>{const pct=s[1]/VP*100;return `<div style="background:${s[2]};flex:0 0 ${pct.toFixed(1)}%">${pct>=10?s[0]:''}</div>`;}).join('');
+    const ex=el('explain');
+    let msg='';
+    if(h2<0.15)msg='h² <b>baixo</b> ('+f3(h2)+'): a maior parte da variação é ambiental ou não-aditiva. Seleção massal avança devagar — vale investir em controle de ambiente e em avaliação que separe G de E (BLUP).';
+    else if(h2<0.35)msg='h² <b>moderado-baixo</b> ('+f3(h2)+'): há resposta à seleção, mas a avaliação precisa ser cuidadosa porque o ambiente ainda pesa muito.';
+    else if(h2<0.5)msg='h² <b>moderado</b> ('+f3(h2)+'): boa fração aditiva. A seleção move a média da progênie de forma eficaz — situação típica de muitas características de crescimento.';
+    else msg='h² <b>alto</b> ('+f3(h2)+'): a maior parte da variação é aditiva e transmissível. O fenótipo é um bom indicador do valor genético.';
+    if(H2-h2>0.18)msg+=' <br><br>Note o vão entre H² e h²: muita variação <b>não-aditiva</b> (VD+VI). Essa parte melhora o desempenho do indivíduo, mas não se transmite de forma previsível — é o que a heterose (M14) explora e perde a cada geração.';
+    ex.innerHTML=msg;
+  }
+  ['VA','VD','VI','VE'].forEach(id=>el(id).addEventListener('input',update));
+  el('reset').addEventListener('click',()=>{el('VA').value=40;el('VD').value=10;el('VI').value=5;el('VE').value=45;update();});
+  el('dbl').addEventListener('click',()=>{el('VE').value=Math.min(80,(+el('VE').value)*2);update();});
+  update();
+</script>
+<script type="application/json" id="dados">
+{
+  "controls": {
+    "VA": {
+      "type": "range",
+      "min": 0,
+      "max": 80,
+      "step": 1,
+      "value": 40
+    },
+    "VD": {
+      "type": "range",
+      "min": 0,
+      "max": 80,
+      "step": 1,
+      "value": 10
+    },
+    "VI": {
+      "type": "range",
+      "min": 0,
+      "max": 80,
+      "step": 1,
+      "value": 5
+    },
+    "VE": {
+      "type": "range",
+      "min": 0,
+      "max": 80,
+      "step": 1,
+      "value": 45
+    }
+  }
+}
+</script>
+<script id="dados-hydrator">
+(() => {
+  const node = document.getElementById('dados');
+  if (!node) return;
+  let data;
+  try { data = JSON.parse(node.textContent || '{}'); } catch (_) { return; }
+  const controls = data.controls || {};
+  for (const [id, cfg] of Object.entries(controls)) {
+    const target = document.getElementById(id);
+    if (!target || cfg == null || !Object.prototype.hasOwnProperty.call(cfg, 'value')) continue;
+    target.value = String(cfg.value);
+    target.dispatchEvent(new Event('input', { bubbles: true }));
+    target.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+  if (data.cruzamento && typeof update === 'function') {
+    try {
+      if (Object.prototype.hasOwnProperty.call(data.cruzamento, 'pai')) pai = data.cruzamento.pai;
+      if (Object.prototype.hasOwnProperty.call(data.cruzamento, 'mae')) mae = data.cruzamento.mae;
+      update();
+    } catch (_) {}
+  }
+})();
+</script>
+</body>
+</html>

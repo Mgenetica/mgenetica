@@ -4,7 +4,7 @@ const inputUrl = process.argv[2] || process.env.DEPLOYED_URL || 'https://mgeneti
 const baseUrl = new URL(inputUrl.endsWith('/') ? inputUrl : `${inputUrl}/`)
 
 const expectedRedirects = [
-  { path: 'plataforma.html', hash: '#auth' },
+  { path: 'plataforma.html', hash: '#catalog' },
   { path: 'modules/', hash: '#catalog' },
   { path: 'modules/modulo01-revisao-de-genetica-basica.html', hash: '#course/module-01' },
   { path: 'modules/modulo15-avaliacao-genetica-dep-ebv-e-ranking-de-animais.html', hash: '#course/module-15' },

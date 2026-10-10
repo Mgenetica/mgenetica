@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M3 · Frequências alélicas — MGenética</title>
+<style>
+  :root{
+    --mg-ink:#0a1f38;--mg-navy-700:#1a4b78;--mg-navy-900:#061626;
+    --mg-cyan:#00a8d6;--mg-cyan-soft:#d6f1f9;--mg-mid:#4a9fd1;
+    --mg-muted:#5a7391;
+    --mg-bg:#fff;--mg-bg-soft:#f7f9fc;--mg-bg-tint:#eef3f9;
+    --mg-line:rgba(10,31,56,.10);--mg-line-strong:rgba(10,31,56,.18);
+    --mg-gold:#ffc107;--mg-gold-soft:#fff7e0;--mg-gold-border:#ffe08a;--mg-gold-ink:#7b4200;
+    --shadow-sm:0 1px 2px rgba(13,38,66,.05),0 1px 1px rgba(13,38,66,.04);
+    --font-body:"DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+    --font-display:"Lora",Georgia,"Times New Roman",serif;
+    --font-mono:"DM Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:var(--font-body);background:linear-gradient(180deg,#f7f9fc,#eef3f9);min-height:100vh;color:var(--mg-ink);line-height:1.6;padding:1.4rem 1rem 3rem;}
+  .page{max-width:840px;margin:0 auto;}
+  .back{display:inline-block;font-family:var(--font-mono);font-size:.74rem;color:var(--mg-muted);text-decoration:none;margin-bottom:1rem;letter-spacing:.03em;}
+  .back:hover{color:var(--mg-cyan);}
+  .eyebrow{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--mg-cyan);font-weight:600;}
+  h1{font-family:var(--font-display);font-size:1.75rem;font-weight:600;margin:.25rem 0 .4rem;line-height:1.18;}
+  .sub{color:var(--mg-muted);font-size:.96rem;margin-bottom:1.6rem;max-width:62ch;}
+  h2{font-family:var(--font-display);font-size:1.12rem;font-weight:600;color:var(--mg-navy-700);margin-bottom:.9rem;display:flex;align-items:center;gap:.5rem;}
+  h2 .n{display:inline-flex;align-items:center;justify-content:center;width:1.5rem;height:1.5rem;border-radius:50%;background:var(--mg-cyan);color:#fff;font-family:var(--font-mono);font-size:.8rem;font-weight:700;flex:none;}
+  .card{background:var(--mg-bg);border:1px solid var(--mg-line);border-radius:var(--radius);padding:1.4rem;margin-bottom:1.2rem;box-shadow:var(--shadow-sm);}
+  .counts{display:grid;grid-template-columns:repeat(3,1fr);gap:.9rem;}
+  .count{border-radius:12px;padding:.9rem;text-align:center;border:1px solid var(--mg-line);}
+  .count .gt{font-family:var(--font-mono);font-weight:700;font-size:1.05rem;margin-bottom:.5rem;}
+  .count input{font-family:var(--font-mono);background:#fff;border:1px solid var(--mg-line-strong);color:var(--mg-ink);border-radius:8px;padding:.4rem;font-size:1.1rem;width:100%;text-align:center;outline:none;}
+  .count input:focus{border-color:var(--mg-cyan);box-shadow:0 0 0 3px var(--mg-cyan-soft);}
+  .c-AA{background:rgba(10,31,56,.05);} .c-AA .gt{color:#0a1f38;}
+  .c-Aa{background:rgba(0,168,214,.08);} .c-Aa .gt{color:#0a7a99;}
+  .c-aa{background:rgba(74,159,209,.10);} .c-aa .gt{color:#1a4b78;}
+  .pool{display:flex;flex-wrap:wrap;gap:4px;margin:.4rem 0 0;line-height:0;}
+  .allele{width:15px;height:15px;border-radius:50%;}
+  .a-A{background:#0a1f38;} .a-a{background:#00a8d6;}
+  .bar{display:flex;height:34px;border-radius:8px;overflow:hidden;border:1px solid var(--mg-line);margin-top:.3rem;font-size:.78rem;font-weight:700;}
+  .bar>div{display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--font-mono);transition:flex-basis .35s ease;white-space:nowrap;overflow:hidden;}
+  .legend{display:flex;gap:1rem;flex-wrap:wrap;font-size:.78rem;color:var(--mg-muted);margin-top:.5rem;}
+  .legend span{display:inline-flex;align-items:center;gap:.35rem;}
+  .dot{width:11px;height:11px;border-radius:3px;display:inline-block;}
+  .res-grid{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-top:.4rem;}
+  .res{background:var(--mg-bg-soft);border:1px solid var(--mg-line);border-radius:12px;padding:.9rem;text-align:center;}
+  .res .lab{font-size:.74rem;color:var(--mg-muted);margin-bottom:.25rem;}
+  .res .val{font-family:var(--font-mono);font-size:1.6rem;font-weight:700;color:var(--mg-cyan);}
+  .formula{font-family:var(--font-mono);background:var(--mg-bg-tint);border:1px solid var(--mg-line);border-radius:8px;padding:.7rem .9rem;font-size:.86rem;color:var(--mg-navy-700);margin:.6rem 0;}
+  table{width:100%;border-collapse:collapse;font-size:.85rem;margin-top:.5rem;}
+  th,td{padding:.5rem .55rem;text-align:right;border-bottom:1px solid var(--mg-line);font-family:var(--font-mono);}
+  th:first-child,td:first-child{text-align:left;font-family:var(--font-body);}
+  th{font-size:.7rem;text-transform:uppercase;letter-spacing:.04em;color:var(--mg-muted);font-weight:600;}
+  .note{border-left:3px solid var(--mg-cyan);background:var(--mg-cyan-soft);color:var(--mg-navy-900);padding:.75rem .9rem;border-radius:0 8px 8px 0;font-size:.86rem;margin-top:1rem;}
+  .try{font-size:.82rem;color:var(--mg-navy-700);background:var(--mg-bg-tint);border:1px dashed var(--mg-line-strong);border-radius:8px;padding:.6rem .8rem;margin-top:.9rem;}
+  .try b{color:var(--mg-cyan);}
+  .mg-foot{text-align:center;font-size:.74rem;color:var(--mg-muted);margin-top:2rem;font-family:var(--font-mono);}
+</style>
+<!-- MG-RUNTIME:start (gerado por scripts/apply_lab_runtime.py — não editar à mão) -->
+<style id="mg-runtime">
+/* mg-lab.css — runtime compartilhado dos labs interativos MGenética.
+   Fonte única: injetado inline em cada lab (mantém self-contained/offline).
+   Adiciona tema ESCURO (sobre os mesmos tokens --mg-* que os labs já usam),
+   foco visível, reduced-motion e utilitários de acessibilidade.
+   Deve vir DEPOIS do <style> do lab para sobrescrever o :root claro. */
+
+/* ----- Tema escuro: auto (prefers-color-scheme) + manual ([data-theme]) ----- */
+:root[data-theme="dark"],
+:root.mg-dark {
+  --mg-ink:#e8eef5;
+  --mg-navy-700:#5fa8da;
+  --mg-navy-900:#cdddec;
+  --mg-cyan:#34c0e8;
+  --mg-cyan-soft:#10344a;
+  --mg-mid:#6bb4dd;
+  --mg-muted:#9fb3c9;
+  --mg-bg:#0c1622;
+  --mg-bg-soft:#111f30;
+  --mg-bg-tint:#16263a;
+  --mg-line:rgba(220,235,250,.12);
+  --mg-line-strong:rgba(220,235,250,.22);
+  --mg-gold:#ffca28;
+  --mg-gold-soft:#33290f;
+  --mg-gold-border:#7a5a16;
+  --mg-gold-ink:#ffd97a;
+  --mg-red:#f08a5a;
+  --mg-red-soft:#3a2018;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]):not(.mg-light) {
+    --mg-ink:#e8eef5;
+    --mg-navy-700:#5fa8da;
+    --mg-navy-900:#cdddec;
+    --mg-cyan:#34c0e8;
+    --mg-cyan-soft:#10344a;
+    --mg-mid:#6bb4dd;
+    --mg-muted:#9fb3c9;
+    --mg-bg:#0c1622;
+    --mg-bg-soft:#111f30;
+    --mg-bg-tint:#16263a;
+    --mg-line:rgba(220,235,250,.12);
+    --mg-line-strong:rgba(220,235,250,.22);
+    --mg-gold:#ffca28;
+    --mg-gold-soft:#33290f;
+    --mg-gold-border:#7a5a16;
+    --mg-gold-ink:#ffd97a;
+    --mg-red:#f08a5a;
+    --mg-red-soft:#3a2018;
+  }
+}
+
+/* garante que o fundo/texto sigam os tokens (alguns labs herdam do body) */
+html, body { background: var(--mg-bg); color: var(--mg-ink); }
+:root { color-scheme: light dark; }
+
+/* ----- Acessibilidade ----- */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 3px solid var(--mg-cyan);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+.mg-visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ----- Controles do runtime (reset, legenda "como ler") ----- */
+.mg-reset-btn {
+  font: inherit; cursor: pointer;
+  border: 1px solid var(--mg-line-strong);
+  background: var(--mg-bg-soft); color: var(--mg-navy-700);
+  border-radius: 8px; padding: 6px 12px; font-weight: 600; font-size: 12.5px;
+}
+.mg-reset-btn:hover { border-color: var(--mg-cyan); }
+.mg-howto {
+  font-size: 12px; color: var(--mg-muted); margin: 6px 0 0; line-height: 1.5;
+}
+
+/* ----- Base responsiva (vale para todos, mesmo sem media query própria) ----- */
+img, canvas, svg, iframe, table { max-width: 100%; }
+canvas { height: auto; }
+@media (max-width: 640px) {
+  body { font-size: 15px; }
+}
+</style>
+<script id="mg-runtime">
+/* mg-lab.js — runtime compartilhado dos labs interativos MGenética.
+   Fonte única, injetado inline. Fornece:
+   - MG: tokens de cor (lidos do CSS) para o canvas usar e reagir ao tema.
+   - tema/idioma via ?theme=&lang= e via postMessage do site (iframe).
+   - auto-resize: reporta a altura ao parent (postMessage).
+   - i18n t(key) lendo <script type="application/json" id="i18n">.
+   - hook de reset ("voltar ao exemplo"). Tudo offline, sem dependências. */
+(function () {
+  "use strict";
+  var root = document.documentElement;
+  var TOKENS = {
+    ink: "--mg-ink", navy7: "--mg-navy-700", navy9: "--mg-navy-900",
+    cyan: "--mg-cyan", cyanSoft: "--mg-cyan-soft", mid: "--mg-mid", muted: "--mg-muted",
+    bg: "--mg-bg", bgSoft: "--mg-bg-soft", bgTint: "--mg-bg-tint",
+    line: "--mg-line", lineStrong: "--mg-line-strong",
+    gold: "--mg-gold", goldSoft: "--mg-gold-soft", goldBorder: "--mg-gold-border", goldInk: "--mg-gold-ink",
+    red: "--mg-red", redSoft: "--mg-red-soft"
+  };
+  var MG = {};
+  window.MG = MG; // canvas usa MG.ink, MG.cyan, ...
+
+  function readPalette() {
+    var cs = getComputedStyle(root);
+    for (var k in TOKENS) MG[k] = cs.getPropertyValue(TOKENS[k]).trim();
+  }
+
+  function params() {
+    try { return new URLSearchParams(location.search); } catch (e) { return new URLSearchParams(); }
+  }
+
+  // ---- tema -------------------------------------------------------------
+  function setTheme(theme) {
+    if (theme === "dark" || theme === "light") root.setAttribute("data-theme", theme);
+    else root.removeAttribute("data-theme"); // auto = segue o sistema/host
+    readPalette();
+    window.dispatchEvent(new CustomEvent("mg:themechange", { detail: { palette: MG } }));
+  }
+  // reage a mudança do sistema quando em modo auto
+  try {
+    var mq = window.matchMedia("(prefers-color-scheme: dark)");
+    mq.addEventListener("change", function () {
+      if (!root.hasAttribute("data-theme")) { readPalette(); window.dispatchEvent(new CustomEvent("mg:themechange", { detail: { palette: MG } })); }
+    });
+  } catch (e) {}
+
+  // ---- i18n -------------------------------------------------------------
+  var DICT = {};
+  var LANG = "pt-BR";
+  function loadDict() {
+    var el = document.getElementById("i18n");
+    if (!el) return;
+    try { DICT = JSON.parse(el.textContent) || {}; } catch (e) { DICT = {}; }
+  }
+  function t(key) {
+    var l = DICT[LANG] || {};
+    if (key in l) return l[key];
+    var base = DICT["pt-BR"] || {};
+    return key in base ? base[key] : key;
+  }
+  function setLang(lang) {
+    if (DICT[lang]) LANG = lang;
+    root.setAttribute("lang", LANG);
+    document.querySelectorAll("[data-i18n]").forEach(function (n) {
+      n.textContent = t(n.getAttribute("data-i18n"));
+    });
+    document.querySelectorAll("[data-i18n-aria]").forEach(function (n) {
+      n.setAttribute("aria-label", t(n.getAttribute("data-i18n-aria")));
+    });
+    window.dispatchEvent(new CustomEvent("mg:langchange", { detail: { lang: LANG } }));
+  }
+  window.MGi18n = { t: t, lang: function () { return LANG; } };
+
+  // ---- auto-resize (reporta altura ao iframe pai) -----------------------
+  var lastH = 0, raf = 0;
+  function reportHeight() {
+    var h = Math.ceil(document.documentElement.getBoundingClientRect().height);
+    if (h && h !== lastH) {
+      lastH = h;
+      try { parent.postMessage({ type: "mg-lab-height", id: document.title || "", height: h }, "*"); } catch (e) {}
+    }
+  }
+  function scheduleReport() { cancelAnimationFrame(raf); raf = requestAnimationFrame(reportHeight); }
+
+  // ---- mensagens do site (host controla tema/idioma) --------------------
+  window.addEventListener("message", function (ev) {
+    var d = ev && ev.data; if (!d || typeof d !== "object") return;
+    if (d.type === "mg-set-theme") setTheme(d.theme);
+    if (d.type === "mg-set-lang") setLang(d.lang);
+  });
+
+  // ---- reset ("voltar ao exemplo") --------------------------------------
+  document.addEventListener("click", function (ev) {
+    var b = ev.target.closest && ev.target.closest("[data-mg-reset]");
+    if (b && typeof window.MGReset === "function") { ev.preventDefault(); window.MGReset(); }
+  });
+
+  // ---- boot -------------------------------------------------------------
+  function boot() {
+    readPalette();
+    loadDict();
+    var p = params();
+    var th = p.get("theme"); if (th) setTheme(th); else readPalette();
+    var lg = p.get("lang"); setLang(lg || LANG);
+    if (window.ResizeObserver) new ResizeObserver(scheduleReport).observe(document.documentElement);
+    window.addEventListener("load", scheduleReport);
+    window.addEventListener("mg:themechange", scheduleReport);
+    setTimeout(reportHeight, 60);
+  }
+  // popula MG imediatamente (o <style> do lab já foi parseado), para o canvas
+  // do lab ver as cores certas mesmo se desenhar antes do DOMContentLoaded.
+  readPalette();
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
+  else boot();
+})();
+</script>
+<!-- MG-RUNTIME:end -->
+</head>
+<body>
+<div class="page">
+  <a class="back" href="../#catalog">← Trilha interativa MGenética</a>
+  <p class="eyebrow">Módulo 3 · Genética de populações I</p>
+  <h1>Frequências alélicas e genotípicas</h1>
+  <p class="sub">Conte os genótipos de um rebanho e veja as frequências surgirem. A frequência alélica é o "saco de gametas" da população — a ponte entre o que você observa e o que pode ser transmitido.</p>
+
+  <div class="card">
+    <h2><span class="n">1</span>Conte os animais de cada genótipo</h2>
+    <div class="counts">
+      <div class="count c-AA"><div class="gt">AA</div><input type="number" id="nAA" min="0" value="30"></div>
+      <div class="count c-Aa"><div class="gt">Aa</div><input type="number" id="nAa" min="0" value="50"></div>
+      <div class="count c-aa"><div class="gt">aa</div><input type="number" id="naa" min="0" value="20"></div>
+    </div>
+    <p style="font-size:.82rem;color:var(--mg-muted);margin-top:.8rem;">Total do rebanho: <b id="N" style="font-family:var(--font-mono);color:var(--mg-navy-700)">100</b> animais &nbsp;·&nbsp; <b id="N2" style="font-family:var(--font-mono);color:var(--mg-navy-700)">200</b> alelos no total (2N).</p>
+  </div>
+
+  <div class="card">
+    <h2><span class="n">2</span>Frequências genotípicas</h2>
+    <div class="bar" id="genoBar"></div>
+    <div class="legend">
+      <span><i class="dot" style="background:#0a1f38"></i> f(AA)</span>
+      <span><i class="dot" style="background:#00a8d6"></i> f(Aa)</span>
+      <span><i class="dot" style="background:#4a9fd1"></i> f(aa)</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2><span class="n">3</span>Frequências alélicas — o saco de gametas</h2>
+    <p style="font-size:.84rem;color:var(--mg-muted);margin-bottom:.5rem;">Cada AA contribui 2 alelos A; cada Aa contribui 1 A e 1 a; cada aa contribui 2 alelos a.</p>
+    <div class="pool" id="pool"></div>
+    <div class="legend"><span><i class="dot" style="background:#0a1f38;border-radius:50%"></i> alelo A</span><span><i class="dot" style="background:#00a8d6;border-radius:50%"></i> alelo a</span></div>
+    <div class="res-grid" style="margin-top:1rem;">
+      <div class="res"><div class="lab">p = freq(A)</div><div class="val" id="p">0,550</div></div>
+      <div class="res"><div class="lab">q = freq(a)</div><div class="val" id="q">0,450</div></div>
+    </div>
+    <div class="formula">p = (2·n<sub>AA</sub> + n<sub>Aa</sub>) / 2N &nbsp;·&nbsp; q = (2·n<sub>aa</sub> + n<sub>Aa</sub>) / 2N &nbsp;·&nbsp; p + q = 1</div>
+  </div>
+
+  <div class="card">
+    <h2><span class="n">4</span>Esta população está em equilíbrio?</h2>
+    <p style="font-size:.84rem;color:var(--mg-muted);margin-bottom:.3rem;">Compare o que você observou com o esperado por Hardy-Weinberg (p², 2pq, q²). Diferenças grandes sugerem seleção, migração ou acasalamento não-aleatório.</p>
+    <table>
+      <tr><th>Genótipo</th><th>Observado</th><th>Esperado HWE</th><th>Diferença</th></tr>
+      <tr><td><b>AA</b></td><td id="oAA"></td><td id="eAA"></td><td id="dAA"></td></tr>
+      <tr><td><b>Aa</b></td><td id="oAa"></td><td id="eAa"></td><td id="dAa"></td></tr>
+      <tr><td><b>aa</b></td><td id="oaa"></td><td id="eaa"></td><td id="daa"></td></tr>
+    </table>
+    <div class="note" id="hweNote"></div>
+    <div class="try"><b>Experimente:</b> zere os heterozigotos (Aa = 0) mantendo AA e aa. As frequências alélicas mudam pouco, mas o esperado por HWE fica muito distante do observado — sinal clássico de acasalamento não-aleatório, tema da M5.</div>
+  </div>
+
+  <div class="mg-foot">MGenética · artefato interativo · derivado do texto M3 — Frequências alélicas e genotípicas</div>
+</div>
+
+<script>
+  function f3(x){return x.toFixed(3).replace('.',',');}
+  function f0(x){return Math.round(x);}
+  const el=id=>document.getElementById(id);
+  function update(){
+    let nAA=Math.max(0,parseInt(el('nAA').value)||0);
+    let nAa=Math.max(0,parseInt(el('nAa').value)||0);
+    let naa=Math.max(0,parseInt(el('naa').value)||0);
+    const N=nAA+nAa+naa;
+    el('N').textContent=N; el('N2').textContent=2*N;
+    if(N===0)return;
+    const fAA=nAA/N,fAa=nAa/N,faa=naa/N;
+    const p=(2*nAA+nAa)/(2*N),q=1-p;
+    // genotype bar
+    const segs=[['#0a1f38',fAA,'AA'],['#00a8d6',fAa,'Aa'],['#4a9fd1',faa,'aa']];
+    el('genoBar').innerHTML=segs.map(s=>`<div style="background:${s[0]};flex:0 0 ${(s[1]*100).toFixed(1)}%">${s[1]>=0.08?f3(s[1]):''}</div>`).join('');
+    // allele pool (cap at ~240 dots, scaled)
+    const totalA=2*nAA+nAa, totala=2*naa+nAa, tot=totalA+totala;
+    let dots=[];const cap=200;
+    if(tot>0){const scale=tot>cap?cap/tot:1;
+      const dA=Math.round(totalA*scale),da=Math.round(totala*scale);
+      for(let i=0;i<dA;i++)dots.push('A');for(let i=0;i<da;i++)dots.push('a');}
+    el('pool').innerHTML=dots.map(d=>`<span class="allele a-${d}"></span>`).join('');
+    el('p').textContent=f3(p); el('q').textContent=f3(q);
+    // HWE expected counts
+    const eAA=p*p*N,eAa=2*p*q*N,eaa=q*q*N;
+    el('oAA').textContent=nAA; el('oAa').textContent=nAa; el('oaa').textContent=naa;
+    el('eAA').textContent=eAA.toFixed(1).replace('.',','); el('eAa').textContent=eAa.toFixed(1).replace('.',','); el('eaa').textContent=eaa.toFixed(1).replace('.',',');
+    const dvAA=nAA-eAA,dvAa=nAa-eAa,dvaa=naa-eaa;
+    const sign=x=>(x>=0?'+':'')+x.toFixed(1).replace('.',',');
+    el('dAA').textContent=sign(dvAA); el('dAa').textContent=sign(dvAa); el('daa').textContent=sign(dvaa);
+    // chi-square-ish proximity
+    const chi=(eAA>0?((nAA-eAA)**2)/eAA:0)+(eAa>0?((nAa-eAa)**2)/eAa:0)+(eaa>0?((naa-eaa)**2)/eaa:0);
+    const note=el('hweNote');
+    if(chi<1){note.style.borderLeftColor='#00a8d6';note.style.background='#d6f1f9';note.innerHTML='<b>Muito próximo de Hardy-Weinberg.</b> O observado bate com p², 2pq e q² — consistente com acasalamento aleatório e ausência de forças evolutivas fortes (χ² ≈ '+f3(chi)+').';}
+    else if(chi<6){note.style.borderLeftColor='#ffc107';note.style.background='#fff7e0';note.innerHTML='<b>Desvio moderado do equilíbrio</b> (χ² ≈ '+f3(chi)+'). Há diferença entre observado e esperado; pode indicar algum desvio de acasalamento aleatório.';}
+    else{note.style.borderLeftColor='#9a3412';note.style.background='#ffedd5';note.innerHTML='<b>Desvio forte do equilíbrio</b> (χ² ≈ '+f3(chi)+'). O observado está longe do esperado por HWE — investigue seleção, migração, deriva ou acasalamento dirigido (M5).';}
+  }
+  ['nAA','nAa','naa'].forEach(id=>el(id).addEventListener('input',update));
+  update();
+</script>
+<script type="application/json" id="dados">
+{
+  "controls": {
+    "nAA": {
+      "type": "number",
+      "min": 0,
+      "value": 30
+    },
+    "nAa": {
+      "type": "number",
+      "min": 0,
+      "value": 50
+    },
+    "naa": {
+      "type": "number",
+      "min": 0,
+      "value": 20
+    }
+  }
+}
+</script>
+<script id="dados-hydrator">
+(() => {
+  const node = document.getElementById('dados');
+  if (!node) return;
+  let data;
+  try { data = JSON.parse(node.textContent || '{}'); } catch (_) { return; }
+  const controls = data.controls || {};
+  for (const [id, cfg] of Object.entries(controls)) {
+    const target = document.getElementById(id);
+    if (!target || cfg == null || !Object.prototype.hasOwnProperty.call(cfg, 'value')) continue;
+    target.value = String(cfg.value);
+    target.dispatchEvent(new Event('input', { bubbles: true }));
+    target.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+  if (data.cruzamento && typeof update === 'function') {
+    try {
+      if (Object.prototype.hasOwnProperty.call(data.cruzamento, 'pai')) pai = data.cruzamento.pai;
+      if (Object.prototype.hasOwnProperty.call(data.cruzamento, 'mae')) mae = data.cruzamento.mae;
+      update();
+    } catch (_) {}
+  }
+})();
+</script>
+</body>
+</html>

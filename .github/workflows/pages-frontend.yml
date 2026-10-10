@@ -69,10 +69,12 @@ jobs:
           DEPLOYED_URL: ${{ steps.deployment.outputs.page_url }}
         run: node scripts/smoke_learner_routes.mjs "$DEPLOYED_URL"
       - name: Smoke Appwrite runtime
+        if: vars.ENABLE_APPWRITE_CHECKS == 'true'
         env:
           APPWRITE_ORIGIN: https://www.mgenetica.com
         run: node scripts/smoke_appwrite_runtime.mjs
       - name: Audit Appwrite backend
+        if: vars.ENABLE_APPWRITE_CHECKS == 'true'
         env:
           APPWRITE_ENDPOINT: ${{ vars.APPWRITE_ENDPOINT || 'https://fra.cloud.appwrite.io/v1' }}
           APPWRITE_PROJECT_ID: ${{ secrets.APPWRITE_PROJECT_ID }}
@@ -81,6 +83,7 @@ jobs:
           APPWRITE_ADMIN_API_KEY: ${{ secrets.APPWRITE_ADMIN_API_KEY || secrets.APPWRITE_API_KEY }}
         run: node scripts/audit_appwrite_backend.mjs
       - name: Smoke real Appwrite login
+        if: vars.ENABLE_APPWRITE_CHECKS == 'true'
         env:
           APPWRITE_ENDPOINT: ${{ vars.APPWRITE_ENDPOINT || 'https://fra.cloud.appwrite.io/v1' }}
           APPWRITE_PROJECT_ID: ${{ secrets.APPWRITE_PROJECT_ID }}

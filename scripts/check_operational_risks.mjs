@@ -51,8 +51,8 @@ if (projectStatus) {
 }
 
 if (nextSite) {
-  assertMatchesPattern(nextSite, /## Status \(2026-06-\d{2}\)/, 'next site current date')
-  assertIncludes(nextSite, '`visual-consistency-qa-and-admin-screen-verification`', 'next block type')
+  assertMatchesPattern(nextSite, /## Status \(\d{4}-\d{2}-\d{2}\)/, 'next site current date')
+  assertIncludes(nextSite, '`public-course-verification`', 'next block type')
   assertNotIncludes(nextSite, '## Status (2026-06-01)', 'next site stale status date')
 } else {
   pass('next site absent in CI checkout')
