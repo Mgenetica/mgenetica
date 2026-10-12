@@ -10,6 +10,7 @@ export function HomePage({ publicAccess = false, user, status, loadingAuth, isAd
     <div className="app-shell">
       <SkipLink t={t} />
       <AppHeader brandName={t('common.brandName')} brandTagline={t('common.brandTagline')} status={status} locale={locale} onLocaleChange={onLocaleChange} t={t} homeHref="#">
+        {publicAccess && <a className="btn btn-secondary" href="#blog">Blog</a>}
         {user ? (
           <>
             <a className="btn btn-secondary" href="#catalog" onClick={onOpenCatalog} aria-label={t('home.openCatalogAria')}>
@@ -92,6 +93,7 @@ export function CatalogPage({ publicAccess = false, courseGroups, progressByCour
     <div className="app-shell">
       <SkipLink t={t} />
       <AppHeader brandName={t('catalog.brandName')} brandTagline={t('catalog.brandTagline')} status={''} locale={locale} onLocaleChange={onLocaleChange} t={t}>
+        {publicAccess && <a className="btn btn-secondary" href="#blog">Blog</a>}
         <button type="button" className="btn btn-secondary" onClick={onBack} aria-label={t('catalog.backHomeAria')}><Icon name="arrowLeft" size={16} />{t('common.back')}</button>
         {!publicAccess && <button type="button" className="btn btn-secondary" onClick={onOpenAccount} aria-label={t('account.openAria')}><Icon name="user" size={16} />{t('common.profile')}</button>}
         {isAdmin ? <button type="button" className="btn btn-secondary" onClick={onOpenAdmin} aria-label={t('catalog.openAdminAria')}><Icon name="check" size={16} />{t('common.admin')}</button> : null}
