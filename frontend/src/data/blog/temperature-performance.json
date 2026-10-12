@@ -1,7 +1,7 @@
 {
   "slug": "genetica-temperatura-desempenho-cavalos",
   "category": "Genética e ambiente",
-  "title": "🐎 Genética, temperatura e desempenho: por que alguns cavalos respondem melhor ao calor durante as corridas?",
+  "title": "Genética, temperatura e desempenho: por que alguns cavalos respondem melhor ao calor durante as corridas?",
   "summary": "Um estudo com mais de 100 mil resultados de corridas de cavalos de trote espanhóis revelou que a temperatura ambiente influencia o desempenho esportivo e que diferenças genéticas ajudam a explicar por que alguns animais são mais sensíveis às mudanças térmicas do que outros.",
   "date": "2026-10-12",
   "readingMinutes": 12,
@@ -32,7 +32,7 @@
   "sections": [
     {
       "id": "secao-1",
-      "title": "🏇 Mais de 100 mil resultados para investigar o desempenho dos cavalos",
+      "title": "Mais de 100 mil resultados para investigar o desempenho dos cavalos",
       "blocks": [
         {
           "type": "paragraph",
@@ -70,7 +70,7 @@
     },
     {
       "id": "secao-2",
-      "title": "🌡️ Existe uma temperatura mais favorável para o desempenho?",
+      "title": "Existe uma temperatura mais favorável para o desempenho?",
       "blocks": [
         {
           "type": "paragraph",
@@ -128,7 +128,7 @@
     },
     {
       "id": "secao-3",
-      "title": "🧬 Como a genética entra nessa história?",
+      "title": "Como a genética entra nessa história?",
       "blocks": [
         {
           "type": "paragraph",
@@ -198,7 +198,7 @@
     },
     {
       "id": "secao-4",
-      "title": "📊 O que a herdabilidade revelou sobre a velocidade?",
+      "title": "O que a herdabilidade revelou sobre a velocidade?",
       "blocks": [
         {
           "type": "paragraph",
@@ -272,7 +272,7 @@
     },
     {
       "id": "secao-5",
-      "title": "🔬 Os cavalos mais rápidos continuam sendo os melhores quando a temperatura muda?",
+      "title": "Os cavalos mais rápidos continuam sendo os melhores quando a temperatura muda?",
       "blocks": [
         {
           "type": "paragraph",
@@ -342,7 +342,7 @@
     },
     {
       "id": "secao-6",
-      "title": "🐴 Desempenho elevado ou desempenho estável: o que considerar na seleção?",
+      "title": "Desempenho elevado ou desempenho estável: o que considerar na seleção?",
       "blocks": [
         {
           "type": "paragraph",
@@ -396,7 +396,7 @@
     },
     {
       "id": "secao-7",
-      "title": "🌍 O ambiente também mudou ao longo dos anos",
+      "title": "O ambiente também mudou ao longo dos anos",
       "blocks": [
         {
           "type": "paragraph",
@@ -430,7 +430,7 @@
     },
     {
       "id": "secao-8",
-      "title": "⚠️ O que ainda precisa ser investigado?",
+      "title": "O que ainda precisa ser investigado?",
       "blocks": [
         {
           "type": "paragraph",
@@ -480,7 +480,7 @@
     },
     {
       "id": "secao-9",
-      "title": "💡 O que podemos aprender com essa pesquisa?",
+      "title": "O que podemos aprender com essa pesquisa?",
       "blocks": [
         {
           "type": "paragraph",
@@ -522,7 +522,7 @@
     },
     {
       "id": "referencia-cientifica",
-      "title": "📚 Referência científica",
+      "title": "Referência científica",
       "blocks": [
         {
           "type": "paragraph",
