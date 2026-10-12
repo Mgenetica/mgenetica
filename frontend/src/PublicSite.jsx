@@ -1,5 +1,10 @@
 import React, { useEffect, useMemo, useState, lazy, Suspense } from 'react'
 import { HomePage, CatalogPage } from './PublicPages'
+const BlogPage = lazy(() => import('./BlogPage'))
+function publicRoute(hash) {
+  const match = String(hash).match(/^#\/?blog(?:\/([^?]*))?$/)
+  return match ? { screen: 'blog', slug: match[1] || '' } : parseRouteHash(hash)
+}
 const App = lazy(() => import('./App'))
 import CoursePage from './CoursePage'
 import curriculum from './data/legacy-curriculum.generated.json'
@@ -9,9 +14,9 @@ import { parseRouteHash } from './lib/access.mjs'
 
 export default function PublicSite() {
   const [locale, setLocale] = useState(detectInitialLocale())
-  const [route, setRoute] = useState(() => parseRouteHash(window.location.hash))
+  const [route, setRoute] = useState(() => publicRoute(window.location.hash))
   useEffect(() => {
-    const update = () => setRoute(parseRouteHash(window.location.hash))
+    const update = () => setRoute(publicRoute(window.location.hash))
     window.addEventListener('hashchange', update)
     return () => window.removeEventListener('hashchange', update)
   }, [])
@@ -29,6 +34,7 @@ export default function PublicSite() {
   const shared = { publicAccess: true, locale, onLocaleChange: setLocale, t, onOpenCatalog: () => go('catalog'), onOpenCourse: id => go('course/' + id) }
   // Private account and administration retain their existing authentication flow.
   if (['auth', 'account', 'admin', 'verify-email'].includes(route.screen)) return <Suspense fallback={<main>Carregando…</main>}><App /></Suspense>
+  if (route.screen === 'blog') return <Suspense fallback={<main role="status">Carregando blog…</main>}><BlogPage {...shared} slug={route.slug} /></Suspense>
   if (route.screen === 'catalog') return <CatalogPage {...shared} courseGroups={formatCourseGroups(curriculum.modules, locale)} onBack={() => go('')} />
   if (route.screen === 'course') {
     const course = courses.find(item => item.id === route.selectedCourseId)
