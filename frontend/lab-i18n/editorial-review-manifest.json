@@ -1,0 +1,22 @@
+{
+  "date": "2026-10-10",
+  "status": "editorial-core-reviewed-secondary-prose-pending",
+  "languages": [
+    "en",
+    "es"
+  ],
+  "modules": 21,
+  "manualSourcePassages": 448,
+  "manualLanguagePassages": 896,
+  "changedSourceLanguagePairs": 1018,
+  "technicalValidation": {
+    "tests": 13,
+    "passed": 13,
+    "build": "passed",
+    "browserReport": "editorial-browser-report.json"
+  },
+  "remaining": [
+    "Conferência integral das interpretações biológicas, checkpoints, tabelas e demais instruções longas",
+    "Revisão independente das referências bibliográficas não realizada"
+  ]
+}

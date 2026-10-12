@@ -1,5 +1,6 @@
-import React, { useEffect, useMemo, useState, lazy, Suspense } from 'react'
-import { HomePage, CatalogPage } from './PublicPages'
+import React, { useEffect, useMemo, useRef, useState, lazy, Suspense } from 'react'
+import SiteCatalog from './SiteCatalog'
+import SiteHome from './SiteHome'
 const BlogPage = lazy(() => import('./BlogPage'))
 function publicRoute(hash) {
   const match = String(hash).match(/^#\/?blog(?:\/([^?]*))?$/)
@@ -12,9 +13,38 @@ import { formatCourseCatalog, formatCourseDetail, formatCourseGroups } from './d
 import { createTranslator, detectInitialLocale } from './i18n'
 import { parseRouteHash } from './lib/access.mjs'
 
+const CONTENT_LOADERS = {
+  en: () => import('./data/courseTranslations/en.json'),
+  es: () => import('./data/courseTranslations/es.json')
+}
+const CONTENT_STATUS = {
+  'pt-BR': ['Carregando conteúdo…', 'Não foi possível carregar o idioma.', 'Tentar novamente'],
+  en: ['Loading content…', 'Could not load this language.', 'Try again'],
+  es: ['Cargando contenido…', 'No se pudo cargar este idioma.', 'Intentar de nuevo']
+}
+
 export default function PublicSite() {
   const [locale, setLocale] = useState(detectInitialLocale())
   const [route, setRoute] = useState(() => publicRoute(window.location.hash))
+  const [contentByLocale, setContentByLocale] = useState({})
+  const [contentError, setContentError] = useState(false)
+  const localeRequest = useRef(0)
+  async function loadContent(language) {
+    if (!CONTENT_LOADERS[language] || contentByLocale[language]) return
+    const { default: content } = await CONTENT_LOADERS[language]()
+    setContentByLocale(current => ({ ...current, [language]: content }))
+  }
+  async function changeLocale(language) {
+    const request = ++localeRequest.current
+    try {
+      if (route.screen === 'course') await loadContent(language)
+      if (request === localeRequest.current) { setContentError(false); setLocale(language) }
+    } catch { setContentError(true) }
+  }
+  useEffect(() => {
+    if (route.screen !== 'course') return
+    loadContent(locale).then(() => setContentError(false)).catch(() => setContentError(true))
+  }, [locale, route.screen])
   useEffect(() => {
     const update = () => setRoute(publicRoute(window.location.hash))
     window.addEventListener('hashchange', update)
@@ -31,15 +61,19 @@ export default function PublicSite() {
   }, [locale])
   const courses = formatCourseCatalog(curriculum.modules, locale)
   const go = hash => { window.location.hash = hash; window.scrollTo(0, 0) }
-  const shared = { publicAccess: true, locale, onLocaleChange: setLocale, t, onOpenCatalog: () => go('catalog'), onOpenCourse: id => go('course/' + id) }
+  const shared = { publicAccess: true, locale, onLocaleChange: changeLocale, contentNotice: contentError ? CONTENT_STATUS[locale]?.[1] : '', t, onOpenCatalog: () => go('catalog'), onOpenCourse: id => go('course/' + id) }
   // Private account and administration retain their existing authentication flow.
   if (['auth', 'account', 'admin', 'verify-email'].includes(route.screen)) return <Suspense fallback={<main>Carregando…</main>}><App /></Suspense>
   if (route.screen === 'blog') return <Suspense fallback={<main role="status">Carregando blog…</main>}><BlogPage {...shared} slug={route.slug} /></Suspense>
-  if (route.screen === 'catalog') return <CatalogPage {...shared} courseGroups={formatCourseGroups(curriculum.modules, locale)} onBack={() => go('')} />
+  if (route.screen === 'catalog') return <SiteCatalog {...shared} courseGroups={formatCourseGroups(curriculum.modules, locale)} onBack={() => go('')} />
   if (route.screen === 'course') {
+    if (locale !== 'pt-BR' && !contentByLocale[locale]) {
+      const status = CONTENT_STATUS[locale] || CONTENT_STATUS['pt-BR']
+      return <main className="app-shell" role="status"><p>{status[contentError ? 1 : 0]}</p>{contentError && <button className="btn btn-primary" onClick={() => loadContent(locale).then(() => setContentError(false)).catch(() => setContentError(true))}>{status[2]}</button>}</main>
+    }
     const course = courses.find(item => item.id === route.selectedCourseId)
-    if (course) return <CoursePage {...shared} key={course.id} course={course} detail={formatCourseDetail(curriculum.modules.find(item => item.id === course.id), locale)} onBack={() => go('catalog')} nextCourse={courses[courses.indexOf(course) + 1] || null} />
-    return <CatalogPage {...shared} courseGroups={formatCourseGroups(curriculum.modules, locale)} onBack={() => go('')} />
+    if (course) return <CoursePage {...shared} key={course.id} course={course} detail={formatCourseDetail(curriculum.modules.find(item => item.id === course.id), locale, contentByLocale[locale])} onBack={() => go('catalog')} nextCourse={courses[courses.indexOf(course) + 1] || null} />
+    return <SiteCatalog {...shared} courseGroups={formatCourseGroups(curriculum.modules, locale)} onBack={() => go('')} />
   }
-  return <HomePage {...shared} status="" user={null} />
+  return <SiteHome {...shared} />
 }

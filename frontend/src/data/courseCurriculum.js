@@ -434,19 +434,20 @@ function buildReviewQuizParagraphs(moduleRow, copy) {
     return []
   }
   return moduleRow.reviewQuiz.map((item, index) => (
-    `${copy.quizLabel} ${index + 1}: ${item.question} Resposta: ${item.answer}`
+    `${copy.quizLabel} ${index + 1}: ${item.question} ${copy.answerLabel}: ${item.answer}`
   ))
 }
 
-function buildReferenceParagraphs(moduleRow) {
+function buildReferenceParagraphs(moduleRow, locale) {
   if (!Array.isArray(moduleRow.references) || moduleRow.references.length === 0) {
     return []
   }
-  return moduleRow.references.map((reference) => `Referência: ${reference}`)
+  const label = { 'pt-BR': 'Referência', en: 'Reference', es: 'Referencia' }[locale] || 'Referência'
+  return moduleRow.references.map((reference) => `${label}: ${reference}`)
 }
 
 function buildSections(moduleRow, locale) {
-  const copy = getLocaleCopy(locale)
+  const copy = { ...getLocaleCopy(locale), answerLabel: { 'pt-BR': 'Resposta', en: 'Answer', es: 'Respuesta' }[locale] || 'Resposta' }
   return [
     {
       eyebrow: copy.questionEyebrow,
@@ -501,7 +502,7 @@ function buildSections(moduleRow, locale) {
         `${copy.taskLabel}: ${moduleRow.task}`,
         `${copy.evidenceLabel}: ${moduleRow.completionEvidence}`,
         ...buildReviewQuizParagraphs(moduleRow, copy),
-        ...buildReferenceParagraphs(moduleRow)
+        ...buildReferenceParagraphs(moduleRow, locale)
       ]),
       part: 'quiz'
     }
@@ -542,8 +543,9 @@ function formatCourseGroups(moduleRows = [], locale = 'pt-BR') {
   }).filter((group) => group.courses.length > 0)
 }
 
-function formatCourseDetail(moduleRow, locale = 'pt-BR') {
+function formatCourseDetail(moduleRow, locale = 'pt-BR', translatedContent = null) {
   if (!moduleRow) return null
+  moduleRow = { ...moduleRow, ...translatedContent?.[moduleRow.id] }
   const localized = getLocalizedModule(moduleRow, locale)
   const copy = getLocaleCopy(locale)
   return {

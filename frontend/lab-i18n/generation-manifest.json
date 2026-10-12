@@ -1,0 +1,14 @@
+{
+  "generator": "offline CTranslate2 / SciLake PT-EN and OPUS EN-ES models",
+  "languages": [
+    "en",
+    "es"
+  ],
+  "texts": 1522,
+  "protectedPattern": "`[^`]*`|<[^>]*>|&(?:\\w+|#\\d+);|\\{\\d+\\}|\\b\\d+(?:[.,:]\\d+)*(?:%|\u00aa|\u00ba)?|\\b(?:AA|Aa|aa|AB|BB|SNP\\d*|EBV|DEP|BLUP|GWAS|QC|MAF|HWE|MGen\u00e9tica|Hardy-Weinberg)\\b|[hHrR][\u00b2\u2082]|[pq][\u00b2\u2082]|[\u03c7\u03c3][\u00b2\u2082]?",
+  "sourcePlanSha256": "62651eb1c055206affc0e0cede2df934fe1598da938ba289c9b0e66a00354571",
+  "models": {
+    "en": "e35a5a6c1e2bdfd0b298d416a3ab3da32ac2df6aac1cf2a4af933948ef8ddf5a",
+    "es": "d5771f823c9dd7eedcf9367c116aede65613a194f761a81826351e2bccb194c4"
+  }
+}

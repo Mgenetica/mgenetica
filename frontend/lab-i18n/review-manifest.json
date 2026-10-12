@@ -1,0 +1,8 @@
+{
+  "terminologyCorrections": {
+    "en": 2,
+    "es": 2
+  },
+  "preserved": "inline code, data, Markdown lists",
+  "reviewScope": "terminology and structural checks; editorial review still recommended before publication"
+}
