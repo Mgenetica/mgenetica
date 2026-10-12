@@ -1,5 +1,7 @@
+import temperaturePerformance from './temperature-performance.json' with { type: 'json' }
 // Conteúdo editorial local. Revisar aqui antes de qualquer publicação.
 export const posts = [
+  temperaturePerformance,
   {
     slug: 'genetica-nao-e-destino', category: 'Conceitos', title: 'Genética não é destino',
     summary: 'O que observamos em um indivíduo nasce do encontro entre herança genética e ambiente.',
