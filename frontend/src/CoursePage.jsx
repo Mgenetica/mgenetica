@@ -1,9 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Icon from './components/Icon'
 import AppHeader from './components/AppHeader'
 import ActionButton from './components/ActionButton'
 import LessonText from './components/LessonText'
 import LabEmbed from './components/LabEmbed'
+import RExample from './components/RExample'
+import rExamplesCommented from './data/rExamplesCommented.json'
+import './site-module.css'
 
 const LAB_COPY = {
   'pt-BR': { eyebrow: 'Interativo', title: 'Laboratório interativo' },
@@ -17,7 +20,7 @@ function CourseLab({ detail, locale }) {
   const title = `${copy.title}: ${detail.title}`
 
   return (
-    <section className="section-card course-lab-card" aria-labelledby={`course-lab-title-${detail.id}`}>
+    <section id={`course-lab-${detail.id}`} tabIndex={-1} className="section-card course-lab-card" aria-labelledby={`course-lab-title-${detail.id}`}>
       <div className="section-eyebrow">{copy.eyebrow}</div>
       <h3 id={`course-lab-title-${detail.id}`}>{copy.title}</h3>
       <p className="course-visual-caption">{detail.title}</p>
@@ -28,14 +31,19 @@ function CourseLab({ detail, locale }) {
   )
 }
 
-function SectionCard({ eyebrow, title, paragraphs, code, codeLabel, part, scientific }) {
+function SectionCard({ id, number, runnable, locale, eyebrow, title, paragraphs, code, codeLabel, part, scientific }) {
   return (
-    <section className={'section-card lesson-section' + (scientific ? ' scientific-section' : '')}>
-      {eyebrow ? <div className="section-eyebrow">{eyebrow}</div> : null}
-      <h3>{title}</h3>
-      {part ? <div className="lesson-part-chip">{part}</div> : null}
+    <section id={id} tabIndex={id ? -1 : undefined} className={'section-card lesson-section' + (scientific ? ' scientific-section' : '')}>
+      <header className="lesson-block-header">
+        {number && <span className="lesson-block-number" aria-hidden="true">{number}</span>}
+        <div className="lesson-block-heading">
+          {eyebrow ? <div className="section-eyebrow">{eyebrow}</div> : null}
+          <h3>{title}</h3>
+        </div>
+        {part ? <div className="lesson-part-chip">{part}</div> : null}
+      </header>
       <LessonText paragraphs={paragraphs} />
-      {code ? (
+      {code && runnable ? <RExample code={code} locale={locale} /> : code ? (
         <div className="code-panel" style={{ marginTop: 18 }}>
           <div className="code-caption">
             <strong>{codeLabel}</strong>
@@ -48,11 +56,11 @@ function SectionCard({ eyebrow, title, paragraphs, code, codeLabel, part, scient
   )
 }
 
-function StudyPath({ detail }) {
+function StudyPath({ detail, publicAccess }) {
   return (
     <section className="section-card study-path-card">
       <div className="section-eyebrow">{detail.courseTitle}</div>
-      <h3>{detail.hierarchy}</h3>
+      <h3>{publicAccess ? detail.blockTitle : detail.hierarchy}</h3>
       <p>{detail.blockTitle}: {detail.blockSummary}</p>
       <div className="study-parts study-parts-large" aria-label={detail.hierarchy}>
         {detail.studyParts.map((part) => <span key={part.id}>{part.label}</span>)}
@@ -62,13 +70,21 @@ function StudyPath({ detail }) {
 }
 
 export default function CoursePage({ publicAccess = false, course, detail, progress, onBack, onOpenQuiz, onOpenCatalog, onOpenCourse, nextCourse, onLogout, loadingAuth, locale, onLocaleChange, contentNotice, t }) {
+  const [activeTopic, setActiveTopic] = useState('module-section-0')
+  const topicLabel = locale === 'en' ? 'Module topics' : locale === 'es' ? 'Temas del módulo' : 'Tópicos do módulo'
+  function jumpToTopic(id) {
+    setActiveTopic(id)
+    const target = document.getElementById(id)
+    target?.focus({ preventScroll: true })
+    target?.scrollIntoView({ behavior: 'instant', block: 'start' })
+  }
   return (
-    <div className="app-shell">
-      <AppHeader brandName={course.title} brandTagline={t('coursePage.dedicatedPage')} status="" locale={locale} onLocaleChange={onLocaleChange} t={t} className="course-header">
-        <ActionButton type="button" variant="secondary" onClick={onBack} icon={<Icon name="arrowLeft" size={16} />}>
+    <div className={publicAccess ? "app-shell site-module" : "app-shell"}>
+      <AppHeader homeHref={publicAccess ? "#" : undefined} brandName={publicAccess ? t('common.brandName') : course.title} brandTagline={publicAccess ? t('common.brandTagline') : t('coursePage.dedicatedPage')} status="" locale={locale} onLocaleChange={onLocaleChange} t={t} className="course-header">
+        {publicAccess ? <nav className="module-site-nav" aria-label={t('coursePage.catalog')}><a href="#">{t('common.home')}</a><a href="#blog">Blog</a><a href="#catalog">{t('coursePage.catalog')}</a></nav> : <ActionButton type="button" variant="secondary" onClick={onBack} icon={<Icon name="arrowLeft" size={16} />}>
           {t('coursePage.backToCatalog')}
-        </ActionButton>
-        {onOpenCatalog ? (
+        </ActionButton>}
+        {!publicAccess && onOpenCatalog ? (
           <ActionButton type="button" variant="secondary" onClick={onOpenCatalog} icon={<Icon name="layers" size={16} />}>
             {t('coursePage.catalog')}
           </ActionButton>
@@ -91,10 +107,17 @@ export default function CoursePage({ publicAccess = false, course, detail, progr
                 {detail.moduleMeta.map((item) => <React.Fragment key={item}><span>{item}</span></React.Fragment>)}
               </div>
             </div>
-            <h2 className="module-title">{detail.title}</h2>
+            {publicAccess ? <h1 className="module-title">{detail.title}</h1> : <h2 className="module-title">{detail.title}</h2>}
             <p className="module-description">{detail.description}</p>
           </article>
-          <StudyPath detail={detail} />
+          <StudyPath detail={detail} publicAccess={publicAccess} />
+          <div className={publicAccess ? "module-study-layout" : "module-private-layout"}>
+          {publicAccess && <nav className="module-contents" aria-label={topicLabel}>
+            <h2>{topicLabel}</h2>
+            {detail.sections.map((section, index) => <button key={index} aria-current={activeTopic === `module-section-${index}` ? 'location' : undefined} onClick={() => jumpToTopic(`module-section-${index}`)}><span aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>{section.title}</button>)}
+            {detail.lab && <button aria-current={activeTopic === `course-lab-${detail.id}` ? 'location' : undefined} onClick={() => jumpToTopic(`course-lab-${detail.id}`)}><span aria-hidden="true">R</span>{(LAB_COPY[locale] || LAB_COPY['pt-BR']).title}</button>}
+          </nav>}
+          <div className={publicAccess ? "module-study-body" : "module-private-layout"}>
           {!publicAccess && <section className="section-card">
             <div className="section-eyebrow">{t('coursePage.progressEyebrow')}</div>
             <h3>{t('coursePage.progressTitle')}</h3>
@@ -116,10 +139,14 @@ export default function CoursePage({ publicAccess = false, course, detail, progr
           {detail.sections.map((section, index) => (
             <React.Fragment key={`${detail.id}-${index}`}>
               <SectionCard
+                id={publicAccess ? `module-section-${index}` : undefined}
+                runnable={publicAccess}
+                locale={locale}
+                number={publicAccess ? String(index + 1).padStart(2, '0') : undefined}
                 eyebrow={section.eyebrow}
                 title={section.title}
                 paragraphs={section.paragraphs}
-                code={section.code}
+                code={publicAccess && section.code ? rExamplesCommented[detail.id] || section.code : section.code}
                 codeLabel={section.codeLabel}
                 part={detail.studyParts.find((part) => part.id === section.part)?.label}
                 scientific={section.scientific}
@@ -165,6 +192,8 @@ export default function CoursePage({ publicAccess = false, course, detail, progr
               )}
             </div>
           </section>
+          </div>
+          </div>
         </main>
       ) : (
         <main id="main-content" className="stack" tabIndex="-1">
