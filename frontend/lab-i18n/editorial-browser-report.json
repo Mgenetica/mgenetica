@@ -1,0 +1,385 @@
+{
+  "cases": 63,
+  "results": [
+    {
+      "module": "module-01",
+      "locale": "pt-BR",
+      "heading": "Quadro de Punnett e segregação",
+      "controls": 0
+    },
+    {
+      "module": "module-01",
+      "locale": "en",
+      "heading": "Punnett square and segregation",
+      "controls": 0
+    },
+    {
+      "module": "module-01",
+      "locale": "es",
+      "heading": "Cuadro de Punnett y segregación",
+      "controls": 0
+    },
+    {
+      "module": "module-02",
+      "locale": "pt-BR",
+      "heading": "Modos de ação gênica",
+      "controls": 3
+    },
+    {
+      "module": "module-02",
+      "locale": "en",
+      "heading": "Modes of gene action",
+      "controls": 3
+    },
+    {
+      "module": "module-02",
+      "locale": "es",
+      "heading": "Modos de acción génica",
+      "controls": 3
+    },
+    {
+      "module": "module-03",
+      "locale": "pt-BR",
+      "heading": "Frequências alélicas e genotípicas",
+      "controls": 3
+    },
+    {
+      "module": "module-03",
+      "locale": "en",
+      "heading": "Allele and genotype frequencies",
+      "controls": 3
+    },
+    {
+      "module": "module-03",
+      "locale": "es",
+      "heading": "Frecuencias alélicas y genotípicas",
+      "controls": 3
+    },
+    {
+      "module": "module-04",
+      "locale": "pt-BR",
+      "heading": "Hardy-Weinberg & o triângulo de De Finetti",
+      "controls": 2
+    },
+    {
+      "module": "module-04",
+      "locale": "en",
+      "heading": "Hardy-Weinberg & the De Finetti triangle",
+      "controls": 2
+    },
+    {
+      "module": "module-04",
+      "locale": "es",
+      "heading": "Hardy-Weinberg & el triángulo de De Finetti",
+      "controls": 2
+    },
+    {
+      "module": "module-05",
+      "locale": "pt-BR",
+      "heading": "Forças que mudam as frequências gênicas",
+      "controls": 6
+    },
+    {
+      "module": "module-05",
+      "locale": "en",
+      "heading": "Forces that change allele frequencies",
+      "controls": 6
+    },
+    {
+      "module": "module-05",
+      "locale": "es",
+      "heading": "Fuerzas que cambian las frecuencias alélicas",
+      "controls": 6
+    },
+    {
+      "module": "module-06",
+      "locale": "pt-BR",
+      "heading": "Fenótipo = Genótipo + Ambiente",
+      "controls": 6
+    },
+    {
+      "module": "module-06",
+      "locale": "en",
+      "heading": "Phenotype = Genotype + Environment",
+      "controls": 6
+    },
+    {
+      "module": "module-06",
+      "locale": "es",
+      "heading": "Fenotipo = Genotipo + Ambiente",
+      "controls": 6
+    },
+    {
+      "module": "module-07",
+      "locale": "pt-BR",
+      "heading": "De muitos genes à curva normal",
+      "controls": 3
+    },
+    {
+      "module": "module-07",
+      "locale": "en",
+      "heading": "From many genes to the normal curve",
+      "controls": 3
+    },
+    {
+      "module": "module-07",
+      "locale": "es",
+      "heading": "De muchos genes a la curva normal",
+      "controls": 3
+    },
+    {
+      "module": "module-08",
+      "locale": "pt-BR",
+      "heading": "Componentes de variância",
+      "controls": 4
+    },
+    {
+      "module": "module-08",
+      "locale": "en",
+      "heading": "Variance components",
+      "controls": 4
+    },
+    {
+      "module": "module-08",
+      "locale": "es",
+      "heading": "Componentes de varianza",
+      "controls": 4
+    },
+    {
+      "module": "module-09",
+      "locale": "pt-BR",
+      "heading": "Herdabilidade & repetibilidade",
+      "controls": 4
+    },
+    {
+      "module": "module-09",
+      "locale": "en",
+      "heading": "Heritability & repeatability",
+      "controls": 4
+    },
+    {
+      "module": "module-09",
+      "locale": "es",
+      "heading": "Heredabilidad & repetibilidad",
+      "controls": 4
+    },
+    {
+      "module": "module-10",
+      "locale": "pt-BR",
+      "heading": "Seleção e ganho genético",
+      "controls": 4
+    },
+    {
+      "module": "module-10",
+      "locale": "en",
+      "heading": "Selection and genetic gain",
+      "controls": 4
+    },
+    {
+      "module": "module-10",
+      "locale": "es",
+      "heading": "Selección y ganancia genética",
+      "controls": 4
+    },
+    {
+      "module": "module-11",
+      "locale": "pt-BR",
+      "heading": "Correlações genéticas, fenotípicas e ambientais",
+      "controls": 4
+    },
+    {
+      "module": "module-11",
+      "locale": "en",
+      "heading": "Genetic, phenotypic and environmental correlations",
+      "controls": 4
+    },
+    {
+      "module": "module-11",
+      "locale": "es",
+      "heading": "Correlaciones genéticas, fenotípicas y ambientales",
+      "controls": 4
+    },
+    {
+      "module": "module-12",
+      "locale": "pt-BR",
+      "heading": "Características de limiar",
+      "controls": 2
+    },
+    {
+      "module": "module-12",
+      "locale": "en",
+      "heading": "Threshold traits",
+      "controls": 2
+    },
+    {
+      "module": "module-12",
+      "locale": "es",
+      "heading": "Caracteres de umbral",
+      "controls": 2
+    },
+    {
+      "module": "module-13",
+      "locale": "pt-BR",
+      "heading": "Endogamia & coeficiente F",
+      "controls": 1
+    },
+    {
+      "module": "module-13",
+      "locale": "en",
+      "heading": "Inbreeding & coefficient F",
+      "controls": 1
+    },
+    {
+      "module": "module-13",
+      "locale": "es",
+      "heading": "Endogamia & coeficiente F",
+      "controls": 1
+    },
+    {
+      "module": "module-14",
+      "locale": "pt-BR",
+      "heading": "Heterose (vigor híbrido)",
+      "controls": 3
+    },
+    {
+      "module": "module-14",
+      "locale": "en",
+      "heading": "Heterosis (hybrid vigor)",
+      "controls": 3
+    },
+    {
+      "module": "module-14",
+      "locale": "es",
+      "heading": "Heterosis (vigor híbrido)",
+      "controls": 3
+    },
+    {
+      "module": "module-15",
+      "locale": "pt-BR",
+      "heading": "Ranking por DEP, EBV e acurácia",
+      "controls": 9
+    },
+    {
+      "module": "module-15",
+      "locale": "en",
+      "heading": "Ranking by DEP, EBV and accuracy",
+      "controls": 9
+    },
+    {
+      "module": "module-15",
+      "locale": "es",
+      "heading": "Clasificación por DEP, EBV y exactitud",
+      "controls": 9
+    },
+    {
+      "module": "module-16",
+      "locale": "pt-BR",
+      "heading": "Modelo misto: corrigir antes de comparar",
+      "controls": 3
+    },
+    {
+      "module": "module-16",
+      "locale": "en",
+      "heading": "Mixed model: adjust before comparing",
+      "controls": 3
+    },
+    {
+      "module": "module-16",
+      "locale": "es",
+      "heading": "Modelo mixto: ajustar antes de comparar",
+      "controls": 3
+    },
+    {
+      "module": "module-17",
+      "locale": "pt-BR",
+      "heading": "Encolhimento: do desvio cru ao EBV",
+      "controls": 4
+    },
+    {
+      "module": "module-17",
+      "locale": "en",
+      "heading": "Shrinkage: from raw deviation to EBV",
+      "controls": 4
+    },
+    {
+      "module": "module-17",
+      "locale": "es",
+      "heading": "Contracción: de la desviación bruta al EBV",
+      "controls": 4
+    },
+    {
+      "module": "module-18",
+      "locale": "pt-BR",
+      "heading": "Da planilha de DNA ao número 0·1·2",
+      "controls": 0
+    },
+    {
+      "module": "module-18",
+      "locale": "en",
+      "heading": "From the DNA spreadsheet to 0·1·2",
+      "controls": 0
+    },
+    {
+      "module": "module-18",
+      "locale": "es",
+      "heading": "De la tabla de ADN a 0·1·2",
+      "controls": 0
+    },
+    {
+      "module": "module-19",
+      "locale": "pt-BR",
+      "heading": "Limpar a balança antes de pesar",
+      "controls": 3
+    },
+    {
+      "module": "module-19",
+      "locale": "en",
+      "heading": "Clean the scales before weighing",
+      "controls": 3
+    },
+    {
+      "module": "module-19",
+      "locale": "es",
+      "heading": "Limpiar la balanza antes de pesar",
+      "controls": 3
+    },
+    {
+      "module": "module-20",
+      "locale": "pt-BR",
+      "heading": "O DNA conta três histórias diferentes",
+      "controls": 2
+    },
+    {
+      "module": "module-20",
+      "locale": "en",
+      "heading": "DNA tells three different stories",
+      "controls": 2
+    },
+    {
+      "module": "module-20",
+      "locale": "es",
+      "heading": "El ADN cuenta tres historias diferentes",
+      "controls": 2
+    },
+    {
+      "module": "module-21",
+      "locale": "pt-BR",
+      "heading": "O comitê de seleção: evidência, não preferência",
+      "controls": 2
+    },
+    {
+      "module": "module-21",
+      "locale": "en",
+      "heading": "The selection committee: evidence, not preference",
+      "controls": 2
+    },
+    {
+      "module": "module-21",
+      "locale": "es",
+      "heading": "El comité de selección: evidencia, no preferencia",
+      "controls": 2
+    }
+  ],
+  "errors": [],
+  "backendRequests": []
+}

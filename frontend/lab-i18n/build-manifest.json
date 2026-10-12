@@ -1,0 +1,110 @@
+{
+  "modules": 21,
+  "labs": [
+    {
+      "file": "M01_punnett.html",
+      "keys": 48,
+      "sha256": "2ff1ffbe946e63223acb4e0cd8ff3d7b6d6600a08e17055646857432e560dc85"
+    },
+    {
+      "file": "M02_acao_genica.html",
+      "keys": 47,
+      "sha256": "8b8128f511bc08f36ed7726637d4fabb1c988a6bb702ca7c606c26a7718577a2"
+    },
+    {
+      "file": "M03_frequencias.html",
+      "keys": 42,
+      "sha256": "3ef318ba38c006172518b5c271b9e7c8cee830aa1a6b9b388a0f004630875af2"
+    },
+    {
+      "file": "M04_hardy_weinberg.html",
+      "keys": 48,
+      "sha256": "30cd20588aa28a481cced8873908793d686a338125a2f8e6f7a00119b9576b49"
+    },
+    {
+      "file": "M05_forcas_evolutivas.html",
+      "keys": 54,
+      "sha256": "a20253a3655541f0b87bd24a607604b8f1beae13d41275177509a6bc2aa0c444"
+    },
+    {
+      "file": "M06_p_g_e.html",
+      "keys": 36,
+      "sha256": "0f86c0c7de516e79e08763b1acfdb8418d50ab3f771b9a1df34d769cb3d5e490"
+    },
+    {
+      "file": "M07_poligenico.html",
+      "keys": 49,
+      "sha256": "2522165db6f21d13a8f45a61d7d388d260fb669c2f6631ae6fc689b14c22af59"
+    },
+    {
+      "file": "M08_componentes_variancia.html",
+      "keys": 39,
+      "sha256": "8f0a494c24caf0f32015ca872dec2d1eefaec29efd0cc5d6c2ba71969d71ec57"
+    },
+    {
+      "file": "M09_herdabilidade.html",
+      "keys": 62,
+      "sha256": "d9857c5d6014c1ecaa002eb29b722dcd101a681661b1f4574c4e2fa409bcfcf2"
+    },
+    {
+      "file": "M10_selecao.html",
+      "keys": 61,
+      "sha256": "33d235c6a8f88cd7874b85f0dda501fb451acb9f8ab191446a6c7b0f6dc18ef0"
+    },
+    {
+      "file": "M11_correlacoes.html",
+      "keys": 55,
+      "sha256": "670d4dd7619b11bb40390e2a13e10f60a2c7c7b47211a0faf33370aacb493c14"
+    },
+    {
+      "file": "M12_limiar.html",
+      "keys": 47,
+      "sha256": "cbc52dfff349f8cd8a9b1b00820ae44cf705847d28d5beccf7999b6ebd2d40cc"
+    },
+    {
+      "file": "M13_endogamia.html",
+      "keys": 39,
+      "sha256": "545756db1c2c191bbad1fca7a6ea12319e830bb14bdab81334b596678d5a35d4"
+    },
+    {
+      "file": "M14_heterose.html",
+      "keys": 51,
+      "sha256": "0ad9af6b694931e677bc242f8369c3f2db9989ce23296efd0cacc69beaffe8f3"
+    },
+    {
+      "file": "M15_ranking_ebv.html",
+      "keys": 62,
+      "sha256": "ec10c77fe9e8a4f2329d53c8dcebbec77413c6c034c6d3b3957b6845e2278236"
+    },
+    {
+      "file": "M16_modelo_misto.html",
+      "keys": 60,
+      "sha256": "94b6a56addebde2951b21058b303cf356e1c648d3485225dc98501362283f327"
+    },
+    {
+      "file": "M17_blup.html",
+      "keys": 53,
+      "sha256": "f098ce23590889c454b0f2f8d93f40d11a23803eec5103b2c83db942a00f2633"
+    },
+    {
+      "file": "M18_matriz_snp.html",
+      "keys": 57,
+      "sha256": "3cbd59ff8533321c785a383010c5a5239e7b0e2397d797be69835807337f6d09"
+    },
+    {
+      "file": "M19_qc_genomico.html",
+      "keys": 57,
+      "sha256": "d13ee065267eac926b32f2a93d60eb1b9a14bb9070d70434a9424d400637be17"
+    },
+    {
+      "file": "M20_gwas_genomica.html",
+      "keys": 76,
+      "sha256": "a2895436d4258bdb2f6493ac4268d542ea55b107477de83e5f8f443091c268d1"
+    },
+    {
+      "file": "M21_pipeline_selecao.html",
+      "keys": 75,
+      "sha256": "0bbc4efe2cc206e929e7ec32f33fc4452aeaddbb543cb3d7adf3afd7ed187d4d"
+    }
+  ]
+}

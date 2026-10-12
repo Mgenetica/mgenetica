@@ -10,10 +10,21 @@ function normalizeLabSrc(lab) {
   return `${base.replace(/\/$/, '')}/${raw.replace(/^\//, '')}`
 }
 
-export default function LabEmbed({ lab, title }) {
+export default function LabEmbed({ lab, title, locale = 'pt-BR' }) {
   const frameRef = useRef(null)
   const [height, setHeight] = useState(820)
-  const src = normalizeLabSrc(lab)
+  const [initialLocale] = useState(locale)
+  const baseSrc = normalizeLabSrc(lab)
+  const src = baseSrc ? `${baseSrc}?lang=${encodeURIComponent(initialLocale)}` : null
+
+  function sendLocale() {
+    // Sandboxed labs have an opaque origin; the receiver validates event.source.
+    frameRef.current?.contentWindow?.postMessage({ type: 'mg-set-lang', lang: locale }, '*')
+  }
+
+  useEffect(() => {
+    sendLocale()
+  }, [locale])
 
   useEffect(() => {
     setHeight(820)
@@ -44,6 +55,7 @@ export default function LabEmbed({ lab, title }) {
       loading="lazy"
       sandbox="allow-scripts"
       referrerPolicy="no-referrer"
+      onLoad={sendLocale}
       style={{ '--course-lab-height': `${height}px` }}
     />
   )

@@ -1,0 +1,22 @@
+{
+  "scope": "public site; local only; no commit, push, merge or publication",
+  "date": "2026-10-10",
+  "modules": 21,
+  "languages": [
+    "pt-BR",
+    "en",
+    "es"
+  ],
+  "browserCases": 63,
+  "browserErrors": 0,
+  "backendRequests": 0,
+  "unitTests": 13,
+  "build": "passed; existing main bundle remains above Vite size warning threshold",
+  "curatedOverrides": 235,
+  "editorialReview": "Automatic local generation with curated scientific vocabulary/headings/critical explanations; final bilingual editorial review recommended before publication",
+  "checksums": {
+    "frontend/lab-i18n/source-plan.json": "f7cbff029edd948efe97eae9202775f371f4d94bba9040e8f16a2da4af371baf",
+    "frontend/lab-i18n/translations.json": "d462fa01dc543f1e3420c40fad68a433c2b2ded0c6271534dd9c2ea3c5a9f9e9",
+    "frontend/lab-i18n/overrides.json": "afd5d0f4f13bb2f26d00cb75cbdc11f8f8d0ba5512cc711072fac1d866d4551d"
+  }
+}

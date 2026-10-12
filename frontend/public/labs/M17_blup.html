@@ -54,6 +54,9 @@
   .mg-foot{text-align:center;font-size:.74rem;color:var(--mg-muted);margin-top:2rem;font-family:var(--font-mono);}
   canvas{width:100%;height:auto;display:block;}
 </style>
+<!-- MG-TRANSLATIONS:start -->
+<script type="application/json" id="i18n">{"pt-BR": {"s_a91dd3be792fef": "← Trilha interativa MGenética", "s_06d5947eb4f16d": "Módulo 17 · BLUP e modelo animal", "s_b3f4533c8aa9e4": "Encolhimento: do desvio cru ao EBV", "s_22713f926cef0b": "Um desempenho de +20 não vira +20 de mérito genético. O BLUP \"encolhe\" o desvio observado na direção da média — quanto menos confiável a informação, mais ele encolhe. Veja o fator λ puxando a estimativa.", "s_92c6ff6f018e67": "Encolhimento do próprio registro", "s_77a76898c2bcc4": "Desvio observado y (pontos acima da média)", "s_a7f8c8753cee66": "Herdabilidade h²", "s_aa1ffe91cb3191": "média (0)", "s_430d588c15dd82": "desvio cru y", "s_90a0072094f9ad": "EBV encolhido = h²·y", "s_ef49d2d02dd915": "EBV didático = h²·y", "s_a09848b6e9499e": "fator λ = (1−h²)/h²", "s_c6946516c51fcc": "encolhimento", "s_71c287a874f3c6": "EBV = h² · y  ·  λ = (1 − h²) / h²  ·  encolhimento = 1 − h²", "s_f1eaab8aacb2f1": "λ alto = resíduo pesa mais que a genética aditiva ⇒ confie menos no desvio cru e encolha mais. Quando h² sobe, λ cai e o desvio recebe mais peso.", "s_de6eb136149059": "Somando a informação da família", "s_a6d57a9d219883": "O jovem ainda não tem filhos avaliados. Os parentes carregam evidência: combinamos a média parental com o registro próprio (pesos didáticos 0,60 / 0,40).", "s_1dc84d75b4f3c0": "EBV do pai", "s_34999b8fc49230": "EBV da mãe", "s_7a42fe7ad5428a": "média parental", "s_b8d813fff24e5d": "próprio (h²·y)", "s_3c4587af1c96b2": "EBV com família", "s_cbc873e598ab0d": "família", "s_66ee4721a2eb88": "= 0,60 · média parental + 0,40 · (h² · y)", "s_259c29aefc6fd5": "Exemplo do curso (y=20, pai=12, mãe=4)", "s_145ead8b15b8d5": "Leitura", "s_d3e2f55e513f55": "Experimente:", "s_89fa01dde7a746": "suba h² para 0,90. O EBV quase iguala o desvio cru (λ → 0,1) — com alta herdabilidade o fenótipo já é um bom estimador. Agora desça para 0,10: o EBV encolhe quase a zero (λ = 9) e a", "s_2083c762bdd81b": "família domina", "s_8902e3b18c0476": "a estimativa. É essa lógica que o BLUP completo generaliza com a matriz de parentesco A.", "s_6d7c1a8e315bd1": "MGenética · artefato interativo · derivado do texto M17 — BLUP e modelo animal", "s_4a45b48a139b69": "média", "s_6757004a581d84": "O desvio observado \u003cb>y = ", "s_9e66544b47c133": "O desvio observado y =", "s_31257bcab7937e": "\u003c/b> encolhe para um EBV de \u003cb>", "s_87f15a1e4b32d2": "encolhe para um EBV de", "s_e5ac4065062eea": "% do desvio foi descontado como ruído ambiental). ", "s_64bebfd8c2fff8": "Sozinho, o registro próprio sugere ", "s_497e480e0f40b0": "; a família sugere ", "s_6863d8927981c5": "; a combinação didática fica em \u003cb>", "s_7c436402a3e18a": "; a combinação didática fica em", "s_84e1ddedaa8f7b": "Isso evita dois erros: transformar todo o +", "s_90e5bb70d39b02": " em mérito genético e, ao mesmo tempo, ignorar parentes avaliados.", "s_d90c648ee15374": "M17 · BLUP e modelo animal — MGenética", "s_289c90decf40c8": "um", "s_6e3a7123b11496": "Boa", "s_94bcec5fd67a68": "Seca", "s_3b2951547f2e87": "aprovado", "s_c5351d0eca67e8": "aprovado com ressalva", "s_1b86e0c24f5ad4": "aprovado c/ ressalva", "s_bd981f11b6b5f5": "reprovado", "s_e09e637cd72329": "alerta", "s_1d6bd61428a2d2": "Nenhum."}, "en": {"s_a91dd3be792fef": "← MGenética interactive learning path", "s_06d5947eb4f16d": "Module 17 · BLUP and animal model", "s_b3f4533c8aa9e4": "Shrinkage: from raw deviation to EBV", "s_22713f926cef0b": "A performance of +20 does not turn +20 of genetic merit. The BLUP \"collects\" the deviation observed in the direction of the mean — the less reliable the information, the more it shrinks. See the factor λ pulling the estimate.", "s_92c6ff6f018e67": "Shrinkage of the individual record", "s_77a76898c2bcc4": "Deviation observed y (points above average)", "s_a7f8c8753cee66": "Heritability h²", "s_aa1ffe91cb3191": "mean (0)", "s_430d588c15dd82": "raw deviation y", "s_90a0072094f9ad": "EBV harvested h²?", "s_ef49d2d02dd915": "EBV Didactic = h²?", "s_a09848b6e9499e": "factor λ = (1−h²)/h²", "s_c6946516c51fcc": "shrinkage", "s_71c287a874f3c6": "EBV = h² · y  ·  λ = (1 − h²) / h²  ? shrinkage : 1 − h²", "s_f1eaab8aacb2f1": "High λ = residual variation outweighs additive genetic variation ⇒ trust the raw deviation less and apply more shrinkage. As h² rises, λ falls and the deviation receives more weight.", "s_de6eb136149059": "Adding family information", "s_a6d57a9d219883": "The young animal has no evaluated offspring yet. Relatives provide evidence: combine the parental mean with its own record (illustrative weights 0,60 / 0,40).", "s_1dc84d75b4f3c0": "EBV of the father", "s_34999b8fc49230": "EBV of the mother", "s_7a42fe7ad5428a": "parental mean", "s_b8d813fff24e5d": "own record (h²·y)", "s_3c4587af1c96b2": "EBV with family", "s_cbc873e598ab0d": "family", "s_66ee4721a2eb88": "= 0,60 · parental mean + 0,40 · (h² · y)", "s_259c29aefc6fd5": "Example of the course (y=20, father=12, mother=4)", "s_145ead8b15b8d5": "Interpretation", "s_d3e2f55e513f55": "Try:", "s_89fa01dde7a746": "raise h² to 0,90. The EBV almost equals the raw deviation (λ → 0,1) — with high heritability, the phenotype is already a good estimator. Now lower it to 0,10: the EBV shrinks almost to zero (λ = 9) and the", "s_2083c762bdd81b": "family dominates", "s_8902e3b18c0476": "the estimate. Full BLUP generalizes this principle using relationship matrix A.", "s_6d7c1a8e315bd1": "MGenética · interactive artifact · based on M17 — BLUP and the Animal Model", "s_4a45b48a139b69": "mean", "s_6757004a581d84": "The observed deviation \u003cb>y = ", "s_9e66544b47c133": "The observed deviation y =", "s_31257bcab7937e": "\u003c/b> shrinks to a EBV of \u003cb>", "s_87f15a1e4b32d2": "shrinks to a EBV of", "s_e5ac4065062eea": "% of deviation was discounted as environmental noise). ", "s_64bebfd8c2fff8": "The animal’s own record alone suggests ", "s_497e480e0f40b0": "; the family suggests ", "s_6863d8927981c5": "; the didactic combination is in \u003cb>", "s_7c436402a3e18a": "; the didactic combination is in", "s_84e1ddedaa8f7b": "This avoids two errors: transform the whole +", "s_90e5bb70d39b02": " in genetic merit while ignoring evaluated relatives.", "s_d90c648ee15374": "M17 · BLUP and the animal model — MGenética", "s_289c90decf40c8": "one", "s_6e3a7123b11496": "Good", "s_94bcec5fd67a68": "Dry", "s_3b2951547f2e87": "approved", "s_c5351d0eca67e8": "approved with reservations", "s_1b86e0c24f5ad4": "approved with reservations", "s_bd981f11b6b5f5": "failed", "s_e09e637cd72329": "warning", "s_1d6bd61428a2d2": "None."}, "es": {"s_a91dd3be792fef": "← Ruta interactiva MGenética", "s_06d5947eb4f16d": "Módulo 17 · BLUP y modelo animal", "s_b3f4533c8aa9e4": "Contracción: de la desviación bruta al EBV", "s_22713f926cef0b": "Un rendimiento de +20 no gira +20 de mérito genético. El BLUP \"colecta\" la desviación observada en la dirección de la media — la menor fiabilidad de la información, cuanto más se contrae. Vea el factor λ tirando de la estimación.", "s_92c6ff6f018e67": "Contracción del registro propio", "s_77a76898c2bcc4": "Desviación observada y (puntos por encima de la media)", "s_a7f8c8753cee66": "Heredabilidad h²", "s_aa1ffe91cb3191": "media (0)", "s_430d588c15dd82": "crudo y", "s_90a0072094f9ad": "EBV cosechado h²?", "s_ef49d2d02dd915": "EBV Didáctica = h²?", "s_a09848b6e9499e": "factor λ = (1−h²)/h²", "s_c6946516c51fcc": "contracción", "s_71c287a874f3c6": "EBV = h² · y · λ = (1 − h² / h² ? : 1 - h²", "s_f1eaab8aacb2f1": "λ alta = la variación residual pesa más que la variación genética aditiva ⇒ confía menos en la desviación sin ajustar y aplica más contracción. Cuando h² sube, λ baja y la desviación recibe más peso.", "s_de6eb136149059": "Añadiendo información familiar", "s_a6d57a9d219883": "El animal joven aún no tiene progenie evaluada. Los parientes aportan evidencia: combina la media parental con su propio registro (pesos didácticos 0,60 / 0,40).", "s_1dc84d75b4f3c0": "EBV del padre", "s_34999b8fc49230": "EBV de la madre", "s_7a42fe7ad5428a": "media parental", "s_b8d813fff24e5d": "registro propio (h²·y)", "s_3c4587af1c96b2": "EBV con familia", "s_cbc873e598ab0d": "familia", "s_66ee4721a2eb88": "= 0,60 · media parental + 0,40 · (h² · y)", "s_259c29aefc6fd5": "Ejemplo del curso (y=20, padre=12, madre=4)", "s_145ead8b15b8d5": "Interpretación", "s_d3e2f55e513f55": "Prueba:", "s_89fa01dde7a746": "sube h² a 0,90. El EBV casi iguala la desviación bruta (λ → 0,1) — con alta heredabilidad, el fenotipo ya es un buen estimador. Ahora baja a 0,10: el EBV se contrae casi a cero (λ = 9) y la", "s_2083c762bdd81b": "la familia domina", "s_8902e3b18c0476": "la estimación. El BLUP completo generaliza esta lógica con la matriz de parentesco A.", "s_6d7c1a8e315bd1": "MGenética · artefacto interactivo · basado en M17 — BLUP y el Modelo Animal", "s_4a45b48a139b69": "media", "s_6757004a581d84": "La desviación observada \u003cb>y = ", "s_9e66544b47c133": "La desviación observada y =", "s_31257bcab7937e": "\u003c/b> psiquiatras a un EBV de \u003cb>", "s_87f15a1e4b32d2": "psiquiatras a un EBV de", "s_e5ac4065062eea": "% de la desviación se descontó como ruido ambiental). ", "s_64bebfd8c2fff8": "Por sí solo, el registro del animal sugiere ", "s_497e480e0f40b0": "; la familia sugiere ", "s_6863d8927981c5": "; la combinación didáctica está en \u003cb>", "s_7c436402a3e18a": "; la combinación didáctica está en", "s_84e1ddedaa8f7b": "Esto evita dos errores: transformar el todo +", "s_90e5bb70d39b02": " en mérito genético e ignorar, al mismo tiempo, a los parientes evaluados.", "s_d90c648ee15374": "M17 · BLUP y modelo animal — MGenética", "s_289c90decf40c8": "un", "s_6e3a7123b11496": "Buena", "s_94bcec5fd67a68": "Seca", "s_3b2951547f2e87": "aprobado", "s_c5351d0eca67e8": "aprobado con reservas", "s_1b86e0c24f5ad4": "aprobado con reservas", "s_bd981f11b6b5f5": "reprobado", "s_e09e637cd72329": "alerta", "s_1d6bd61428a2d2": "Ninguno."}}</script>
+<!-- MG-TRANSLATIONS:end -->
 <!-- MG-RUNTIME:start (gerado por scripts/apply_lab_runtime.py — não editar à mão) -->
 <style id="mg-runtime">
 /* mg-lab.css — runtime compartilhado dos labs interativos MGenética.
@@ -214,15 +217,24 @@ canvas { height: auto; }
   function setLang(lang) {
     if (DICT[lang]) LANG = lang;
     root.setAttribute("lang", LANG);
+    document.title = t("s_d90c648ee15374");
     document.querySelectorAll("[data-i18n]").forEach(function (n) {
       n.textContent = t(n.getAttribute("data-i18n"));
     });
     document.querySelectorAll("[data-i18n-aria]").forEach(function (n) {
       n.setAttribute("aria-label", t(n.getAttribute("data-i18n-aria")));
     });
+    document.querySelectorAll("[data-i18n-title]").forEach(function(n) { n.title = t(n.getAttribute("data-i18n-title")); });
     window.dispatchEvent(new CustomEvent("mg:langchange", { detail: { lang: LANG } }));
   }
-  window.MGi18n = { t: t, lang: function () { return LANG; } };
+  window.MGi18n = {
+    t: t,
+    format: function (key, values) { return t(key).replace(/\{(\d+)\}/g, function (_, i) { return values[Number(i)]; }); },
+    lang: function () { return LANG; }
+  };
+  loadDict();
+  var initialLang = params().get("lang");
+  if (DICT[initialLang]) LANG = initialLang;
 
   // ---- auto-resize (reporta altura ao iframe pai) -----------------------
   var lastH = 0, raf = 0;
@@ -239,7 +251,7 @@ canvas { height: auto; }
   window.addEventListener("message", function (ev) {
     var d = ev && ev.data; if (!d || typeof d !== "object") return;
     if (d.type === "mg-set-theme") setTheme(d.theme);
-    if (d.type === "mg-set-lang") setLang(d.lang);
+    if (d.type === "mg-set-lang" && ev.source === parent) setLang(d.lang);
   });
 
   // ---- reset ("voltar ao exemplo") --------------------------------------
@@ -268,70 +280,77 @@ canvas { height: auto; }
 })();
 </script>
 <!-- MG-RUNTIME:end -->
+<style id="mg-i18n-layout">
+  .page, .card, .res, .res-grid > *, .twores > * { min-width: 0; }
+  [data-i18n] { overflow-wrap: anywhere; }
+  @media (max-width: 420px) {
+    .res-grid, .twores { grid-template-columns: 1fr; }
+  }
+  </style>
 </head>
 <body>
 <div class="page">
-  <a class="back" href="../#catalog">← Trilha interativa MGenética</a>
-  <p class="eyebrow">Módulo 17 · BLUP e modelo animal</p>
-  <h1>Encolhimento: do desvio cru ao EBV</h1>
-  <p class="sub">Um desempenho de +20 não vira +20 de mérito genético. O BLUP "encolhe" o desvio observado na direção da média — quanto menos confiável a informação, mais ele encolhe. Veja o fator λ puxando a estimativa.</p>
+  <a class="back" href="../#catalog"><span data-i18n="s_a91dd3be792fef">← Trilha interativa MGenética</span></a>
+  <p class="eyebrow"><span data-i18n="s_06d5947eb4f16d">Módulo 17 · BLUP e modelo animal</span></p>
+  <h1><span data-i18n="s_b3f4533c8aa9e4">Encolhimento: do desvio cru ao EBV</span></h1>
+  <p class="sub"><span data-i18n="s_22713f926cef0b">Um desempenho de +20 não vira +20 de mérito genético. O BLUP &quot;encolhe&quot; o desvio observado na direção da média — quanto menos confiável a informação, mais ele encolhe. Veja o fator λ puxando a estimativa.</span></p>
 
   <div class="card">
-    <h2><span class="n">1</span>Encolhimento do próprio registro</h2>
+    <h2><span class="n">1</span><span data-i18n="s_92c6ff6f018e67">Encolhimento do próprio registro</span></h2>
     <div class="grid2">
       <div class="slider-group">
-        <label><span>Desvio observado y (pontos acima da média)</span><span class="v" id="vy">20</span></label>
+        <label><span><span data-i18n="s_77a76898c2bcc4">Desvio observado y (pontos acima da média)</span></span><span class="v" id="vy">20</span></label>
         <input type="range" id="y" min="-30" max="30" step="1" value="20">
       </div>
       <div class="slider-group">
-        <label><span>Herdabilidade h²</span><span class="v" id="vh2">0,30</span></label>
+        <label><span><span data-i18n="s_a7f8c8753cee66">Herdabilidade h²</span></span><span class="v" id="vh2">0,30</span></label>
         <input type="range" id="h2" min="0.05" max="0.95" step="0.01" value="0.30">
       </div>
     </div>
     <canvas id="cv" width="1440" height="420"></canvas>
     <div class="legend">
-      <span><i class="dot" style="background:#5a7391"></i> média (0)</span>
-      <span><i class="dot" style="background:#0a1f38"></i> desvio cru y</span>
-      <span><i class="dot" style="background:#00a8d6"></i> EBV encolhido = h²·y</span>
+      <span><i class="dot" style="background:#5a7391"></i> <span data-i18n="s_aa1ffe91cb3191">média (0)</span></span>
+      <span><i class="dot" style="background:#0a1f38"></i> <span data-i18n="s_430d588c15dd82">desvio cru y</span></span>
+      <span><i class="dot" style="background:#00a8d6"></i> <span data-i18n="s_90a0072094f9ad">EBV encolhido = h²·y</span></span>
     </div>
     <div class="res-grid" style="margin-top:1rem;">
-      <div class="res"><div class="lab">EBV didático = h²·y</div><div class="val" id="ebv">6,0</div></div>
-      <div class="res f"><div class="lab">fator λ = (1−h²)/h²</div><div class="val" id="lam">2,33</div></div>
-      <div class="res"><div class="lab">encolhimento</div><div class="val" id="shr">70%</div></div>
+      <div class="res"><div class="lab"><span data-i18n="s_ef49d2d02dd915">EBV didático = h²·y</span></div><div class="val" id="ebv">6,0</div></div>
+      <div class="res f"><div class="lab"><span data-i18n="s_a09848b6e9499e">fator λ = (1−h²)/h²</span></div><div class="val" id="lam">2,33</div></div>
+      <div class="res"><div class="lab"><span data-i18n="s_c6946516c51fcc">encolhimento</span></div><div class="val" id="shr">70%</div></div>
     </div>
-    <div class="formula">EBV = h² · y &nbsp;·&nbsp; λ = (1 − h²) / h² &nbsp;·&nbsp; encolhimento = 1 − h²</div>
-    <div class="warn">λ alto = resíduo pesa mais que a genética aditiva ⇒ confie menos no desvio cru e encolha mais. Quando h² sobe, λ cai e o desvio recebe mais peso.</div>
+    <div class="formula"><span data-i18n="s_71c287a874f3c6">EBV = h² · y  ·  λ = (1 − h²) / h²  ·  encolhimento = 1 − h²</span></div>
+    <div class="warn"><span data-i18n="s_f1eaab8aacb2f1">λ alto = resíduo pesa mais que a genética aditiva ⇒ confie menos no desvio cru e encolha mais. Quando h² sobe, λ cai e o desvio recebe mais peso.</span></div>
   </div>
 
   <div class="card">
-    <h2><span class="n">2</span>Somando a informação da família</h2>
-    <p style="font-size:.84rem;color:var(--mg-muted);margin-bottom:.8rem;">O jovem ainda não tem filhos avaliados. Os parentes carregam evidência: combinamos a média parental com o registro próprio (pesos didáticos 0,60 / 0,40).</p>
+    <h2><span class="n">2</span><span data-i18n="s_de6eb136149059">Somando a informação da família</span></h2>
+    <p style="font-size:.84rem;color:var(--mg-muted);margin-bottom:.8rem;"><span data-i18n="s_a6d57a9d219883">O jovem ainda não tem filhos avaliados. Os parentes carregam evidência: combinamos a média parental com o registro próprio (pesos didáticos 0,60 / 0,40).</span></p>
     <div class="grid2">
       <div class="slider-group">
-        <label><span>EBV do pai</span><span class="v" id="vpai">12</span></label>
+        <label><span><span data-i18n="s_1dc84d75b4f3c0">EBV do pai</span></span><span class="v" id="vpai">12</span></label>
         <input type="range" id="pai" min="-20" max="20" step="1" value="12">
       </div>
       <div class="slider-group">
-        <label><span>EBV da mãe</span><span class="v" id="vmae">4</span></label>
+        <label><span><span data-i18n="s_34999b8fc49230">EBV da mãe</span></span><span class="v" id="vmae">4</span></label>
         <input type="range" id="mae" min="-20" max="20" step="1" value="4">
       </div>
     </div>
     <div class="res-grid">
-      <div class="res"><div class="lab">média parental</div><div class="val" id="mp">8,0</div></div>
-      <div class="res"><div class="lab">próprio (h²·y)</div><div class="val" id="own">6,0</div></div>
-      <div class="res" style="border-color:var(--mg-cyan)"><div class="lab">EBV com família</div><div class="val" id="comb" style="color:#0a7a99">7,2</div></div>
+      <div class="res"><div class="lab"><span data-i18n="s_7a42fe7ad5428a">média parental</span></div><div class="val" id="mp">8,0</div></div>
+      <div class="res"><div class="lab"><span data-i18n="s_b8d813fff24e5d">próprio (h²·y)</span></div><div class="val" id="own">6,0</div></div>
+      <div class="res" style="border-color:var(--mg-cyan)"><div class="lab"><span data-i18n="s_3c4587af1c96b2">EBV com família</span></div><div class="val" id="comb" style="color:#0a7a99">7,2</div></div>
     </div>
-    <div class="formula">EBV<sub>família</sub> = 0,60 · média parental + 0,40 · (h² · y)</div>
-    <button class="btn" id="ex" style="margin-top:.8rem;">Exemplo do curso (y=20, pai=12, mãe=4)</button>
+    <div class="formula">EBV<sub><span data-i18n="s_cbc873e598ab0d">família</span></sub> <span data-i18n="s_66ee4721a2eb88">= 0,60 · média parental + 0,40 · (h² · y)</span></div>
+    <button class="btn" id="ex" style="margin-top:.8rem;"><span data-i18n="s_259c29aefc6fd5">Exemplo do curso (y=20, pai=12, mãe=4)</span></button>
   </div>
 
   <div class="card">
-    <h2><span class="n">3</span>Leitura</h2>
+    <h2><span class="n">3</span><span data-i18n="s_145ead8b15b8d5">Leitura</span></h2>
     <div class="note" id="explain"></div>
-    <div class="try"><b>Experimente:</b> suba h² para 0,90. O EBV quase iguala o desvio cru (λ → 0,1) — com alta herdabilidade o fenótipo já é um bom estimador. Agora desça para 0,10: o EBV encolhe quase a zero (λ = 9) e a <b>família domina</b> a estimativa. É essa lógica que o BLUP completo generaliza com a matriz de parentesco A.</div>
+    <div class="try"><b><span data-i18n="s_d3e2f55e513f55">Experimente:</span></b> <span data-i18n="s_89fa01dde7a746">suba h² para 0,90. O EBV quase iguala o desvio cru (λ → 0,1) — com alta herdabilidade o fenótipo já é um bom estimador. Agora desça para 0,10: o EBV encolhe quase a zero (λ = 9) e a</span> <b><span data-i18n="s_2083c762bdd81b">família domina</span></b> <span data-i18n="s_8902e3b18c0476">a estimativa. É essa lógica que o BLUP completo generaliza com a matriz de parentesco A.</span></div>
   </div>
 
-  <div class="mg-foot">MGenética · artefato interativo · derivado do texto M17 — BLUP e modelo animal</div>
+  <div class="mg-foot"><span data-i18n="s_6d7c1a8e315bd1">MGenética · artefato interativo · derivado do texto M17 — BLUP e modelo animal</span></div>
 </div>
 
 <script>
@@ -359,7 +378,7 @@ canvas { height: auto; }
     // mean marker
     function mark(v,col,label,up){ctx.fillStyle=col;ctx.beginPath();ctx.arc(X(v),yc,7,0,7);ctx.fill();ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.stroke();
       ctx.fillStyle=col;ctx.font='bold 12px monospace';ctx.textAlign='center';ctx.fillText(label,X(v),yc+(up?-46:42));}
-    mark(0,'#5a7391','média',false);
+    mark(0,'#5a7391',window.MGi18n.t("s_4a45b48a139b69"),false);
     mark(y,'#0a1f38','y = '+f1(y),true);
     mark(ebv,'#00a8d6','EBV = '+f1(ebv),false);
   }
@@ -377,9 +396,9 @@ canvas { height: auto; }
     const mp=(pai+mae)/2,comb=0.6*mp+0.4*ebv;
     el('mp').textContent=f1(mp);el('own').textContent=f1(ebv);el('comb').textContent=f1(comb);
     const ex=el('explain');
-    ex.innerHTML='O desvio observado <b>y = '+f1(y)+'</b> encolhe para um EBV de <b>'+f1(ebv)+'</b> ('+Math.round((1-h2)*100)+'% do desvio foi descontado como ruído ambiental). '+
-      'Sozinho, o registro próprio sugere '+f1(ebv)+'; a família sugere '+f1(mp)+'; a combinação didática fica em <b>'+f1(comb)+'</b>. '+
-      'Isso evita dois erros: transformar todo o +'+f1(y)+' em mérito genético e, ao mesmo tempo, ignorar parentes avaliados.';
+    ex.innerHTML=window.MGi18n.t("s_6757004a581d84")+f1(y)+window.MGi18n.t("s_31257bcab7937e")+f1(ebv)+'</b> ('+Math.round((1-h2)*100)+window.MGi18n.t("s_e5ac4065062eea")+
+      window.MGi18n.t("s_64bebfd8c2fff8")+f1(ebv)+window.MGi18n.t("s_497e480e0f40b0")+f1(mp)+window.MGi18n.t("s_6863d8927981c5")+f1(comb)+'</b>. '+
+      window.MGi18n.t("s_84e1ddedaa8f7b")+f1(y)+window.MGi18n.t("s_90e5bb70d39b02");
   }
   ['y','h2','pai','mae'].forEach(id=>el(id).addEventListener('input',update));
   el('ex').addEventListener('click',()=>{el('y').value=20;el('h2').value=0.30;el('pai').value=12;el('mae').value=4;update();});
@@ -440,6 +459,31 @@ canvas { height: auto; }
       update();
     } catch (_) {}
   }
+})();
+</script>
+
+<script id="mg-language-refresh">
+(() => {
+  const dict = JSON.parse(document.getElementById('i18n').textContent);
+  const aliases = new Map();
+  for (const entries of Object.values(dict)) for (const [key, text] of Object.entries(entries)) {
+    if (!text.includes('<') && text.trim()) aliases.set(text.trim(), key);
+  }
+  const bindings = new WeakMap();
+  function bindAndTranslate() {
+    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+    let node;
+    while ((node = walker.nextNode())) {
+      if (node.parentElement.closest('script,style,pre,code,[data-i18n]')) continue;
+      const key = bindings.get(node) || aliases.get(node.textContent.trim());
+      if (!key) continue;
+      bindings.set(node, key);
+      const lead = node.textContent.match(/^\s*/)[0], tail = node.textContent.match(/\s*$/)[0];
+      node.textContent = lead + window.MGi18n.t(key) + tail;
+    }
+  }
+  window.addEventListener('mg:langchange', () => { update(); bindAndTranslate(); });
+  bindAndTranslate();
 })();
 </script>
 </body>

@@ -5,17 +5,24 @@ import ActionButton from './components/ActionButton'
 import LessonText from './components/LessonText'
 import LabEmbed from './components/LabEmbed'
 
-function CourseLab({ detail }) {
+const LAB_COPY = {
+  'pt-BR': { eyebrow: 'Interativo', title: 'Laboratório interativo' },
+  en: { eyebrow: 'Interactive', title: 'Interactive laboratory' },
+  es: { eyebrow: 'Interactivo', title: 'Laboratorio interactivo' }
+}
+
+function CourseLab({ detail, locale }) {
   if (!detail?.lab) return null
-  const title = `Laboratório interativo: ${detail.title}`
+  const copy = LAB_COPY[locale] || LAB_COPY['pt-BR']
+  const title = `${copy.title}: ${detail.title}`
 
   return (
     <section className="section-card course-lab-card" aria-labelledby={`course-lab-title-${detail.id}`}>
-      <div className="section-eyebrow">Interativo</div>
-      <h3 id={`course-lab-title-${detail.id}`}>Laboratório interativo</h3>
+      <div className="section-eyebrow">{copy.eyebrow}</div>
+      <h3 id={`course-lab-title-${detail.id}`}>{copy.title}</h3>
       <p className="course-visual-caption">{detail.title}</p>
       <div className="course-lab-frame-wrap">
-        <LabEmbed lab={detail.lab} title={title} />
+        <LabEmbed key={detail.lab} lab={detail.lab} title={title} locale={locale} />
       </div>
     </section>
   )
@@ -54,7 +61,7 @@ function StudyPath({ detail }) {
   )
 }
 
-export default function CoursePage({ publicAccess = false, course, detail, progress, onBack, onOpenQuiz, onOpenCatalog, onOpenCourse, nextCourse, onLogout, loadingAuth, locale, onLocaleChange, t }) {
+export default function CoursePage({ publicAccess = false, course, detail, progress, onBack, onOpenQuiz, onOpenCatalog, onOpenCourse, nextCourse, onLogout, loadingAuth, locale, onLocaleChange, contentNotice, t }) {
   return (
     <div className="app-shell">
       <AppHeader brandName={course.title} brandTagline={t('coursePage.dedicatedPage')} status="" locale={locale} onLocaleChange={onLocaleChange} t={t} className="course-header">
@@ -73,6 +80,7 @@ export default function CoursePage({ publicAccess = false, course, detail, progr
       <a className="skip-link" href="#main-content">{t('common.skipToContent') || 'Skip to content'}</a>
       {detail ? (
         <main id="main-content" className="course-content stack" tabIndex="-1">
+          {contentNotice && <p role="alert">{contentNotice}</p>}
           <article className="module-card">
             <div className="module-header">
               <div className="badge-row">
@@ -105,8 +113,8 @@ export default function CoursePage({ publicAccess = false, course, detail, progr
               </article>
             </div>
           </section>}
-          {detail.sections.map((section) => (
-            <React.Fragment key={section.eyebrow + section.title}>
+          {detail.sections.map((section, index) => (
+            <React.Fragment key={`${detail.id}-${index}`}>
               <SectionCard
                 eyebrow={section.eyebrow}
                 title={section.title}
@@ -116,7 +124,7 @@ export default function CoursePage({ publicAccess = false, course, detail, progr
                 part={detail.studyParts.find((part) => part.id === section.part)?.label}
                 scientific={section.scientific}
               />
-              {detail.lab && section.part === 'lab' ? <CourseLab detail={detail} /> : null}
+              {detail.lab && section.part === 'lab' ? <CourseLab detail={detail} locale={locale} /> : null}
             </React.Fragment>
           ))}
           {!publicAccess && <section className="section-card">
