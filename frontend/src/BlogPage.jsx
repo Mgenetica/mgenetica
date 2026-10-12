@@ -26,9 +26,13 @@ export default function BlogPage({ slug, locale, onLocaleChange, t }) {
         <a className="blog-back" href="#blog">← Todos os textos</a>
         <header>{meta(post)}<h1 ref={heading} tabIndex={-1}>{post.title}</h1><p className="blog-deck">{post.summary}</p><p className="blog-byline">MGenética · Divulgação científica</p></header>
         <aside className="blog-takeaway"><strong>Para guardar</strong><p>{post.takeaway}</p></aside>
+        <div className="blog-reading-layout">
         <nav className="blog-toc" aria-label="Neste texto"><strong>Neste texto</strong>{post.sections.map(s => <a key={s.id} href={'#blog/' + post.slug} onClick={e => { e.preventDefault(); const el = document.getElementById(s.id); el?.focus(); el?.scrollIntoView({ behavior: 'instant', block: 'start' }) }}>{s.title}</a>)}</nav>
+        <div className="blog-prose">
         {post.sections.map(s => <section key={s.id}><h2 id={s.id} tabIndex={-1}>{s.title}</h2>{s.paragraphs.map((p, i) => <p key={i}>{p}</p>)}</section>)}
         <section className="blog-sources"><h2>Fontes para aprofundar</h2><p>Material de referência do National Human Genome Research Institute. Consultado em 12 de outubro de 2026.</p><ul>{post.sources.map(s => <li key={s.url}><a href={s.url}>{s.title} ↗</a></li>)}</ul></section>
+        </div>
+        </div>
         <aside className="blog-course"><h2>Da leitura à prática</h2><p>Explore o tema no curso aberto, com explicações e laboratório interativo.</p><a className="btn btn-primary" href={'#course/' + post.module}>Explorar módulo do curso →</a></aside>
         <section className="blog-related"><h2>Continue a leitura</h2>{posts.filter(p => p.slug !== slug).map(p => <a key={p.slug} href={'#blog/' + p.slug}>{p.title} →</a>)}</section>
       </article> : <section className="blog-article"><h1 ref={heading} tabIndex={-1}>Artigo não encontrado</h1><p>Este endereço não corresponde a um texto do blog.</p><a className="btn btn-primary" href="#blog">Voltar ao blog</a></section> : <>
