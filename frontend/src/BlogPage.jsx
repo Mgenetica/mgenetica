@@ -37,7 +37,6 @@ export default function BlogPage({ slug, locale, onLocaleChange, t }) {
         <div className="blog-prose">
         {post.introduction && <div className="blog-introduction"><Blocks blocks={post.introduction} /></div>}
         {post.sections.map(s => <section key={s.id}><h2 id={s.id} tabIndex={-1}>{s.title}</h2>{s.blocks ? <Blocks blocks={s.blocks} /> : s.paragraphs.map((p, i) => <p key={i}>{p}</p>)}</section>)}
-        <section className="blog-sources"><h2>Fontes para aprofundar</h2><p>{post.sourceNote || 'Material de referência do National Human Genome Research Institute. Consultado em 12 de outubro de 2026.'}</p><ul>{post.sources.map(s => <li key={s.url}><a href={s.url}>{s.title} ↗</a></li>)}</ul></section>
         </div>
         </div>
         <aside className="blog-course"><h2>Da leitura à prática</h2><p>Explore o tema no curso aberto, com explicações e laboratório interativo.</p><a className="btn btn-primary" href={'#course/' + post.module}>Explorar módulo do curso →</a></aside>
