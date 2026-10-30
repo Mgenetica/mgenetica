@@ -1,0 +1,535 @@
+{
+  "slug": "marcas-brancas-cavalos-genetica",
+  "category": "Genética equina",
+  "title": "Marcas brancas nos cavalos: o que a genética revela sobre sua origem?",
+  "summary": "Estudo com cavalos Quarto de Milha criados no Brasil mostra que marcas brancas semelhantes podem estar associadas a diferentes regiões do DNA.",
+  "date": "2026-10-30",
+  "readingMinutes": 11,
+  "module": "module-20",
+  "author": "MGenética",
+  "takeaway": "Marcas brancas semelhantes podem estar associadas a diferentes regiões do DNA. As associações encontradas nesta população não comprovam quais alterações genéticas causam as marcas.",
+  "introduction": [
+    {
+      "type": "paragraph",
+      "text": "As marcas brancas na testa, no focinho e nas pernas são características bastante conhecidas dos cavalos. Além de contribuírem para a aparência de cada animal, essas marcas são utilizadas na identificação individual e nos registros das associações de criadores."
+    },
+    {
+      "type": "paragraph",
+      "text": "Mas você já se perguntou por que alguns cavalos apresentam grandes marcas brancas na cabeça, enquanto outros possuem apenas pequenas manchas ou regiões despigmentadas nas pernas?"
+    },
+    {
+      "type": "paragraph",
+      "text": "A resposta envolve a genética. E, ao contrário do que pode parecer, **marcas brancas semelhantes nem sempre têm a mesma origem genética**."
+    },
+    {
+      "type": "paragraph",
+      "text": "Essa foi uma das principais descobertas do estudo *Genetic heterogeneity of white markings in Quarter Horses*, publicado em 2020 no periódico científico *Livestock Science*, por Maciel e colaboradores."
+    },
+    {
+      "type": "paragraph",
+      "text": "A pesquisa investigou regiões do DNA associadas à presença de marcas brancas em cavalos Quarto de Milha da linhagem de corrida, criados no Brasil, e revelou que diferentes partes do genoma estão relacionadas à manifestação dessas características."
+    }
+  ],
+  "sections": [
+    {
+      "id": "secao-1",
+      "title": "Por que estudar as marcas brancas dos cavalos?",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "As marcas brancas são regiões da pele que apresentam ausência de pigmentação devido à falta de células produtoras de pigmento, chamadas melanócitos."
+        },
+        {
+          "type": "paragraph",
+          "text": "Essas células são responsáveis pela produção de melanina, substância que contribui para a coloração da pele e dos pelos."
+        },
+        {
+          "type": "paragraph",
+          "text": "A distribuição dessas marcas pode variar bastante entre os animais. Alguns apresentam pequenas estrelas brancas na testa, enquanto outros possuem faixas extensas na face ou marcas que cobrem parte das pernas."
+        },
+        {
+          "type": "paragraph",
+          "text": "No caso dos cavalos Quarto de Milha, essa característica também possui importância para a identificação racial."
+        },
+        {
+          "type": "paragraph",
+          "text": "O artigo destaca que a presença de marcas brancas excessivas na cabeça e nas pernas pode interferir no registro de determinados animais como Quarto de Milha, conforme os critérios da associação de criadores."
+        },
+        {
+          "type": "paragraph",
+          "text": "Além disso, pesquisas anteriores mencionadas pelos autores identificaram associações entre determinados padrões de despigmentação e problemas de pele ou surdez em cavalos. Isso não significa que todo cavalo com marcas brancas apresente essas condições, mas reforça a importância de compreender os mecanismos genéticos envolvidos."
+        },
+        {
+          "type": "paragraph",
+          "text": "Conhecer as regiões do DNA relacionadas à pigmentação pode, portanto, contribuir para o entendimento da diversidade de aparência dos cavalos e orientar futuras investigações genéticas."
+        }
+      ]
+    },
+    {
+      "id": "secao-2",
+      "title": "Como o estudo foi realizado?",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Os pesquisadores trabalharam com cavalos Quarto de Milha da linhagem de corrida, nascidos entre 1985 e 2012 e criados no Brasil."
+        },
+        {
+          "type": "paragraph",
+          "text": "Foram utilizados dados genéticos de **360 animais**, além de registros sobre a presença ou ausência de marcas brancas em **342 cavalos**."
+        },
+        {
+          "type": "paragraph",
+          "text": "A investigação considerou três características separadamente:"
+        },
+        {
+          "type": "list",
+          "text": "- Presença de marcas brancas na cabeça.\n- Presença de marcas brancas nos membros anteriores.\n- Presença de marcas brancas nos membros posteriores."
+        },
+        {
+          "type": "paragraph",
+          "text": "Para investigar essas características, os pesquisadores analisaram **63.652 SNPs** distribuídos pelo genoma dos animais."
+        },
+        {
+          "type": "heading",
+          "text": "O que são SNPs?"
+        },
+        {
+          "type": "paragraph",
+          "text": "O DNA pode ser entendido como um conjunto de instruções biológicas que participa da formação e do funcionamento dos organismos."
+        },
+        {
+          "type": "paragraph",
+          "text": "Embora os cavalos compartilhem grande parte de seu material genético, existem pequenas diferenças na sequência do DNA entre os indivíduos."
+        },
+        {
+          "type": "paragraph",
+          "text": "Uma dessas diferenças é chamada de SNP, sigla em inglês para *Single Nucleotide Polymorphism*, ou polimorfismo de nucleotídeo único."
+        },
+        {
+          "type": "paragraph",
+          "text": "Um SNP corresponde à variação de uma única posição na sequência do DNA."
+        },
+        {
+          "type": "paragraph",
+          "text": "Essas variações funcionam como marcadores genéticos, permitindo investigar quais regiões do genoma estão associadas a determinadas características."
+        },
+        {
+          "type": "paragraph",
+          "text": "No estudo, os pesquisadores utilizaram uma **análise de associação genômica ampla (GWAS)**, uma abordagem que examina milhares de marcadores distribuídos pelo DNA para identificar regiões relacionadas às diferenças observadas entre os animais."
+        },
+        {
+          "type": "paragraph",
+          "text": "A análise também incorporou informações de parentesco, combinando dados genealógicos e genéticos por meio de um procedimento conhecido como *single-step*."
+        },
+        {
+          "type": "paragraph",
+          "text": "O objetivo não era apenas localizar genes relacionados à pigmentação, mas compreender se as marcas brancas da cabeça e das pernas compartilhavam as mesmas regiões genéticas."
+        }
+      ]
+    },
+    {
+      "id": "secao-3",
+      "title": "Quais marcas brancas foram mais frequentes?",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Entre os animais com registros utilizados no estudo, as marcas brancas apresentaram frequências bastante diferentes conforme a região corporal."
+        },
+        {
+          "type": "table",
+          "headers": [
+            "Região corporal",
+            "Animais com marcas brancas"
+          ],
+          "rows": [
+            [
+              "Cabeça",
+              "85,01%"
+            ],
+            [
+              "Membros anteriores",
+              "51,71%"
+            ],
+            [
+              "Membros posteriores",
+              "26,30%"
+            ]
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "As marcas na cabeça foram as mais frequentes, estando presentes em aproximadamente 85 de cada 100 animais avaliados."
+        },
+        {
+          "type": "paragraph",
+          "text": "Já as marcas nos membros posteriores foram observadas em pouco mais de um quarto dos cavalos."
+        },
+        {
+          "type": "paragraph",
+          "text": "É importante destacar que esses percentuais descrevem a população analisada. Eles não representam necessariamente a frequência das marcas brancas em todos os cavalos Quarto de Milha."
+        },
+        {
+          "type": "paragraph",
+          "text": "Além disso, os pesquisadores avaliaram apenas a presença ou ausência das marcas, independentemente de seu tamanho ou formato."
+        }
+      ]
+    },
+    {
+      "id": "secao-4",
+      "title": "O DNA revelou regiões com efeitos importantes",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Um dos resultados mais relevantes foi a identificação de um número relativamente pequeno de regiões genômicas que, em conjunto, explicavam uma parcela expressiva da variação genética relacionada às marcas brancas."
+        },
+        {
+          "type": "paragraph",
+          "text": "Os pesquisadores identificaram:"
+        },
+        {
+          "type": "list",
+          "text": "- **Cabeça:** cinco regiões genômicas que explicaram 64,32% da variação genética aditiva.\n- **Membros anteriores:** quatro regiões que explicaram 40,13%.\n- **Membros posteriores:** três regiões que explicaram 64,81%."
+        },
+        {
+          "type": "heading",
+          "text": "Como interpretar esses percentuais?"
+        },
+        {
+          "type": "paragraph",
+          "text": "A variação genética aditiva corresponde à parcela das diferenças genéticas entre indivíduos associada aos efeitos aditivos dos genes, isto é, aos efeitos que contribuem para a transmissão das características entre gerações."
+        },
+        {
+          "type": "paragraph",
+          "text": "Quando o estudo informa que cinco regiões explicaram 64,32% da variação genética aditiva relacionada às marcas da cabeça, isso significa que essas regiões, consideradas em conjunto, responderam por aproximadamente 64% da variação genética aditiva estimada para essa característica na população estudada."
+        },
+        {
+          "type": "paragraph",
+          "text": "Não significa que 64% das marcas brancas sejam determinadas exclusivamente por essas regiões, nem que um animal tenha 64% de probabilidade de apresentar determinada marca."
+        },
+        {
+          "type": "paragraph",
+          "text": "O resultado indica que algumas partes do genoma possuem efeitos relativamente importantes sobre as diferenças genéticas associadas à presença das marcas."
+        },
+        {
+          "type": "paragraph",
+          "text": "Entretanto, identificar uma região associada a uma característica não é o mesmo que identificar a alteração genética responsável por produzi-la."
+        }
+      ]
+    },
+    {
+      "id": "secao-5",
+      "title": "Marcas semelhantes podem ter origens genéticas diferentes",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Talvez a descoberta mais interessante tenha sido a diferença entre as regiões genômicas associadas às três características investigadas."
+        },
+        {
+          "type": "paragraph",
+          "text": "Os pesquisadores observaram que as regiões relacionadas às marcas brancas na cabeça eram, em sua maioria, diferentes daquelas associadas às marcas nas pernas."
+        },
+        {
+          "type": "paragraph",
+          "text": "Apenas uma região do cromossomo 2 apresentou sobreposição entre as análises dos membros anteriores e posteriores."
+        },
+        {
+          "type": "paragraph",
+          "text": "Esse resultado sugere que determinados genes podem influenciar simultaneamente a presença de marcas brancas nas duas regiões."
+        },
+        {
+          "type": "paragraph",
+          "text": "Por outro lado, a ausência de sobreposição entre a maioria das regiões identificadas indica que diferentes mecanismos genéticos podem estar envolvidos na manifestação dessas características."
+        },
+        {
+          "type": "paragraph",
+          "text": "Esse fenômeno é conhecido como **heterogeneidade genética**."
+        },
+        {
+          "type": "heading",
+          "text": "O que significa heterogeneidade genética?"
+        },
+        {
+          "type": "paragraph",
+          "text": "Imagine dois cavalos que apresentam marcas brancas muito semelhantes na testa."
+        },
+        {
+          "type": "paragraph",
+          "text": "Apesar da aparência parecida, essas marcas podem estar associadas a variações em genes diferentes."
+        },
+        {
+          "type": "paragraph",
+          "text": "Em outras palavras, uma mesma característica observável pode surgir por diferentes caminhos genéticos."
+        },
+        {
+          "type": "paragraph",
+          "text": "A heterogeneidade genética também ajuda a compreender por que genes associados a determinada característica em uma raça ou população podem não apresentar a mesma importância em outra."
+        },
+        {
+          "type": "paragraph",
+          "text": "Isso acontece porque as frequências das variantes genéticas podem variar entre populações, modificando sua contribuição para as características estudadas."
+        },
+        {
+          "type": "paragraph",
+          "text": "No trabalho, os autores observaram que várias regiões associadas às marcas brancas ainda não haviam sido relatadas em pesquisas anteriores."
+        },
+        {
+          "type": "paragraph",
+          "text": "Essa descoberta reforça a importância de investigar diferentes populações equinas, mesmo quando apresentam características aparentemente semelhantes."
+        }
+      ]
+    },
+    {
+      "id": "secao-6",
+      "title": "Quais genes foram associados às marcas brancas?",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "A análise permitiu identificar genes candidatos localizados nas regiões genômicas associadas às marcas."
+        },
+        {
+          "type": "paragraph",
+          "text": "Um gene candidato é aquele que, por sua localização ou função biológica conhecida, pode estar envolvido na manifestação de determinada característica."
+        },
+        {
+          "type": "paragraph",
+          "text": "Isso não significa que sua participação causal tenha sido comprovada."
+        },
+        {
+          "type": "paragraph",
+          "text": "Entre os genes destacados pelos pesquisadores estão:"
+        },
+        {
+          "type": "heading",
+          "text": "MC1R: um gene conhecido pela influência na pelagem"
+        },
+        {
+          "type": "paragraph",
+          "text": "O gene *MC1R* está localizado no cromossomo 3 e é amplamente conhecido por sua participação na determinação da cor básica da pelagem dos cavalos."
+        },
+        {
+          "type": "paragraph",
+          "text": "Ele influencia o tipo de melanina produzido, contribuindo para diferenças entre pelagens como alazã, castanha e preta."
+        },
+        {
+          "type": "paragraph",
+          "text": "Estudos anteriores também haviam associado esse gene à presença e à extensão de marcas brancas."
+        },
+        {
+          "type": "paragraph",
+          "text": "Na pesquisa com cavalos Quarto de Milha, a região contendo *MC1R* foi associada às marcas brancas na cabeça."
+        },
+        {
+          "type": "heading",
+          "text": "ZEB2 e KYNU: possíveis relações com a pigmentação"
+        },
+        {
+          "type": "paragraph",
+          "text": "Outros dois genes candidatos identificados em regiões associadas às marcas da cabeça foram *ZEB2* e *KYNU*."
+        },
+        {
+          "type": "paragraph",
+          "text": "Os autores destacaram evidências anteriores que relacionavam esses genes a processos de pigmentação ou alterações de coloração em outras espécies."
+        },
+        {
+          "type": "paragraph",
+          "text": "Essas informações tornam os genes candidatos interessantes para investigações futuras, mas não demonstram, por si só, que sejam responsáveis pelas marcas brancas nos cavalos analisados."
+        },
+        {
+          "type": "heading",
+          "text": "SLC36A1, STX12 e MAP3K6: candidatos relacionados às marcas nas pernas"
+        },
+        {
+          "type": "paragraph",
+          "text": "Nas regiões associadas às marcas dos membros anteriores, os pesquisadores destacaram genes como *SLC36A1*, *STX12* e *MAP3K6*."
+        },
+        {
+          "type": "paragraph",
+          "text": "O gene *SLC36A1* já havia sido relacionado à diluição da cor da pelagem em cavalos, incluindo a coloração conhecida como champanhe."
+        },
+        {
+          "type": "paragraph",
+          "text": "Os demais foram apontados por suas possíveis relações com mecanismos celulares envolvidos na pigmentação."
+        },
+        {
+          "type": "heading",
+          "text": "GJB2 e LATS2: outros candidatos importantes"
+        },
+        {
+          "type": "paragraph",
+          "text": "Para as marcas nos membros posteriores, foram destacados os genes *GJB2* e *LATS2*, localizados em uma região do cromossomo 17."
+        },
+        {
+          "type": "paragraph",
+          "text": "Esses genes possuem relações conhecidas com processos celulares associados à pigmentação ou com outros genes envolvidos nesse processo."
+        },
+        {
+          "type": "paragraph",
+          "text": "O artigo também menciona estudos anteriores que relacionaram alterações em genes envolvidos na pigmentação a determinados casos de surdez."
+        },
+        {
+          "type": "paragraph",
+          "text": "Entretanto, a pesquisa com os cavalos Quarto de Milha não investigou diretamente a ocorrência de surdez, nem demonstrou que os genes candidatos identificados causassem problemas auditivos nesses animais."
+        }
+      ]
+    },
+    {
+      "id": "secao-7",
+      "title": "E os genes KIT e MITF?",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Um resultado interessante foi a ausência de associação destacada para dois genes bastante conhecidos nos estudos de pigmentação equina: *KIT* e *MITF*."
+        },
+        {
+          "type": "paragraph",
+          "text": "Pesquisas anteriores identificaram variantes nesses genes relacionadas a diferentes padrões de marcas brancas em cavalos."
+        },
+        {
+          "type": "paragraph",
+          "text": "Entretanto, eles não foram identificados entre as principais regiões associadas às características analisadas neste estudo."
+        },
+        {
+          "type": "paragraph",
+          "text": "Isso não significa que esses genes não participem da pigmentação dos cavalos Quarto de Milha."
+        },
+        {
+          "type": "paragraph",
+          "text": "O resultado indica apenas que, nas condições e na população avaliadas, outras regiões apresentaram maior destaque nas análises realizadas."
+        },
+        {
+          "type": "paragraph",
+          "text": "Essa observação é especialmente relevante porque demonstra que **os resultados de estudos genéticos dependem também das características da população investigada**."
+        },
+        {
+          "type": "paragraph",
+          "text": "Uma variante importante em determinada raça pode ser rara, ausente ou apresentar contribuição diferente em outra."
+        }
+      ]
+    },
+    {
+      "id": "secao-8",
+      "title": "O que essas descobertas podem mudar na prática?",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Compreender a genética das marcas brancas pode contribuir para diferentes áreas da pesquisa e da criação de cavalos."
+        },
+        {
+          "type": "paragraph",
+          "text": "Primeiramente, os resultados ampliam o conhecimento sobre a arquitetura genética dessas características, ou seja, sobre quais regiões do DNA estão associadas à sua manifestação e como seus efeitos podem variar."
+        },
+        {
+          "type": "paragraph",
+          "text": "O estudo também fornece informações que podem orientar pesquisas mais detalhadas, destinadas a identificar as alterações genéticas efetivamente responsáveis pelas marcas."
+        },
+        {
+          "type": "paragraph",
+          "text": "Esse tipo de investigação é conhecido como *mapeamento fino* e busca localizar com maior precisão as variantes envolvidas em determinada característica."
+        },
+        {
+          "type": "paragraph",
+          "text": "A identificação dessas alterações poderá, futuramente, contribuir para o desenvolvimento de marcadores moleculares utilizados na investigação genética de padrões de pigmentação."
+        },
+        {
+          "type": "paragraph",
+          "text": "Entretanto, é importante diferenciar essas possibilidades dos resultados já demonstrados."
+        },
+        {
+          "type": "paragraph",
+          "text": "O estudo identificou regiões associadas às marcas brancas e apontou genes candidatos. Ele não desenvolveu nem validou um teste genético capaz de prever com precisão os padrões de marcas dos animais."
+        }
+      ]
+    },
+    {
+      "id": "secao-9",
+      "title": "Quais são as limitações do estudo?",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Embora os resultados sejam relevantes, algumas limitações precisam ser consideradas."
+        },
+        {
+          "type": "paragraph",
+          "text": "A primeira é que os animais pertenciam à linhagem de corrida da raça Quarto de Milha, criada no Brasil. Portanto, os resultados não devem ser automaticamente generalizados para outras linhagens, raças ou populações."
+        },
+        {
+          "type": "paragraph",
+          "text": "Outra limitação está na forma como as características foram registradas."
+        },
+        {
+          "type": "paragraph",
+          "text": "Os pesquisadores consideraram a presença ou ausência das marcas brancas, mas não avaliaram diferenças de tamanho, formato ou extensão."
+        },
+        {
+          "type": "paragraph",
+          "text": "Assim, dois cavalos com marcas muito diferentes poderiam receber a mesma classificação caso ambos apresentassem pigmentação branca na região analisada."
+        },
+        {
+          "type": "paragraph",
+          "text": "Além disso, as análises identificaram associações genômicas, não mutações causais confirmadas."
+        },
+        {
+          "type": "paragraph",
+          "text": "Novos estudos serão necessários para investigar detalhadamente as regiões identificadas e verificar quais alterações genéticas estão efetivamente relacionadas à manifestação dessas características."
+        }
+      ]
+    },
+    {
+      "id": "secao-10",
+      "title": "Conclusão: a aparência não conta toda a história",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "As marcas brancas dos cavalos são características facilmente observadas, mas sua origem genética pode ser mais complexa do que parece."
+        },
+        {
+          "type": "paragraph",
+          "text": "O estudo de Maciel e colaboradores mostrou que diferentes regiões do DNA estão associadas à presença dessas marcas em cavalos Quarto de Milha da linhagem de corrida."
+        },
+        {
+          "type": "paragraph",
+          "text": "Também revelou que as regiões relacionadas às marcas da cabeça e das pernas são, em grande parte, distintas, evidenciando a heterogeneidade genética dessas características."
+        },
+        {
+          "type": "paragraph",
+          "text": "Esses resultados ajudam a compreender por que animais com aparências semelhantes podem apresentar diferenças importantes em seu material genético."
+        },
+        {
+          "type": "paragraph",
+          "text": "Mais do que explicar detalhes da pelagem, a pesquisa demonstra como o estudo do DNA pode revelar mecanismos biológicos que não são visíveis apenas pela observação dos animais."
+        },
+        {
+          "type": "paragraph",
+          "text": "**Na genética, características semelhantes nem sempre possuem a mesma origem.**"
+        }
+      ]
+    },
+    {
+      "id": "secao-11",
+      "title": "Referência científica",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Maciel, S. V. S. A. et al. (2020). **Genetic heterogeneity of white markings in Quarter Horses.** *Livestock Science*, 232, 103935."
+        },
+        {
+          "type": "paragraph",
+          "text": "DOI: https://doi.org/10.1016/j.livsci.2020.103935"
+        },
+        {
+          "type": "paragraph",
+          "text": "**Palavras-chave:** genética equina, Quarto de Milha, marcas brancas, pigmentação, genômica, heterogeneidade genética, GWAS."
+        }
+      ]
+    }
+  ],
+  "cover": {
+    "src": "blog/covers/marcas-brancas-cavalos-genetica.jpg",
+    "alt": "Ilustração de três cavalos Quarto de Milha, com ampliações das marcas brancas na cabeça e nas pernas e uma dupla hélice de DNA ao fundo.",
+    "width": 1600,
+    "height": 900,
+    "position": "center",
+    "caption": "Representação ilustrativa das marcas brancas em cavalos e de sua investigação genética.",
+    "credit": "Imagem gerada por IA, fornecida por MGenética."
+  }
+}

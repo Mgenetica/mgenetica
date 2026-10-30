@@ -85,3 +85,9 @@
 .blog-cover figcaption{font-size:.85rem;color:#45647c;line-height:1.6;margin-top:12px;overflow-wrap:anywhere}
 .blog-shell a:focus-visible,.blog-shell button:focus-visible{outline:3px solid #1a4b78;outline-offset:4px}
 @media(max-width:768px){.blog-shell .blog-featured{display:block}.blog-featured .blog-cover img,.blog-featured .blog-cover-placeholder{aspect-ratio:16/9}.blog-card-content{padding:24px}.blog-cover-hero{margin:24px 0}}
+
+.blog-table-wrap { max-width: 100%; overflow-x: auto; margin: 1.5rem 0; }
+.blog-table-wrap table { width: 100%; border-collapse: collapse; font-size: .95em; }
+.blog-table-wrap th, .blog-table-wrap td { padding: .75rem; border-bottom: 1px solid var(--line, #dce5e7); text-align: left; vertical-align: top; }
+.blog-table-wrap thead th { font-weight: 700; }
+.blog-table-wrap tbody th { font-weight: 500; }
