@@ -11,6 +11,10 @@
   "introduction": [
     {
       "type": "paragraph",
+      "text": "Por que os cavalos têm marcas brancas na cabeça e nas pernas? Um estudo com Quarto de Milha da linhagem de corrida, criados no Brasil, identificou diferentes regiões do DNA associadas à presença dessas marcas. Os resultados ajudam a entender sua origem genética, mas não comprovam quais alterações causam cada padrão."
+    },
+    {
+      "type": "paragraph",
       "text": "As marcas brancas na testa, no focinho e nas pernas são características bastante conhecidas dos cavalos. Além de contribuírem para a aparência de cada animal, essas marcas são utilizadas na identificação individual e nos registros das associações de criadores."
     },
     {
@@ -531,5 +535,7 @@
     "position": "center",
     "caption": "Representação ilustrativa das marcas brancas em cavalos e de sua investigação genética.",
     "credit": "Imagem gerada por IA, fornecida por MGenética."
-  }
+  },
+  "seoDescription": "Entenda a genética das marcas brancas em cavalos Quarto de Milha: o que Maciel et al. (2020) descobriram e quais são os limites do estudo.",
+  "seoTitle": "Marcas brancas em cavalos: genética do Quarto de Milha"
 }

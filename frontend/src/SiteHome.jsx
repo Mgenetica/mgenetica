@@ -14,7 +14,7 @@ export default function SiteHome({ locale, onLocaleChange, t }) {
     <a className="skip-link" href="#main-content" onClick={e => { e.preventDefault(); document.getElementById('main-content').focus() }}>{t('common.skipToContent')}</a>
     <AppHeader brandName={t('common.brandName')} brandTagline={t('common.brandTagline')} locale={locale} onLocaleChange={onLocaleChange} t={t} homeHref="#">
 
-      <nav aria-label={t('common.brandName')}><a href="#blog">Blog</a><a href="#catalog">{t('publicCourse.title')}</a></nav>
+      <nav aria-label={t('common.brandName')}><a href={import.meta.env.BASE_URL + 'blog/'}>Blog</a><a href="#catalog">{t('publicCourse.title')}</a></nav>
     </AppHeader>
     <main id="main-content" tabIndex={-1}>
       <section className="home-opening" aria-labelledby="home-title">

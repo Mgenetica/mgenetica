@@ -6,11 +6,11 @@ Para adicionar artigo: slug único em minúsculas com hífens; categoria, títul
 
 Guia editorial: explicar termos, exemplos cotidianos, distinguir analogia de evidência, preservar incertezas e evitar determinismo. Não inventar autoria, resultados ou validação externa. Os três textos iniciais são introdutórios, preparados para revisão de Gleb antes de publicar; autoria exibida como MGenética.
 
-Prévia: `/mgenetica/#blog`; artigo: `/mgenetica/#blog/SLUG`. Rotas seguem o site existente. Título do documento muda por artigo. Hash routing não oferece páginas HTML individuais nem metadados sociais por artigo para robôs que não executam JavaScript. Avaliar pré-renderização/URLs dedicadas antes de exigir indexação e compartilhamento avançados; não apresentar esta versão como SEO completo.
+Prévia: `/mgenetica/blog/`; artigo: `/mgenetica/blog/SLUG/`. Em produção, os endereços usam a raiz do domínio. O build pré-renderiza texto e metadados de cada artigo; links anteriores com `#blog` encaminham para os novos endereços.
 
 Teste: `npm --prefix frontend test`, `npm --prefix frontend run build`; com servidor local na porta 4180, `node scripts/blog/verify-local.cjs`. Se Playwright não estiver instalado localmente, indicar pacote em `PLAYWRIGHT_PATH`. Teste funcional inclui busca, filtros, artigos em três larguras, foco do sumário, atalho para conteúdo, endereço inexistente e navegação para curso. Capturas ficam em `/tmp/blog-*.png`.
 
-Sem publicação autorizada. Revisar textos, datas editoriais e integração final antes do prepublish_site_check.R e eventual publicação.
+Publicar somente quando solicitado, após revisar texto, data, imagem e executar prepublish_site_check.R.
 
 ## Texto e capa pelo Codex Work
 
@@ -38,4 +38,8 @@ author: 'Nome responsável pelo texto',
 
 Campos de capa opcionais mantêm compatibilidade com textos anteriores. Imagens ausentes ou indisponíveis usam composição visual neutra. Capas nos cards carregam sob demanda; capa do artigo carrega imediatamente. Crédito aparece no artigo. Referências continuam no texto enviado; não é recriado o bloco “Fontes para aprofundar”.
 
-Título e descrição são atualizados no navegador. O uso atual de URLs com `#` continua limitando indexação e prévias sociais por artigo; metadados alterados por JavaScript não garantem uma capa em WhatsApp/Instagram. URLs próprias com HTML pré-renderizado exigem um bloco futuro de trabalho.
+Título, descrição e metadados sociais são gerados em HTML por artigo. A disponibilidade desses dados não garante indexação nem a atualização imediata dos caches de WhatsApp/Instagram.
+
+## URLs públicas e SEO (30/10/2026)
+
+O build agora gera `/blog/` e `/blog/SLUG/` com o texto completo em HTML, metadados próprios, URL canônica, Open Graph e JSON-LD BlogPosting. `seoDescription` permite descrição específica; na ausência, usa-se o resumo. Sitemap e robots.txt são gerados no mesmo build. Links antigos `#blog/SLUG` continuam encaminhando ao novo endereço. Em prévias com base `/mgenetica/`, o prefixo é preservado; produção usa `VITE_APP_BASE=/` e `VITE_PUBLIC_SITE_URL=https://www.mgenetica.com/` no fluxo existente. Não se deve editar o HTML gerado: a fonte continua em `posts.mjs` e nos JSONs dos artigos.
