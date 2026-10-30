@@ -3,7 +3,12 @@ import SiteCatalog from './SiteCatalog'
 import SiteHome from './SiteHome'
 const BlogPage = lazy(() => import('./BlogPage'))
 function publicRoute(hash) {
-  const match = String(hash).match(/^#\/?blog(?:\/([^?]*))?$/)
+  const path = window.location.pathname.slice(import.meta.env.BASE_URL.length).replace(/^\/+/, '')
+  const legacy = String(hash).match(/^#\/?blog(?:\/([^?]*))?$/)
+  if (legacy) {
+    return { screen: 'blog', slug: legacy[1] || '' }
+  }
+  const match = (path.startsWith('blog') && (!hash || /^#secao-/.test(hash))) ? path.match(/^blog(?:\/([^/]+))?\/?$/) : String(hash).match(/^#\/?blog(?:\/([^?]*))?$/)
   return match ? { screen: 'blog', slug: match[1] || '' } : parseRouteHash(hash)
 }
 const App = lazy(() => import('./App'))
@@ -24,6 +29,10 @@ const CONTENT_STATUS = {
 }
 
 export default function PublicSite() {
+  useEffect(() => {
+    const legacy = window.location.hash.match(/^#\/?blog(?:\/([^?]*))?$/)
+    if (legacy) window.location.replace(`${import.meta.env.BASE_URL}blog/${legacy[1] ? legacy[1] + '/' : ''}`)
+  }, [])
   const [locale, setLocale] = useState(detectInitialLocale())
   const [route, setRoute] = useState(() => publicRoute(window.location.hash))
   const [contentByLocale, setContentByLocale] = useState({})
@@ -51,9 +60,9 @@ export default function PublicSite() {
     return () => window.removeEventListener('hashchange', update)
   }, [])
   useEffect(() => {
-    document.documentElement.lang = locale
+    document.documentElement.lang = route.screen === 'blog' ? 'pt-BR' : locale
     window.localStorage.setItem('mgenetica-locale', locale)
-  }, [locale])
+  }, [locale, route.screen])
   const t = useMemo(() => {
     const translate = createTranslator(locale)
     const copy = locale === 'en' ? ['Open course', '21 modules and interactive labs. No registration required.'] : locale === 'es' ? ['Curso abierto', '21 módulos y laboratorios interactivos. Sin registro.'] : ['Curso aberto', '21 módulos e laboratórios interativos. Sem cadastro.']

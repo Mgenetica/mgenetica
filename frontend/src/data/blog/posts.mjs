@@ -1,5 +1,6 @@
 import temperaturePerformance from './temperature-performance.json' with { type: 'json' }
-export const posts = [temperaturePerformance]
+import whiteMarkings from './white-markings.json' with { type: 'json' }
+export const posts = [whiteMarkings, temperaturePerformance]
 export function filterPosts(query = '', category = 'Todos') {
   const normalize = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
   const needle = normalize(query.trim())
