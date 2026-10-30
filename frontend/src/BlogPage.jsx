@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import AppHeader from './components/AppHeader'
 import { posts, filterPosts } from './data/blog/posts.mjs'
 import './blog.css'
+import BlogCover from './components/BlogCover'
 function InlineText({ text }) {
   return String(text).split(/(\*\*[^*]+\*\*|\*[^*]+\*|https:\/\/[^\s]+)/g).map((part, i) => part.startsWith('**') ? <strong key={i}>{part.slice(2, -2)}</strong> : part.startsWith('*') ? <em key={i}>{part.slice(1, -1)}</em> : part.startsWith('https://') ? <a key={i} href={part}>{part}</a> : part)
 }
@@ -31,6 +32,7 @@ export default function BlogPage({ slug, locale, onLocaleChange, t }) {
       {slug ? post ? <article className="blog-article">
         <a className="blog-back" href="#blog">← Todos os textos</a>
         <header>{meta(post)}<h1 ref={heading} tabIndex={-1}>{post.title}</h1><p className="blog-deck">{post.summary}</p><p className="blog-byline">MGenética · Divulgação científica</p></header>
+        <BlogCover cover={post.cover} title={post.title} hero />
         <aside className="blog-takeaway"><strong>Para guardar</strong><p>{post.takeaway}</p></aside>
         <div className="blog-reading-layout">
         <nav className="blog-toc" aria-label="Neste texto"><strong>Neste texto</strong>{post.sections.map(s => <a key={s.id} href={'#blog/' + post.slug} onClick={e => { e.preventDefault(); const el = document.getElementById(s.id); el?.focus(); el?.scrollIntoView({ behavior: 'instant', block: 'start' }) }}>{s.title}</a>)}</nav>
@@ -40,12 +42,12 @@ export default function BlogPage({ slug, locale, onLocaleChange, t }) {
         </div>
         </div>
         <aside className="blog-course"><h2>Da leitura à prática</h2><p>Explore o tema no curso aberto, com explicações e laboratório interativo.</p><a className="btn btn-primary" href={'#course/' + post.module}>Explorar módulo do curso →</a></aside>
-        <section className="blog-related"><h2>Continue a leitura</h2>{posts.filter(p => p.slug !== slug).map(p => <a key={p.slug} href={'#blog/' + p.slug}>{p.title} →</a>)}</section>
+        {posts.length > 1 && <section className="blog-related"><h2>Continue a leitura</h2>{posts.filter(p => p.slug !== slug).map(p => <a key={p.slug} href={'#blog/' + p.slug}>{p.title} →</a>)}</section>}
       </article> : <section className="blog-article"><h1 ref={heading} tabIndex={-1}>Artigo não encontrado</h1><p>Este endereço não corresponde a um texto do blog.</p><a className="btn btn-primary" href="#blog">Voltar ao blog</a></section> : <>
         <header className="blog-intro"><div className="section-label">Blog MGenética</div><h1 ref={heading} tabIndex={-1}>Ciência para entender.<br /><em>Ideias para levar consigo.</em></h1><p>Genética em linguagem clara. Textos para aproximar a ciência da vida, sem perder de vista as evidências.</p>{locale !== 'pt-BR' && <p className="blog-language-note">Os textos do blog estão disponíveis em português.</p>}</header>
         <section aria-label="Encontrar textos" className="blog-filters"><label htmlFor="blog-search">Buscar no blog<input id="blog-search" type="search" placeholder="Tema ou palavra-chave" value={query} onChange={e => setQuery(e.target.value)} /></label><div className="blog-categories" aria-label="Filtrar por tema">{['Todos', ...new Set(posts.map(p => p.category))].map(c => <button key={c} type="button" aria-pressed={category === c} onClick={() => setCategory(c)}>{c}</button>)}</div></section>
         <p role="status" className="blog-count">{visible.length} {visible.length === 1 ? 'texto encontrado' : 'textos encontrados'}</p>
-        <div className="blog-grid">{visible.map((p, i) => <article className={'blog-card ' + (i === 0 && !query && category === 'Todos' ? 'blog-featured' : '')} key={p.slug}>{meta(p)}<h2><a href={'#blog/' + p.slug}>{p.title}</a></h2><p>{p.summary}</p><a className="blog-read" href={'#blog/' + p.slug} aria-label={'Ler: ' + p.title}>Ler texto <span aria-hidden="true">↗</span></a></article>)}</div>
+        <div className="blog-grid">{visible.map((p, i) => <article className={'blog-card ' + (i === 0 && !query && category === 'Todos' ? 'blog-featured' : '')} key={p.slug}><a className="blog-cover-link" href={'#blog/' + p.slug} tabIndex={-1} aria-hidden="true"><BlogCover cover={p.cover} title={p.title} /></a><div className="blog-card-content">{meta(p)}<h2><a href={'#blog/' + p.slug}>{p.title}</a></h2><p>{p.summary}</p><a className="blog-read" href={'#blog/' + p.slug} aria-label={'Ler: ' + p.title}>Ler texto <span aria-hidden="true">↗</span></a></div></article>)}</div>
         {!visible.length && <div className="blog-empty"><h2>Nenhum texto com esses filtros</h2><p>Tente outra palavra ou explore todos os temas.</p><button className="btn btn-secondary" onClick={() => { setQuery(''); setCategory('Todos') }}>Limpar filtros</button></div>}
         <aside className="blog-course"><div><h2>Quer experimentar os conceitos?</h2><p>Conheça os 21 módulos e laboratórios do curso aberto.</p></div><a className="btn btn-primary" href="#catalog">Explorar o curso →</a></aside>
       </>}
