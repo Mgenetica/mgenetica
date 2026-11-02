@@ -36,7 +36,7 @@ function resolveAsset(path) {
 
 const html = await fetchText(baseUrl.toString())
 
-if (!html.includes('<div id="root"></div>')) {
+if (!/<div id="root">/.test(html)) {
   throw new Error('Published HTML does not contain the React root element.')
 }
 
