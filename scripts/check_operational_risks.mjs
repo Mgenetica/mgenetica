@@ -52,7 +52,7 @@ if (projectStatus) {
 
 if (nextSite) {
   assertMatchesPattern(nextSite, /## Status \(\d{4}-\d{2}-\d{2}\)/, 'next site current date')
-  assertIncludes(nextSite, '`public-course-verification`', 'next block type')
+  assertMatchesPattern(nextSite, /`(?:public-course-verification|public-blog-verification)`/, 'next block type')
   assertNotIncludes(nextSite, '## Status (2026-06-01)', 'next site stale status date')
 } else {
   pass('next site absent in CI checkout')
@@ -67,7 +67,7 @@ if (deploymentPlan) {
 
 for (const step of [
   'Smoke deployed frontend',
-  'Smoke learner routes',
+  'Smoke editorial blog',
   'Smoke Appwrite runtime',
   'Audit Appwrite backend',
   'Smoke real Appwrite login'

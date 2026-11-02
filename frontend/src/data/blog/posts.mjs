@@ -1,8 +1,7 @@
-import temperaturePerformance from './temperature-performance.json' with { type: 'json' }
 import whiteMarkings from './white-markings.json' with { type: 'json' }
-export const posts = [whiteMarkings, temperaturePerformance]
-export function filterPosts(query = '', category = 'Todos') {
-  const normalize = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
-  const needle = normalize(query.trim())
-  return posts.filter(p => (category === 'Todos' || p.category === category) && normalize(`${p.title} ${p.summary} ${p.category}`).includes(needle))
-}
+import temperaturePerformance from './temperature-performance.json' with { type: 'json' }
+import entries from './entries.generated.json' with { type: 'json' }
+import { searchPosts, visiblePosts } from './catalog.mjs'
+export const allPosts = [whiteMarkings,temperaturePerformance,...entries]
+export const posts = visiblePosts(allPosts,{drafts: entries.some(p=>p.status==='draft')})
+export const filterPosts = (query='',category='Todos',list=posts) => searchPosts(list,query,category)

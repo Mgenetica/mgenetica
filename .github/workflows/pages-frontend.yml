@@ -64,10 +64,10 @@ jobs:
         env:
           DEPLOYED_URL: ${{ steps.deployment.outputs.page_url }}
         run: node scripts/smoke_deployed_frontend.mjs "$DEPLOYED_URL"
-      - name: Smoke learner routes
+      - name: Smoke editorial blog
         env:
           DEPLOYED_URL: ${{ steps.deployment.outputs.page_url }}
-        run: node scripts/smoke_learner_routes.mjs "$DEPLOYED_URL"
+        run: node scripts/smoke_blog_site.mjs "$DEPLOYED_URL"
       - name: Smoke Appwrite runtime
         if: vars.ENABLE_APPWRITE_CHECKS == 'true'
         env:

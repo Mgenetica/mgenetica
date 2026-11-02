@@ -1,0 +1,8 @@
+const {chromium}=require(process.env.PLAYWRIGHT_PATH||'../../frontend/node_modules/playwright');const assert=require('node:assert/strict');
+(async()=>{const base=process.env.SITE_URL||'http://127.0.0.1:4184/mgenetica/';const browser=await chromium.launch();const page=await browser.newPage();
+await page.goto(base);await page.getByLabel('Encontre uma leitura').fill('norma reação');assert.equal(await page.locator('.blog-card').count(),1);await page.reload();await page.getByLabel('Encontre uma leitura').waitFor();await page.waitForFunction(()=>document.querySelector('#blog-search').value.length>0);assert.equal(await page.getByLabel('Encontre uma leitura').inputValue(),'norma reação');await page.locator('.blog-read').click();
+assert.equal(await page.locator('[aria-label="Você está aqui"]').count(),1);await page.getByRole('button',{name:'Aumentar texto'}).click();assert(await page.evaluate(()=>document.documentElement.classList.contains('blog-large-text')));await page.reload();await page.getByRole('button',{name:'Restaurar tamanho do texto'}).waitFor();
+const feed=await (await page.request.get(base+'feed.xml')).text();assert(feed.includes('<rss'));assert.equal((feed.match(/<item>/g)||[]).length,2);
+const schema=await page.locator('script[type="application/ld+json"]').allTextContents();assert(schema.map(JSON.parse).some(s=>s['@type']==='BreadcrumbList'));
+for(const width of [375,768,1024,1440]){await page.setViewportSize({width,height:900});assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));}
+await browser.close();console.log('PASS full-text search, URL persistence, breadcrumbs/schema, reading preference, RSS and 4 widths');})();
