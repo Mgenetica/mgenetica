@@ -23,7 +23,7 @@ export default function BlogPage({ slug, locale = 'pt-BR', unavailable = false }
   const post = posts.find(p => p.slug === slug)
   useEffect(() => {
     const previous = document.title
-    document.title = unavailable ? 'Curso em preparação | MGenética' : slug ? `${post?.title || 'Artigo não encontrado'} | MGenética` : 'MGenética — Genética e ciência em linguagem acessível'
+    document.title = unavailable ? 'Curso em preparação | MGenética' : slug ? `${post?.seoTitle || post?.title || 'Artigo não encontrado'} | MGenética` : 'MGenética — Genética e ciência em linguagem acessível'
     const anchor = document.getElementById(decodeURIComponent(window.location.hash.slice(1)))
     if (anchor) { anchor.focus({ preventScroll: true }); anchor.scrollIntoView() }
     else { heading.current?.focus(); window.scrollTo(0, 0) }
