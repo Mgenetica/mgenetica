@@ -1,1 +1,267 @@
-[]
+[
+  {
+    "slug": "cavalos-adai-origem-genetica",
+    "status": "published",
+    "category": "Genética equina",
+    "title": "Cavalos Adai: o que o DNA revela sobre sua origem?",
+    "summary": "Entenda o que o DNA revelou sobre os cavalos Adai do Cazaquistão, os sinais de cruzamentos e os limites de reconhecer a origem dos animais pela aparência.",
+    "date": "2026-11-03",
+    "readingMinutes": 8,
+    "author": "MGenética",
+    "takeaway": "Os Adai estudados se parecem geneticamente com outros cavalos das estepes. Parte da amostra apresentou sinais de outros cruzamentos, sem relação detectável com as medidas corporais avaliadas.",
+    "introduction": [
+      {
+        "type": "paragraph",
+        "text": "Os cavalos Adai, do oeste do Cazaquistão, são geneticamente muito parecidos com outros cavalos das estepes da Ásia Central. Um estudo também encontrou sinais de cruzamentos com animais de origem próxima à do Puro-Sangue Inglês. Essas contribuições variaram entre fazendas e não apresentaram relação detectável com altura, peso e outras características medidas."
+      },
+      {
+        "type": "paragraph",
+        "text": "Quando observamos um cavalo, seu tamanho e o formato do corpo ajudam a descrevê-lo. Mas quanto conseguimos saber sobre seus antepassados apenas olhando para ele?"
+      },
+      {
+        "type": "paragraph",
+        "text": "Essa foi uma das questões investigadas por Kirill Yanin e colaboradores em um [estudo publicado na revista *Genes*, em 2026](https://doi.org/10.3390/genes17101292). A pesquisa examinou o DNA dos Adai para entender sua relação com outros cavalos e procurar contribuições de cruzamentos que não estavam documentados."
+      }
+    ],
+    "sections": [
+      {
+        "id": "secao-1",
+        "title": "Quem são os cavalos Adai?",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Os cavalos Adai são um tipo regional do cavalo cazaque, criado em Mangystau, no oeste do Cazaquistão. Nessa região, os rebanhos permanecem o ano inteiro em pastagens desérticas. Eles fazem parte do conjunto de cavalos das estepes da Ásia Central, grandes áreas de paisagem aberta."
+          },
+          {
+            "type": "paragraph",
+            "text": "Segundo o artigo, o Adai foi reconhecido como uma raça independente em 2024, sem que uma avaliação genética integrasse esse reconhecimento."
+          },
+          {
+            "type": "paragraph",
+            "text": "Isso abriu espaço para duas perguntas diferentes. A primeira era se os Adai formavam uma população geneticamente separada dos cavalos vizinhos. A segunda era se haviam recebido contribuições genéticas de outros cruzamentos. Uma população pode ser muito parecida com as vizinhas e, ainda assim, ter uma história própria de reprodução."
+          }
+        ]
+      },
+      {
+        "id": "secao-2",
+        "title": "Como os pesquisadores estudaram o DNA?",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Os pesquisadores obtiveram informações genéticas de **533 animais registrados como Adai**, utilizando DNA extraído de raízes de pelos da crina. As análises principais consideraram **500 cavalos de cinco fazendas** cuja origem estava identificada. Os demais não tinham informação sobre a fazenda e ficaram fora dessas análises."
+          },
+          {
+            "type": "paragraph",
+            "text": "Para situar os Adai em um contexto mais amplo, a equipe reuniu dados de comparação de 45 raças. A base compartilhada continha 36.193 SNPs. Apesar do nome técnico, um SNP é uma variação em uma posição do DNA. Analisar muitas dessas posições ajuda a reconhecer padrões de semelhança e diferença entre animais e populações."
+          },
+          {
+            "type": "paragraph",
+            "text": "Os autores também simularam cruzamentos a partir de informações reais de DNA. Isso permitiu ajustar a escala usada para estimar contribuições de outras origens, reduzindo distorções que o método apresentava nos valores mais baixos."
+          }
+        ]
+      },
+      {
+        "id": "secao-3",
+        "title": "O que o DNA revelou sobre os cavalos Adai?",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Os cavalos Adai ficaram junto dos outros cavalos das estepes da Ásia Central nas análises de semelhança genética. A população estudada não apareceu como um grupo claramente separado desse conjunto regional."
+          },
+          {
+            "type": "paragraph",
+            "text": "Uma comparação ajuda a entender o resultado: as diferenças entre duas fazendas de Adai podiam ser tão grandes quanto as diferenças entre uma fazenda Adai e uma população vizinha usada como referência."
+          },
+          {
+            "type": "paragraph",
+            "text": "Isso não apaga a história cultural desses animais nem sua adaptação às pastagens desérticas. O resultado mostra que, nessa investigação, as fronteiras entre os nomes das populações eram mais nítidas que as diferenças encontradas no DNA."
+          },
+          {
+            "type": "paragraph",
+            "text": "Também não significa que todos os animais fossem geneticamente iguais. Os pesquisadores conseguiram reconhecer pequenas diferenças entre grupos. O ponto é que encontrar essas diferenças não basta, por si só, para demonstrar uma separação genética clara entre raças."
+          }
+        ]
+      },
+      {
+        "id": "secao-4",
+        "title": "Quais sinais de outros cruzamentos apareceram?",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Parte dos animais apresentou um sinal de contribuição genética próxima à do Puro-Sangue Inglês, raça usada como referência na análise. Ancestralidade, aqui, é uma forma de falar da origem genética herdada dos antepassados."
+          },
+          {
+            "type": "paragraph",
+            "text": "Em **12 dos 500 Adai**, o sinal de compartilhamento de variações do DNA com o Puro-Sangue Inglês foi mais forte do que em todos os 223 cavalos das estepes usados como referência. Esse resultado reforça os indícios de cruzamentos na história desses animais."
+          },
+          {
+            "type": "paragraph",
+            "text": "Além de procurar sinais de cruzamentos, a equipe estimou o tamanho dessa contribuição genética. Depois do ajuste do método, **9,6% dos 500 animais** atingiram um nível equivalente ao esperado de um bisavô Puro-Sangue Inglês, ou superior."
+          },
+          {
+            "type": "paragraph",
+            "text": "Essa equivalência funciona como uma régua para apresentar a estimativa genética. Ela não reconstrói a família de cada cavalo nem comprova que um bisavô específico pertencia àquela raça. As análises também não determinaram quando os cruzamentos aconteceram."
+          }
+        ]
+      },
+      {
+        "id": "secao-5",
+        "title": "Por que uma fazenda chamou mais atenção?",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Os sinais de outros cruzamentos não estavam distribuídos igualmente entre os criatórios. Em uma das fazendas, **42% dos cavalos** atingiram aquele nível de contribuição equivalente ao esperado de um bisavô Puro-Sangue Inglês, ou mais. Nas outras quatro, a proporção variou de **0% a 9,1%**."
+          },
+          {
+            "type": "paragraph",
+            "text": "Esses números descrevem quantos animais ultrapassaram o mesmo nível de referência. Não significam que 42% do DNA de todos os cavalos daquela fazenda tivesse essa origem."
+          },
+          {
+            "type": "paragraph",
+            "text": "Como muitos animais eram aparentados, os pesquisadores repetiram as comparações levando esse parentesco em conta. A diferença entre as fazendas permaneceu."
+          },
+          {
+            "type": "paragraph",
+            "text": "O resultado destaca a importância de conhecer a história de cada criatório. Um valor calculado para toda a amostra pode esconder diferenças relevantes entre os locais de criação."
+          }
+        ]
+      },
+      {
+        "id": "secao-6",
+        "title": "Era possível reconhecer essa origem pela aparência?",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Nas características estudadas, não houve uma relação detectável entre a contribuição genética estimada e as medidas do corpo dentro das fazendas."
+          },
+          {
+            "type": "paragraph",
+            "text": "A equipe analisou oito características, incluindo medidas como altura e peso e índices calculados a partir das medidas corporais. O resultado se manteve nas análises que consideraram o parentesco e, entre os animais com essa informação, a idade."
+          },
+          {
+            "type": "paragraph",
+            "text": "Isso ajuda a entender por que uma fita métrica pode ser insuficiente para reconhecer a história de cruzamentos de um cavalo. Mas há um limite: não encontrar uma relação nessas características não demonstra que essa origem genética seja incapaz de afetar qualquer outra característica."
+          },
+          {
+            "type": "paragraph",
+            "text": "O estudo não avaliou velocidade, resistência, produção de leite ou produção de carne. Portanto, não permite concluir que os cruzamentos melhoraram ou pioraram esses aspectos."
+          }
+        ]
+      },
+      {
+        "id": "secao-7",
+        "title": "Quais são os limites da pesquisa?",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Os resultados descrevem os animais e as cinco fazendas estudadas. Eles não autorizam atribuir a mesma frequência de cruzamentos a todos os cavalos Adai ou a todos os criatórios do Cazaquistão."
+          },
+          {
+            "type": "paragraph",
+            "text": "Outra limitação está nos grupos disponíveis para comparação. O estudo não incluiu dados de outros tipos cazaques importantes, como Zhabe e Kushum. Assim, a comparação direta dos Adai com esses grupos não pôde ser feita."
+          },
+          {
+            "type": "paragraph",
+            "text": "Também não havia registros genealógicos completos para conferir as estimativas com a história familiar documentada de cada animal. Os ajustes com cruzamentos simulados ajudam a avaliar o método, mas não substituem essa conferência."
+          },
+          {
+            "type": "paragraph",
+            "text": "Além disso, os valores apresentados dizem respeito à afinidade genética próxima à do Puro-Sangue Inglês. Eles não medem, de maneira equivalente, todas as possíveis contribuições de outras raças."
+          }
+        ]
+      },
+      {
+        "id": "secao-8",
+        "title": "Como isso pode ajudar na criação e na conservação?",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Para os cavalos Adai, a pesquisa mostra a importância de aproximar os registros de origem da história revelada pelo DNA. No sistema de criação descrito no artigo, as éguas parem no pasto e os garanhões permanecem com grupos de fêmeas, o que dificulta documentar todos os acasalamentos e confirmar a filiação."
+          },
+          {
+            "type": "paragraph",
+            "text": "Os autores consideram que análises genéticas poderiam apoiar a verificação dos animais no momento do registro. Essa é uma possibilidade para desenvolver: **o estudo não criou nem validou um teste específico para certificar cavalos Adai**."
+          },
+          {
+            "type": "paragraph",
+            "text": "Para a conservação, a semelhança com as populações vizinhas também merece atenção. Os dados não sustentam tratar essa proximidade regional, por si só, como um sinal de perda da identidade genética dos Adai. Conhecer a população envolve considerar sua história local, suas condições de criação e as contribuições de cruzamentos identificadas em cada rebanho."
+          }
+        ]
+      },
+      {
+        "id": "secao-9",
+        "title": "Perguntas frequentes sobre os cavalos Adai",
+        "blocks": [
+          {
+            "type": "heading",
+            "text": "Os Adai deixaram de ser uma raça por causa desse resultado?"
+          },
+          {
+            "type": "paragraph",
+            "text": "O estudo não altera o reconhecimento oficial relatado pelos autores, ocorrido em 2024. Ele mostra que os Adai analisados não formaram uma população geneticamente muito separada dos cavalos das estepes usados como referência. Essa semelhança não elimina sua história cultural nem sua adaptação às condições locais."
+          },
+          {
+            "type": "heading",
+            "text": "O estudo provou que alguns Adai tinham um bisavô Puro-Sangue Inglês?"
+          },
+          {
+            "type": "paragraph",
+            "text": "Não. A pesquisa estimou contribuições genéticas e usou a contribuição esperada de um bisavô como uma escala de comparação. Não identificou antepassados individuais nem reconstruiu famílias documentadas. O resultado de 9,6% se refere aos animais que atingiram esse nível estimado ou um nível superior."
+          },
+          {
+            "type": "heading",
+            "text": "Já existe um teste de certificação dos Adai validado por essa pesquisa?"
+          },
+          {
+            "type": "paragraph",
+            "text": "Não. Os autores apresentam a verificação por DNA como uma possibilidade para apoiar os registros, mas não desenvolveram nem validaram um teste específico. Para transformar os resultados em uma ferramenta de certificação, seria necessário selecionar os marcadores adequados e avaliar seu desempenho para essa finalidade."
+          }
+        ]
+      },
+      {
+        "id": "secao-10",
+        "title": "Continue a leitura",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Para explorar outra pergunta sobre genética equina, leia também [Marcas brancas nos cavalos: o que a genética revela sobre sua origem?](https://www.mgenetica.com/blog/marcas-brancas-cavalos-genetica/)."
+          }
+        ]
+      },
+      {
+        "id": "secao-11",
+        "title": "Referência científica",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Yanin, K.; Kanat, R.; Zhambakin, K.; Ulyanova, T.; Beishova, I.; Kovalchuk, A.; Shamshidin, A.; Shamekova, M. (2026). *The Western Ecotype of the Kazakh Horse: Current Status and Genomic Characterisation*. **Genes**, 17, 1292. [https://doi.org/10.3390/genes17101292](https://doi.org/10.3390/genes17101292)."
+          }
+        ]
+      }
+    ],
+    "tags": [
+      "cavalos Adai",
+      "genética equina",
+      "ancestralidade",
+      "Cazaquistão",
+      "conservação genética"
+    ],
+    "sources": [
+      {
+        "title": "The Western Ecotype of the Kazakh Horse: Current Status and Genomic Characterisation",
+        "url": "https://doi.org/10.3390/genes17101292"
+      }
+    ],
+    "cover": {
+      "src": "blog/covers/cavalos-adai-origem-genetica.webp",
+      "alt": "Ilustração de um cavalo Adai castanho em pastagem desértica, com três cavalos ao fundo e uma dupla hélice de DNA no céu.",
+      "width": 1672,
+      "height": 941,
+      "position": "center",
+      "caption": "Representação ilustrativa dos cavalos Adai e da investigação de sua história genética.",
+      "credit": "Imagem gerada por IA para o MGenética."
+    },
+    "seoDescription": "Entenda o que o DNA revelou sobre os cavalos Adai do Cazaquistão, os sinais de cruzamentos e os limites de reconhecer a origem dos animais pela aparência.",
+    "seoTitle": "Cavalos Adai: origem e genética no Cazaquistão"
+  }
+]

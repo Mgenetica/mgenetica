@@ -6,8 +6,12 @@ import './blog.css'
 import BlogCover from './components/BlogCover'
 import ArticleActions from './components/ArticleActions'
 import ReadingPreferences from './components/ReadingPreferences'
-function InlineText({ text }) {
-  return String(text).split(/(\*\*[^*]+\*\*|\*[^*]+\*|https:\/\/[^\s]+)/g).map((part, i) => part.startsWith('**') ? <strong key={i}>{part.slice(2, -2)}</strong> : part.startsWith('*') ? <em key={i}>{part.slice(1, -1)}</em> : part.startsWith('https://') ? <a key={i} href={part}>{part}</a> : part)
+function InlineText({ text, links = true }) {
+  const pattern = links ? /(\[[^\]]+\]\(https:\/\/[^\s)]+\)|\*\*[^*]+\*\*|\*[^*]+\*|https:\/\/[^\s)]+)/g : /(\*\*[^*]+\*\*|\*[^*]+\*)/g
+  return String(text).split(pattern).map((part, i) => {
+    const link = links && part.match(/^\[([^\]]+)\]\((https:\/\/[^\s)]+)\)$/)
+    return link ? <a key={i} href={link[2]}><InlineText text={link[1]} links={false} /></a> : part.startsWith('**') ? <strong key={i}>{part.slice(2, -2)}</strong> : part.startsWith('*') ? <em key={i}>{part.slice(1, -1)}</em> : links && part.startsWith('https://') ? <a key={i} href={part}>{part}</a> : part
+  })
 }
 function Blocks({ blocks }) {
   return blocks.map((block, i) => block.type === 'table' ? <div className="blog-table-wrap" key={i}><table><thead><tr>{block.headers.map((cell, j) => <th key={j} scope="col"><InlineText text={cell} /></th>)}</tr></thead><tbody>{block.rows.map((row, j) => <tr key={j}>{row.map((cell, k) => k === 0 ? <th key={k} scope="row"><InlineText text={cell} /></th> : <td key={k}><InlineText text={cell} /></td>)}</tr>)}</tbody></table></div> : block.type === 'heading' ? <h3 key={i}><InlineText text={block.text} /></h3> : block.type === 'list' ? <ul key={i}>{block.text.split('\n').map((item, j) => <li key={j}><InlineText text={item.replace(/^- /, '')} /></li>)}</ul> : <p key={i}><InlineText text={block.text} /></p>)
