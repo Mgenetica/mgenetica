@@ -1,0 +1,182 @@
+{
+  "slug": "quartodemilha-assinaturas-selecao",
+  "status": "published",
+  "category": "Genética equina",
+  "title": "Quarto de Milha e as marcas da seleção esportiva no DNA",
+  "summary": "Estudo com 143 cavalos Quarto de Milha investigou marcas de seleção em seis modalidades. Entenda os genes candidatos e os limites dos resultados.",
+  "seoDescription": "Entenda como a seleção esportiva deixou pistas no DNA de 143 cavalos Quarto de Milha e o que os genes candidatos revelam sobre seis modalidades da raça.",
+  "date": "2026-11-06",
+  "readingMinutes": 6,
+  "author": "MGenética",
+  "takeaway": "As modalidades apresentaram regiões do DNA com sinais de seleção e genes candidatos ligados a músculos, metabolismo e sistema nervoso. Confirmar seus efeitos exige novas pesquisas.",
+  "introduction": [
+    {
+      "type": "paragraph",
+      "text": "A seleção para diferentes modalidades pode deixar pistas no DNA dos cavalos Quarto de Milha. Em um estudo com 143 animais de elite, pesquisadores localizaram regiões genéticas que ajudam a investigar a história da seleção dentro da raça. Os resultados apontam candidatos para novas pesquisas sobre desempenho esportivo."
+    },
+    {
+      "type": "paragraph",
+      "text": "Publicado em 2018 na Frontiers in Genetics, o trabalho de Avila e colaboradores comparou seis grupos de competição. A pergunta era como diferentes objetivos de criação se relacionam com os padrões encontrados no genoma, o conjunto do material genético dos animais."
+    }
+  ],
+  "sections": [
+    {
+      "id": "seis-modalidades",
+      "title": "Uma raça, seis objetivos de seleção",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "O estudo incluiu cavalos de corrida, apartação de bovinos (cutting), conformação (halter), rédeas (reining), western pleasure e trabalho com bovinos (working cow). Essas modalidades valorizam diferentes combinações de movimentos, estrutura corporal e comportamento."
+        },
+        {
+          "type": "paragraph",
+          "text": "Os pesquisadores analisaram 24 indivíduos de cada grupo, com exceção do western pleasure, representado por 23. Os animais estavam entre os competidores de destaque segundo ganhos ou pontos em 2009 e 2010. Essa escolha permitiu investigar grupos especializados, mas restringe a interpretação a uma amostra de elite."
+        }
+      ]
+    },
+    {
+      "id": "analise-dna",
+      "title": "Como os pesquisadores procuraram marcas no DNA?",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "O DNA foi obtido de raízes de pelos. A equipe partiu de dados de aproximadamente 65 mil SNPs, pequenas variações em posições específicas do DNA usadas como marcadores genéticos."
+        },
+        {
+          "type": "paragraph",
+          "text": "Uma técnica estatística chamada imputação permitiu estimar informações para aproximadamente 2 milhões de marcadores. Ela utiliza padrões conhecidos e um painel de referência para inferir variantes que não foram medidas diretamente em todos os animais."
+        },
+        {
+          "type": "paragraph",
+          "text": "As análises combinaram diferenças na frequência das variantes e padrões de haplótipos, trechos do DNA que tendem a ser herdados juntos. Esses padrões ajudam a localizar regiões que podem ter sido favorecidas ao longo das gerações."
+        }
+      ]
+    },
+    {
+      "id": "assinaturas-selecao",
+      "title": "O que são assinaturas de seleção?",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Assinaturas de seleção são padrões estatísticos no DNA compatíveis com a ação da seleção ao longo das gerações. Quando características valorizadas influenciam quais animais deixam descendentes, variantes relacionadas a elas podem se tornar mais frequentes."
+        },
+        {
+          "type": "paragraph",
+          "text": "A história das populações e mudanças aleatórias nas frequências genéticas também influenciam esses padrões. Por isso, a interpretação depende dos métodos empregados e da comparação entre as evidências."
+        }
+      ]
+    },
+    {
+      "id": "regioes-identificadas",
+      "title": "O que apareceu nos grupos de corrida e western pleasure?",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "A análise de diferenciação genética identificou 346 regiões de interesse ao somar os resultados dos seis grupos. O número descreve os sinais detectados por esse método, que investiga diferenças nas frequências das variantes entre populações."
+        },
+        {
+          "type": "paragraph",
+          "text": "Na análise baseada em diferenciação genética, o grupo de corrida apresentou 77 regiões de interesse e o western pleasure apresentou 39. As regiões continham genes que os autores investigaram como possíveis participantes das habilidades valorizadas em cada grupo."
+        },
+        {
+          "type": "paragraph",
+          "text": "Esses números contam regiões identificadas pelo método. Uma região pode conter vários genes, e sua identificação ainda exige investigação para esclarecer quais variantes têm efeitos relevantes."
+        }
+      ]
+    },
+    {
+      "id": "musculos-energia",
+      "title": "Músculos e uso de energia entre os candidatos",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Nos cavalos de corrida, BAG3 apareceu entre os genes candidatos por sua relação conhecida com funções musculares e cardíacas. A presença do gene em uma região de interesse oferece uma hipótese a ser investigada sobre a biologia do desempenho."
+        },
+        {
+          "type": "paragraph",
+          "text": "Na apartação, os autores destacaram genes relacionados ao metabolismo, o conjunto de processos que transforma e utiliza nutrientes no organismo. Nos animais de conformação, apareceram processos relacionados ao metabolismo das gorduras."
+        }
+      ]
+    },
+    {
+      "id": "sistema-nervoso",
+      "title": "Por que o sistema nervoso também chamou atenção?",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "As modalidades exigem respostas motoras e comportamentais específicas. Nos cavalos de rédeas, surgiram candidatos relacionados ao sistema nervoso. No western pleasure, os autores discutiram genes com funções nervosas, cognitivas ou comportamentais conhecidas."
+        },
+        {
+          "type": "paragraph",
+          "text": "No grupo de trabalho com bovinos, DRD2 e GRID2 estiveram entre os candidatos destacados. Parte da interpretação se baseia em associações descritas em humanos. Confirmar a função dessas variantes nos cavalos requer estudos próprios na espécie."
+        }
+      ]
+    },
+    {
+      "id": "limites",
+      "title": "O estudo permite prever qual cavalo será campeão?",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "O trabalho identificou regiões e genes candidatos, sem validar um teste capaz de prever o desempenho de um indivíduo. Uma associação entre uma região do DNA e a história de seleção de um grupo exige etapas adicionais até que se estabeleça um efeito funcional."
+        },
+        {
+          "type": "paragraph",
+          "text": "A amostra de 143 animais representa competidores de elite de seis grupos. Generalizar os resultados para todos os cavalos Quarto de Milha, inclusive populações de outros contextos de criação, exige cautela."
+        },
+        {
+          "type": "paragraph",
+          "text": "A imputação e os testes estatísticos também envolvem pressupostos. A convergência entre análises fortalece a investigação de uma região, mas a confirmação dos efeitos dos genes candidatos permanece uma etapa necessária."
+        },
+        {
+          "type": "paragraph",
+          "text": "Os autores também apontaram uma limitação da versão do genoma de referência utilizada, EquCab2. Algumas regiões relevantes não continham genes codificadores de proteínas anotados, e elementos reguladores ainda pouco descritos poderiam participar dos sinais observados."
+        }
+      ]
+    },
+    {
+      "id": "aplicacoes",
+      "title": "Como esses resultados contribuem para o melhoramento?",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "A pesquisa ajuda a compreender como objetivos distintos de criação podem contribuir para a diferenciação genética dentro de uma raça. Também oferece regiões e genes para orientar estudos sobre a biologia das habilidades esportivas."
+        },
+        {
+          "type": "paragraph",
+          "text": "Para criadores e profissionais, a contribuição está em compreender melhor a história e as hipóteses biológicas da seleção. Aplicações na escolha de reprodutores dependeriam de validações adicionais sobre os efeitos e a utilidade das variantes identificadas."
+        }
+      ]
+    },
+    {
+      "id": "referencia",
+      "title": "Referência científica",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Avila F, Mickelson JR, Schaefer RJ e McCue ME. Genome-Wide Signatures of Selection Reveal Genes Associated With Performance in American Quarter Horse Subpopulations. Frontiers in Genetics, 9, 249, 2018. [Leia o artigo original](https://doi.org/10.3389/fgene.2018.00249)."
+        }
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "title": "Avila F, Mickelson JR, Schaefer RJ e McCue ME (2018). Genome-Wide Signatures of Selection Reveal Genes Associated With Performance in American Quarter Horse Subpopulations. Frontiers in Genetics, 9, 249.",
+      "url": "https://doi.org/10.3389/fgene.2018.00249"
+    }
+  ],
+  "tags": [
+    "Quarto de Milha",
+    "genética equina",
+    "assinaturas de seleção",
+    "desempenho esportivo"
+  ],
+  "cover": {
+    "src": "blog/covers/quartodemilha-assinaturas-selecao.jpg",
+    "width": 1672,
+    "height": 941,
+    "alt": "Ilustração de três cavalos Quarto de Milha com uma representação de DNA ao fundo.",
+    "credit": "Ilustração gerada por inteligência artificial para o MGenética.",
+    "caption": "Representação ilustrativa do tema. Os animais retratados não pertencem à amostra do estudo."
+  }
+}
